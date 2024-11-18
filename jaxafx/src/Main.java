@@ -23,6 +23,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.ArrayList;
+
 /**
  * Sample application that demonstrates the use of JavaFX Canvas for a Game.
  * This class is intentionally not structured very well. This is just a starting point to show
@@ -34,21 +39,22 @@ import javafx.util.Duration;
  * @author Liam O'Reilly
  */
 public class Main extends Application {
-	// The dimensions of the window
-	private static final int WINDOW_WIDTH = 800;
-	private static final int WINDOW_HEIGHT = 800;
-
-	// The dimensions of the canvas
-	private static final int CANVAS_WIDTH = 600;
-	private static final int CANVAS_HEIGHT = 600;
 
 	// The width and height (in pixels) of each cell that makes up the game.
-	private static final int GRID_CELL_WIDTH = 50;
-	private static final int GRID_CELL_HEIGHT = 50;
+	private static final int GRID_CELL_WIDTH = 30;
+	private static final int GRID_CELL_HEIGHT = 30;
 	
 	// The width of the grid in number of cells.
-	private static final int GRID_WIDTH = 12;
-	private static final int GRID_HEIGHT = Math.round(GRID_WIDTH * (CANVAS_HEIGHT / CANVAS_WIDTH));
+	private static final int GRID_WIDTH = 40;
+	private static final int GRID_HEIGHT = 22;
+
+	// The dimensions of the canvas
+	private static final int CANVAS_WIDTH = GRID_WIDTH * GRID_CELL_WIDTH;
+	private static final int CANVAS_HEIGHT = GRID_HEIGHT * GRID_CELL_HEIGHT;
+
+	// The dimensions of the window
+	private static final int WINDOW_WIDTH = CANVAS_WIDTH + 100;
+	private static final int WINDOW_HEIGHT = CANVAS_HEIGHT + 100;
 	
 	// The canvas in the GUI. This needs to be a global variable
 	// (in this setup) as we need to access it in different methods.
@@ -59,13 +65,19 @@ public class Main extends Application {
 	private Image playerFrontImage;
 	private Image dirtImage;
 	private Image boulderImage;
+	private Image normalWallImage;
+	private Image diamondImage;
+	private Image titaniumWallImage;
 	
 	// X and Y coordinate of player on the grid.
-	private int playerX = 0;
-	private int playerY = 0;
+	private int playerX = 3;
+	private int playerY = 2;
 	
 	// Timeline which will cause tick method to be called periodically.
-	private Timeline tickTimeline; 
+	private Timeline tickTimeline;
+
+	// level array creation
+	public String[][] level = ReadLevelFile("src/LEVEL1.txt");
 	
 	/**
 	 * Setup the new application.
@@ -73,9 +85,12 @@ public class Main extends Application {
 	 */
 	public void start(Stage primaryStage) {
 		// Load images. Note we use png images with a transparent background.
-		playerFrontImage = new Image("PLAYER_FRONT.png", 50, 50, false, false);
-		dirtImage = new Image("DIRT.png", 50, 50, false, false);
-		boulderImage = new Image("BOULDER.png", 50, 50, false, false);
+		playerFrontImage = new Image("PLAYER_FRONT.png", GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false, false);
+		dirtImage = new Image("DIRT.png", GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false, false);
+		boulderImage = new Image("BOULDER.png", GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false, false);
+		normalWallImage = new Image("NORMAL_WALL.png", GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false, false);
+		diamondImage = new Image("DIAMOND.png", GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false, false);
+		titaniumWallImage = new Image("TITANIUM_WALL.png", GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false, false);
 
 		// Build the GUI 
 		Pane root = buildGUI();
@@ -99,7 +114,33 @@ public class Main extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
-	
+
+	/**
+	 * Reads the level file then takes the data and arranges it into a 2d array.
+	 * @param fn name of the file to read from.
+	 * @author Luca Crooks.
+	 */
+	public String[][] ReadLevelFile (String fn) {
+		String[][] a = new String[GRID_HEIGHT][GRID_WIDTH];
+		try {
+			int row = 0;
+			File f = new File(fn);
+			Scanner reader = new Scanner(f);
+			while (reader.hasNextLine()) {
+				String data = reader.nextLine();
+				for (int col = 0; col < GRID_WIDTH; col++) {
+					a[row][col] = data.substring(col, col + 1);
+				}
+				row++;
+			}
+			reader.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+		return a;
+	}
+
 	/**
 	 * Process a key event due to a key being pressed, e.g., to move the player.
 	 * @param event The key event that was pressed.
@@ -108,28 +149,16 @@ public class Main extends Application {
 		// We change the behaviour depending on the actual key that was pressed.
 		switch (event.getCode()) {			
 		    case RIGHT:
-		    	// Right key was pressed. So move the player right by one cell.
-	        	playerX = (playerX + 1) % GRID_WIDTH;
+	        	playerX++;
 	        	break;
 			case LEFT:
-				// Left key was pressed. So move the player left by one cell.
-				if (playerX == 0){
-					playerX = playerX + GRID_WIDTH - 1;
-				} else {
-					playerX--;
-				}
+				playerX--;
 				break;
 			case UP:
-				// Up key was pressed. So move the player up by one cell.
-				if (playerY == 0){
-					playerY = playerY + GRID_HEIGHT - 1;
-				} else {
-					playerY--;
-				}
+				playerY--;
 				break;
 			case DOWN:
-				// Down key was pressed. So move the player down by one cell.
-				playerY = (playerY + 1) % GRID_HEIGHT;
+				playerY++;
 				break;
 			default:
 	        	// Do nothing for all other keys.
@@ -154,14 +183,28 @@ public class Main extends Application {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
 		// Set the background to gray.
-		gc.setFill(Color.GRAY);
+		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
 		// Draw row of dirt images
 		// We multiply by the cell width and height to turn a coordinate in our grid into a pixel coordinate.
 		// We draw the row at y value 2.
-		for (int x = 0; x < GRID_WIDTH; x++) {
-			gc.drawImage(dirtImage, x * GRID_CELL_WIDTH, 2 * GRID_CELL_HEIGHT);
+		for (int row = 0; row < GRID_HEIGHT; row++) {
+			for (int col = 0; col < GRID_WIDTH; col++) {
+				if (level[row][col].equals("D")) {
+					gc.drawImage(dirtImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
+				} else if (level[row][col].equals("@")) {
+					gc.drawImage(boulderImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
+				} else if (level[row][col].equals("X")) {
+					gc.drawImage(playerFrontImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
+				} else if (level[row][col].equals("*")) {
+					gc.drawImage(diamondImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
+				} else if (level[row][col].equals("W")) {
+					gc.drawImage(normalWallImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
+				} else if (level[row][col].equals("T")) {
+				gc.drawImage(titaniumWallImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
+				}
+			}
 		}
 		
 		// Draw player at current location
@@ -172,19 +215,9 @@ public class Main extends Application {
 	 * Reset the player's location and move them back to (0,0). 
 	 */
 	public void resetPlayerLocation() { 
-		playerX = 0;
-		playerY = 0;
-		drawGame();
-	}
-	
-	/**
-	 * Move the player to roughly the center of the grid.
-	 */
-	public void movePlayerToCenter() {
-		// We just move the player to cell (5, 2)
-		playerX = 5;
+		playerX = 3;
 		playerY = 2;
-		drawGame();		
+		drawGame();
 	}
 	
 	/**
@@ -196,26 +229,6 @@ public class Main extends Application {
 	public void tick() {
 		// We then redraw the whole canvas.
 		drawGame();
-	}
-	
-	/**
-	 * React when an object is dragged onto the canvas. 
-	 * @param event The drag event itself which contains data about the drag that occurred.
-	 */
-	public void canvasDragDroppedOccured(DragEvent event) {
-    	double x = event.getX();
-        double y = event.getY();
-
-        // Print a string showing the location.
-        String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
-    	System.out.println(s);
-
-    	// Draw an icon at the dropped location.
-    	GraphicsContext gc = canvas.getGraphicsContext2D();
-    	// Draw the the image so the top-left corner is where we dropped.
-    	gc.drawImage(boulderImage, x, y);
-    	// Draw the the image so the center is where we dropped.    	
-    	// gc.drawImage(iconImage, x - iconImage.getWidth() / 2.0, y - iconImage.getHeight() / 2.0);
 	}
 	
 	/**
@@ -248,16 +261,6 @@ public class Main extends Application {
 			// We keep this method short and use a method for the bulk of the work.
 			resetPlayerLocation();
 		});
-
-		// Center Player Button		
-		Button centerPlayerLocationButton = new Button("Center Player");
-		toolbar.getChildren().add(centerPlayerLocationButton);		
-
-		// Setup the behaviour of the button.
-		centerPlayerLocationButton.setOnAction(e -> {
-			// We keep this method short and use a method for the bulk of the work.
-			movePlayerToCenter();
-		});
 		
 		// Tick Timeline buttons
 		Button startTickTimelineButton = new Button("Start Ticks");
@@ -282,57 +285,6 @@ public class Main extends Application {
 			startTickTimelineButton.setDisable(false);
 		});
 
-		// Setup a draggable image.
-		ImageView draggableImage = new ImageView();
-		draggableImage.setImage(boulderImage);
-        toolbar.getChildren().add(draggableImage);
-        
-        // This code setup what happens when the dragging starts on the image.
-        // You probably don't need to change this (unless you wish to do more advanced things).
-        draggableImage.setOnDragDetected(new EventHandler<MouseEvent>() {
-		    public void handle(MouseEvent event) {
-		        // Mark the drag as started.
-		    	// We do not use the transfer mode (this can be used to indicate different forms
-		    	// of drags operations, for example, moving files or copying files).
-		    	Dragboard db = draggableImage.startDragAndDrop(TransferMode.ANY);
-
-		    	// We have to put some content in the clipboard of the drag event.
-		    	// We do not use this, but we could use it to store extra data if we wished.
-                ClipboardContent content = new ClipboardContent();
-                content.putString("Hello");
-                db.setContent(content);
-                
-		    	// Consume the event. This means we mark it as dealt with. 
-		        event.consume();
-		    }
-		});
-		
-        // This code allows the canvas to receive a dragged object within its bounds.
-        // You probably don't need to change this (unless you wish to do more advanced things).
-        canvas.setOnDragOver(new EventHandler<DragEvent>() {
-            public void handle(DragEvent event) {
-		        // Mark the drag as acceptable if the source was the draggable image.
-            	// (for example, we don't want to allow the user to drag things or files into our application)
-            	if (event.getGestureSource() == draggableImage) {
-    		    	// Mark the drag event as acceptable by the canvas.
-            		event.acceptTransferModes(TransferMode.ANY);
-    		    	// Consume the event. This means we mark it as dealt with.
-            		event.consume();
-            	}
-            }
-        });
-        
-        // This code allows the canvas to react to a dragged object when it is finally dropped.
-        // You probably don't need to change this (unless you wish to do more advanced things).
-        canvas.setOnDragDropped(new EventHandler<DragEvent>() {
-            public void handle(DragEvent event) {                
-            	// We call this method which is where the bulk of the behaviour takes place.
-            	canvasDragDroppedOccured(event);
-            	// Consume the event. This means we mark it as dealt with.
-            	event.consume();
-             }
-        });
-        
 		// Finally, return the border pane we built up.
         return root;
 	}
