@@ -13,22 +13,24 @@ public class Player {
     }
 
     public boolean checkValidMove(String dir) {
-        if (dir.equals("left")) {
-            if (Main.board.getTileLetter(this.x - 1, this.y).equals("P") || Main.board.getTileLetter(this.x - 1, this.y).equals("D")) {
-                return true;
-            }
-        } else if (dir.equals("right")) {
-            if (Main.board.getTileLetter(this.x + 1, this.y).equals("P") || Main.board.getTileLetter(this.x + 1, this.y).equals("D")) {
-                return true;
-            }
+        int nx = 0;
+        int ny = 0;
+        if (dir.equals("right")) {
+            nx = this.x + 1;
+            ny = this.y;
+        } else if (dir.equals("left")) {
+            nx = this.x - 1;
+            ny = this.y;
         } else if (dir.equals("up")) {
-            if (Main.board.getTileLetter(this.x, this.y - 1).equals("P") || Main.board.getTileLetter(this.x, this.y - 1).equals("D")) {
-                return true;
-            }
+            nx = this.x;
+            ny = this.y - 1;
         } else {
-            if (Main.board.getTileLetter(this.x, this.y + 1).equals("P") || Main.board.getTileLetter(this.x, this.y + 1).equals("D")) {
-                return true;
-            }
+            nx = this.x;
+            ny = this.y + 1;
+        }
+
+        if (Main.board.getTileLetter(nx, ny).equals("P") || Main.board.getTileLetter(nx, ny).equals("D")) {
+            return true;
         }
         return false;
     }
