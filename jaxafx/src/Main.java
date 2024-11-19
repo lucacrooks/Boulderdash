@@ -77,7 +77,7 @@ public class Main extends Application {
 	private Timeline tickTimeline;
 
 	// level array creation
-	public String[][] level = ReadLevelFile("src/LEVEL1.txt");
+	public Tile[][] level = ReadLevelFile("src/LEVEL1.txt");
 	
 	/**
 	 * Setup the new application.
@@ -120,8 +120,8 @@ public class Main extends Application {
 	 * @param fn name of the file to read from.
 	 * @author Luca Crooks.
 	 */
-	public String[][] ReadLevelFile (String fn) {
-		String[][] a = new String[GRID_HEIGHT][GRID_WIDTH];
+	public Tile[][] ReadLevelFile (String fn) {
+		Tile[][] a = new Tile[GRID_HEIGHT][GRID_WIDTH];
 		try {
 			int row = 0;
 			File f = new File(fn);
@@ -129,7 +129,7 @@ public class Main extends Application {
 			while (reader.hasNextLine()) {
 				String data = reader.nextLine();
 				for (int col = 0; col < GRID_WIDTH; col++) {
-					a[row][col] = data.substring(col, col + 1);
+					a[row][col] = new Tile(row, col, data.substring(col, col + 1));
 				}
 				row++;
 			}
@@ -191,17 +191,17 @@ public class Main extends Application {
 		// We draw the row at y value 2.
 		for (int row = 0; row < GRID_HEIGHT; row++) {
 			for (int col = 0; col < GRID_WIDTH; col++) {
-				if (level[row][col].equals("D")) {
+				if (level[row][col].getLetter().equals("D")) {
 					gc.drawImage(dirtImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
-				} else if (level[row][col].equals("@")) {
+				} else if (level[row][col].getLetter().equals("@")) {
 					gc.drawImage(boulderImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
-				} else if (level[row][col].equals("X")) {
+				} else if (level[row][col].getLetter().equals("X")) {
 					gc.drawImage(playerFrontImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
-				} else if (level[row][col].equals("*")) {
+				} else if (level[row][col].getLetter().equals("*")) {
 					gc.drawImage(diamondImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
-				} else if (level[row][col].equals("W")) {
+				} else if (level[row][col].getLetter().equals("W")) {
 					gc.drawImage(normalWallImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
-				} else if (level[row][col].equals("T")) {
+				} else if (level[row][col].getLetter().equals("T")) {
 				gc.drawImage(titaniumWallImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
 				}
 			}
