@@ -60,16 +60,14 @@ public class Main extends Application {
 	// (in this setup) as we need to access it in different methods.
 	// We could use FXML to place code in the controller instead.
 	public Canvas canvas;
-
-	// X and Y coordinate of player on the grid.
-	private int playerX = 3;
-	private int playerY = 2;
 	
 	// Timeline which will cause tick method to be called periodically.
 	private Timeline tickTimeline;
 
-	// level array creation
-	Board b = new Board("src/LEVEL1.txt");
+	// player instance
+	public static Player player = new Player(3, 2);
+	// board creation from file
+	public static Board board = new Board("src/LEVEL1.txt");
 	
 	/**
 	 * Setup the new application.
@@ -94,7 +92,7 @@ public class Main extends Application {
 		// We start the timeline upon a button press.
 		
 		// Display the scene on the stage
-		b.draw(canvas);
+		board.draw(canvas);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -131,38 +129,32 @@ public class Main extends Application {
 	 */
 	public void processKeyEvent(KeyEvent event) {
 		// We change the behaviour depending on the actual key that was pressed.
+		String direction = "";
 		switch (event.getCode()) {			
 		    case RIGHT:
-	        	playerX++;
+	        	direction = "right";
 	        	break;
 			case LEFT:
-				playerX--;
+				direction = "left";
 				break;
 			case UP:
-				playerY--;
+				direction = "up";
 				break;
 			case DOWN:
-				playerY++;
+				direction = "down";
 				break;
 			default:
 	        	// Do nothing for all other keys.
 	        	break;
 		}
-		
+
+		// calls update on player -> checks if move is valid, moves (or not), then digs its square if it is dirt.
+		player.update(direction);
 		// Redraw game as the player may have moved.
-		b.draw(canvas);
+		board.draw(canvas);
 		
 		// Consume the event. This means we mark it as dealt with. This stops other GUI nodes (buttons etc) responding to it.
 		event.consume();
-	}
-	
-	/**
-	 * Reset the player's location and move them back to (0,0). 
-	 */
-	public void resetPlayerLocation() { 
-		playerX = 3;
-		playerY = 2;
-		b.draw(canvas);
 	}
 	
 	/**
@@ -173,7 +165,7 @@ public class Main extends Application {
 	 */
 	public void tick() {
 		// We then redraw the whole canvas.
-		b.draw(canvas);
+		board.draw(canvas);
 	}
 	
 	/**
@@ -204,7 +196,7 @@ public class Main extends Application {
 		// Setup the behaviour of the button.
 		resetPlayerLocationButton.setOnAction(e -> {
 			// We keep this method short and use a method for the bulk of the work.
-			resetPlayerLocation();
+			player.setPos(3, 2);
 		});
 		
 		// Tick Timeline buttons

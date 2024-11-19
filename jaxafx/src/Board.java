@@ -12,24 +12,16 @@ public class Board {
     private Tile[][] array;
 
     // Loaded images
-    private Image playerFrontImage;
-    private Image dirtImage;
-    private Image boulderImage;
-    private Image normalWallImage;
-    private Image diamondImage;
-    private Image titaniumWallImage;
+    private Image playerFrontImage = Main.player.getImage();
+    private Image dirtImage = new Image("DIRT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+    private Image boulderImage = new Image("BOULDER.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+    private Image normalWallImage = new Image("NORMAL_WALL.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+    private Image diamondImage = new Image("DIAMOND.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+    private Image titaniumWallImage = new Image("TITANIUM_WALL.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+    private Image exitImage = new Image("EXIT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
 
     public Board (String fn) {
         this.array = make(fn);
-
-        // Load images. Note we use png images with a transparent background.
-        playerFrontImage = new Image("PLAYER_FRONT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-        dirtImage = new Image("DIRT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-        boulderImage = new Image("BOULDER.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-        normalWallImage = new Image("NORMAL_WALL.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-        diamondImage = new Image("DIAMOND.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-        titaniumWallImage = new Image("TITANIUM_WALL.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-
     }
 
     public Tile[][] make(String fn) {
@@ -55,6 +47,14 @@ public class Board {
 
     public void replace(int x, int y, Tile t) {
         this.array[x][y] = t;
+    }
+
+    public Tile[][] getArray() {
+        return this.array;
+    }
+
+    public String getTileLetter(int x, int y) {
+        return this.array[y][x].getLetter();
     }
 
     public void draw(Canvas canvas) {
@@ -83,12 +83,14 @@ public class Board {
                     gc.drawImage(normalWallImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 } else if (array[row][col].getLetter().equals("T")) {
                     gc.drawImage(titaniumWallImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                } else if (array[row][col].getLetter().equals("E")) {
+                    gc.drawImage(exitImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 }
             }
         }
 
         // Draw player at current location
-        //gc.drawImage(playerFrontImage, playerX * Main.GRID_CELL_WIDTH, playerY * Main.GRID_CELL_HEIGHT);
+        gc.drawImage(playerFrontImage, Main.player.getX() * Main.GRID_CELL_WIDTH, Main.player.getY() * Main.GRID_CELL_HEIGHT);
     }
 
 }

@@ -10,15 +10,15 @@ public class Tile {
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
 
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public String getLetter() {
-        return letter;
+        return this.letter;
     }
 
     public void setXY(int x, int y) {
