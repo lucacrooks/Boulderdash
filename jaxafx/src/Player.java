@@ -1,15 +1,25 @@
 import javafx.scene.image.Image;
 
 public class Player {
-
+    private int start_x;
+    private int start_y;
     private int x;
     private int y;
     private Image image;
+    private int diamondCount;
 
-    public Player(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Player(int start_x, int start_y) {
+        this.start_x = start_x;
+        this.start_y = start_y;
+        this.x = start_x;
+        this.y = start_y;
         this.image = new Image("PLAYER_FRONT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+        this.diamondCount = 0;
+    }
+
+    public void reset() {
+        this.x = this.start_x;
+        this.y = this.start_y;
     }
 
     public boolean checkValidMove(String dir) {
@@ -29,8 +39,14 @@ public class Player {
             ny = this.y + 1;
         }
 
-        if (Main.board.getTileLetter(nx, ny).equals("P") || Main.board.getTileLetter(nx, ny).equals("D")) {
+        if (Main.board.getTileLetter(nx, ny).equals("D") || Main.board.getTileLetter(nx, ny).equals("P")) {
             return true;
+        } else if (Main.board.getTileLetter(nx, ny).equals("*")) {
+            this.diamondCount++;
+            System.out.println(this.diamondCount);
+            return true;
+        } else if (Main.board.getTileLetter(nx, ny).equals("E")) {
+            this.reset();
         }
         return false;
     }
