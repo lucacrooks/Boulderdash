@@ -41,34 +41,26 @@ import java.util.ArrayList;
 public class Main extends Application {
 
 	// The width and height (in pixels) of each cell that makes up the game.
-	private static final int GRID_CELL_WIDTH = 30;
-	private static final int GRID_CELL_HEIGHT = 30;
+	public static final int GRID_CELL_WIDTH = 30;
+	public static final int GRID_CELL_HEIGHT = 30;
 	
 	// The width of the grid in number of cells.
-	private static final int GRID_WIDTH = 40;
-	private static final int GRID_HEIGHT = 22;
+	public static final int GRID_WIDTH = 40;
+	public static final int GRID_HEIGHT = 22;
 
 	// The dimensions of the canvas
-	private static final int CANVAS_WIDTH = GRID_WIDTH * GRID_CELL_WIDTH;
-	private static final int CANVAS_HEIGHT = GRID_HEIGHT * GRID_CELL_HEIGHT;
+	public static final int CANVAS_WIDTH = GRID_WIDTH * GRID_CELL_WIDTH;
+	public static final int CANVAS_HEIGHT = GRID_HEIGHT * GRID_CELL_HEIGHT;
 
 	// The dimensions of the window
-	private static final int WINDOW_WIDTH = CANVAS_WIDTH + 100;
-	private static final int WINDOW_HEIGHT = CANVAS_HEIGHT + 100;
+	public static final int WINDOW_WIDTH = CANVAS_WIDTH + 100;
+	public static final int WINDOW_HEIGHT = CANVAS_HEIGHT + 100;
 	
 	// The canvas in the GUI. This needs to be a global variable
 	// (in this setup) as we need to access it in different methods.
 	// We could use FXML to place code in the controller instead.
-	private Canvas canvas;
-		
-	// Loaded images
-	private Image playerFrontImage;
-	private Image dirtImage;
-	private Image boulderImage;
-	private Image normalWallImage;
-	private Image diamondImage;
-	private Image titaniumWallImage;
-	
+	public Canvas canvas;
+
 	// X and Y coordinate of player on the grid.
 	private int playerX = 3;
 	private int playerY = 2;
@@ -77,21 +69,13 @@ public class Main extends Application {
 	private Timeline tickTimeline;
 
 	// level array creation
-	public Tile[][] level = ReadLevelFile("src/LEVEL1.txt");
+	Board b = new Board("src/LEVEL1.txt");
 	
 	/**
 	 * Setup the new application.
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
 	public void start(Stage primaryStage) {
-		// Load images. Note we use png images with a transparent background.
-		playerFrontImage = new Image("PLAYER_FRONT.png", GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false, false);
-		dirtImage = new Image("DIRT.png", GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false, false);
-		boulderImage = new Image("BOULDER.png", GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false, false);
-		normalWallImage = new Image("NORMAL_WALL.png", GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false, false);
-		diamondImage = new Image("DIAMOND.png", GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false, false);
-		titaniumWallImage = new Image("TITANIUM_WALL.png", GRID_CELL_WIDTH, GRID_CELL_HEIGHT, false, false);
-
 		// Build the GUI 
 		Pane root = buildGUI();
 		
@@ -110,7 +94,7 @@ public class Main extends Application {
 		// We start the timeline upon a button press.
 		
 		// Display the scene on the stage
-		drawGame();
+		b.draw(canvas);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -166,49 +150,10 @@ public class Main extends Application {
 		}
 		
 		// Redraw game as the player may have moved.
-		drawGame();
+		b.draw(canvas);
 		
 		// Consume the event. This means we mark it as dealt with. This stops other GUI nodes (buttons etc) responding to it.
 		event.consume();
-	}
-	
-	/**
-	 * Draw the game on the canvas.
-	 */
-	public void drawGame() {
-		// Get the Graphic Context of the canvas. This is what we draw on.
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-		
-		// Clear canvas
-		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		
-		// Set the background to gray.
-		gc.setFill(Color.BLACK);
-		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		
-		// Draw row of dirt images
-		// We multiply by the cell width and height to turn a coordinate in our grid into a pixel coordinate.
-		// We draw the row at y value 2.
-		for (int row = 0; row < GRID_HEIGHT; row++) {
-			for (int col = 0; col < GRID_WIDTH; col++) {
-				if (level[row][col].getLetter().equals("D")) {
-					gc.drawImage(dirtImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
-				} else if (level[row][col].getLetter().equals("@")) {
-					gc.drawImage(boulderImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
-				} else if (level[row][col].getLetter().equals("X")) {
-					gc.drawImage(playerFrontImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
-				} else if (level[row][col].getLetter().equals("*")) {
-					gc.drawImage(diamondImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
-				} else if (level[row][col].getLetter().equals("W")) {
-					gc.drawImage(normalWallImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
-				} else if (level[row][col].getLetter().equals("T")) {
-				gc.drawImage(titaniumWallImage, col * GRID_CELL_WIDTH, row * GRID_CELL_HEIGHT);
-				}
-			}
-		}
-		
-		// Draw player at current location
-		gc.drawImage(playerFrontImage, playerX * GRID_CELL_WIDTH, playerY * GRID_CELL_HEIGHT);
 	}
 	
 	/**
@@ -217,7 +162,7 @@ public class Main extends Application {
 	public void resetPlayerLocation() { 
 		playerX = 3;
 		playerY = 2;
-		drawGame();
+		b.draw(canvas);
 	}
 	
 	/**
@@ -228,7 +173,7 @@ public class Main extends Application {
 	 */
 	public void tick() {
 		// We then redraw the whole canvas.
-		drawGame();
+		b.draw(canvas);
 	}
 	
 	/**
