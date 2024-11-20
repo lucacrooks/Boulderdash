@@ -68,15 +68,16 @@ public class Main extends Application {
 	public static Player player = new Player(3, 2);
 	// board creation from file
 	public static Board board = new Board("src/LEVEL1.txt");
+	public static ArrayList<Diamond> diamonds = board.makeDiamondsArray();
 	
 	/**
 	 * Setup the new application.
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
 	public void start(Stage primaryStage) {
-		// Build the GUI 
+		// Build the GUI
 		Pane root = buildGUI();
-		
+
 		// Create a scene from the GUI
 		Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 				
@@ -89,8 +90,9 @@ public class Main extends Application {
 		tickTimeline = new Timeline(new KeyFrame(Duration.millis(500), event -> tick()));
 		 // Loop the timeline forever
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
-		// We start the timeline upon a button press.
-		
+		// We start the timeline.
+		tickTimeline.play();
+
 		// Display the scene on the stage
 		board.draw(canvas);
 		primaryStage.setScene(scene);
@@ -150,6 +152,7 @@ public class Main extends Application {
 
 		// calls update on player -> checks if move is valid, moves (or not), then digs its square if it is dirt.
 		player.update(direction);
+
 		// Redraw game as the player may have moved.
 		board.draw(canvas);
 		
@@ -165,9 +168,11 @@ public class Main extends Application {
 	 */
 	public void tick() {
 		// We then redraw the whole canvas.
+		diamonds.forEach((d) -> d.update());
+		diamonds = board.makeDiamondsArray();
 		board.draw(canvas);
 	}
-	
+
 	/**
 	 * Create the GUI.
 	 * @return The panel that contains the created GUI.
@@ -175,20 +180,20 @@ public class Main extends Application {
 	private Pane buildGUI() {
 		// Create top-level panel that will hold all GUI nodes.
 		BorderPane root = new BorderPane();
-				
+
 		// Create the canvas that we will draw on.
 		// We store this as a gloabl variable so other methods can access it.
 		canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 		root.setCenter(canvas);
-		
+
 		// Create a toolbar with some nice padding and spacing
 		HBox toolbar = new HBox();
 		toolbar.setSpacing(10);
-		toolbar.setPadding(new Insets(10, 10, 10, 10)); 
+		toolbar.setPadding(new Insets(10, 10, 10, 10));
 		root.setTop(toolbar);
-		
+
 		// Create the toolbar content
-		
+
 		// Reset Player Location Button
 		Button resetPlayerLocationButton = new Button("Reset Player");
 		toolbar.getChildren().add(resetPlayerLocationButton);
@@ -198,7 +203,7 @@ public class Main extends Application {
 			// We keep this method short and use a method for the bulk of the work.
 			player.setPos(3, 2);
 		});
-		
+
 		// Tick Timeline buttons
 		Button startTickTimelineButton = new Button("Start Ticks");
 		Button stopTickTimelineButton = new Button("Stop Ticks");
@@ -207,20 +212,7 @@ public class Main extends Application {
 		// Stop button is disabled by default
 		stopTickTimelineButton.setDisable(true);
 
-		// Setup the behaviour of the buttons.
-		startTickTimelineButton.setOnAction(e -> {
-			// Start the tick timeline and enable/disable buttons as appropriate.
-			startTickTimelineButton.setDisable(true);
-			tickTimeline.play();
-			stopTickTimelineButton.setDisable(false);
-		});
 
-		stopTickTimelineButton.setOnAction(e -> {
-			// Stop the tick timeline and enable/disable buttons as appropriate.
-			stopTickTimelineButton.setDisable(true);
-			tickTimeline.stop();
-			startTickTimelineButton.setDisable(false);
-		});
 
 		// Finally, return the border pane we built up.
         return root;

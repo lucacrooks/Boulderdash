@@ -2,6 +2,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.canvas.Canvas;
+import java.util.ArrayList;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,6 +11,7 @@ import java.util.Scanner;
 public class Board {
 
     private Tile[][] array;
+    private ArrayList<Diamond> diamondsArray;
 
     // Loaded images
     private Image playerFrontImage = Main.player.getImage();
@@ -21,10 +23,11 @@ public class Board {
     private Image exitImage = new Image("EXIT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
 
     public Board (String fn) {
-        this.array = make(fn);
+        this.array = makeArray(fn);
+        this.diamondsArray = makeDiamondsArray();
     }
 
-    public Tile[][] make(String fn) {
+    public Tile[][] makeArray(String fn) {
         Tile[][] a = new Tile[Main.GRID_HEIGHT][Main.GRID_WIDTH];
         try {
             int row = 0;
@@ -33,7 +36,8 @@ public class Board {
             while (reader.hasNextLine()) {
                 String data = reader.nextLine();
                 for (int col = 0; col < Main.GRID_WIDTH; col++) {
-                    a[row][col] = new Tile(row, col, data.substring(col, col + 1));
+                    String l = data.substring(col, col + 1);
+                    a[row][col] = new Tile(row, col, l);
                 }
                 row++;
             }
@@ -45,8 +49,20 @@ public class Board {
         return a;
     }
 
+    public ArrayList<Diamond> makeDiamondsArray() {
+        ArrayList<Diamond> da = new ArrayList<Diamond>();
+        for (int row = 0; row < Main.GRID_HEIGHT; row++) {
+            for (int col = 0; col < Main.GRID_WIDTH; col++) {
+                if (this.array[row][col].getLetter().equals("*")) {
+                    da.add(new Diamond(col, row));
+                }
+            }
+        }
+        return da;
+    }
+
     public void replace(int x, int y, Tile t) {
-        this.array[x][y] = t;
+        this.array[y][x] = t;
     }
 
     public Tile[][] getArray() {
@@ -85,6 +101,8 @@ public class Board {
                     gc.drawImage(titaniumWallImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 } else if (array[row][col].getLetter().equals("E")) {
                     gc.drawImage(exitImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                } else if (array[row][col].getLetter().equals("X")) {
+                    gc.drawImage(playerFrontImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 }
             }
         }

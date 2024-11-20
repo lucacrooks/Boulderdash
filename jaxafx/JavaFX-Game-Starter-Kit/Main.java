@@ -184,26 +184,6 @@ public class Main extends Application {
 	}
 	
 	/**
-	 * React when an object is dragged onto the canvas. 
-	 * @param event The drag event itself which contains data about the drag that occurred.
-	 */
-	public void canvasDragDroppedOccured(DragEvent event) {
-    	double x = event.getX();
-        double y = event.getY();
-
-        // Print a string showing the location.
-        String s = String.format("You dropped at (%f, %f) relative to the canvas.", x, y);
-    	System.out.println(s);
-
-    	// Draw an icon at the dropped location.
-    	GraphicsContext gc = canvas.getGraphicsContext2D();
-    	// Draw the the image so the top-left corner is where we dropped.
-    	gc.drawImage(iconImage, x, y);
-    	// Draw the the image so the center is where we dropped.    	
-    	// gc.drawImage(iconImage, x - iconImage.getWidth() / 2.0, y - iconImage.getHeight() / 2.0);
-	}
-	
-	/**
 	 * Create the GUI.
 	 * @return The panel that contains the created GUI.
 	 */

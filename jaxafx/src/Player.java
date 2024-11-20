@@ -42,8 +42,13 @@ public class Player {
         if (Main.board.getTileLetter(nx, ny).equals("D") || Main.board.getTileLetter(nx, ny).equals("P")) {
             return true;
         } else if (Main.board.getTileLetter(nx, ny).equals("*")) {
-            this.diamondCount++;
-            System.out.println(this.diamondCount);
+            for (int i = 0; i < Main.diamonds.size(); i++) {
+                int[] pos = {nx, ny};
+                if (Main.diamonds.get(i).getX() == nx && Main.diamonds.get(i).getY() == ny) {
+                    Main.diamonds.remove(Main.diamonds.get(i));
+                    this.diamondCount++;
+                }
+            }
             return true;
         } else if (Main.board.getTileLetter(nx, ny).equals("E")) {
             this.reset();
@@ -52,6 +57,7 @@ public class Player {
     }
 
     public void move(String dir) {
+        Main.board.getArray()[this.y][this.x] = new Tile(this.x, this.y, "P");
         if (dir.equals("right")) {
             this.x++;
         } else if (dir.equals("left")){
@@ -64,7 +70,7 @@ public class Player {
     }
 
     public void dig() {
-        Main.board.getArray()[this.y][this.x] = new Tile(this.x, this.y, "P");
+        Main.board.getArray()[this.y][this.x] = new Tile(this.x, this.y, "X");
     }
 
     public Image getImage() {
