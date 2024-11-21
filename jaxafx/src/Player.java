@@ -61,7 +61,6 @@ public class Player {
             }
             return true;
         }
-
         else if (Main.board.getTileLetter(nx, ny).equals("D") || Main.board.getTileLetter(nx, ny).equals("P")) {
             return true;
         } else if (Main.board.getTileLetter(nx, ny).equals("*")) {

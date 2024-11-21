@@ -26,17 +26,10 @@ public class Boulder {
         String belowRight = Main.board.getArray()[this.y + 1][this.x + 1].getLetter();
 
         if (below.equals("X") && this.isFalling) {
-            this.killPlayer();
             Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "P"));
-            for (int i = 0; i < Main.boulders.size(); i++) {
-                if (Main.boulders.get(i).getX() == this.x && Main.boulders.get(i).getY() == this.y) {
-                    Main.boulders.remove(Main.boulders.get(i));
-                    Main.board.explode(this.x, this.y);
-                }
-            }
-        }
-
-        if (below.equals("P") || below.equals("f") || below.equals("F") || below.equals("B")) {
+            Main.board.explode(this.x, this.y);
+            this.killPlayer();
+        } else if (below.equals("P") || below.equals("f") || below.equals("F") || below.equals("B")) {
             return 2;
         } else if (below.equals("@") || below.equals("W") || below.equals("*")) {
             if (left.equals("P") && belowLeft.equals("P")) {
