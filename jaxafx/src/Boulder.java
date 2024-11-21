@@ -9,8 +9,13 @@ public class Boulder {
         this.isFalling = false;
     }
 
-    public void push() {
-
+    public void push(String dir) {
+        if (dir.equals("left")) {
+            this.x--;
+        } else {
+            this.x++;
+        }
+        Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "@"));
     }
 
     public int canFall() {
@@ -22,8 +27,15 @@ public class Boulder {
 
         if (below.equals("X") && this.isFalling) {
             this.killPlayer();
+            Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "P"));
+            for (int i = 0; i < Main.boulders.size(); i++) {
+                if (Main.boulders.get(i).getX() == this.x && Main.boulders.get(i).getY() == this.y) {
+                    Main.boulders.remove(Main.boulders.get(i));
+                    Main.board.explode(this.x, this.y);
+                }
+            }
         }
-        
+
         if (below.equals("P") || below.equals("f") || below.equals("F") || below.equals("B")) {
             return 2;
         } else if (below.equals("@") || below.equals("W") || below.equals("*")) {

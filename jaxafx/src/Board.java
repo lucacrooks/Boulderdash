@@ -90,6 +90,10 @@ public class Board {
         return this.array[y][x].getLetter();
     }
 
+    public void explode(int x, int y) {
+
+    }
+
     public void draw(Canvas canvas) {
         // Get the Graphic Context of the canvas. This is what we draw on.
         GraphicsContext gc = canvas.getGraphicsContext2D();

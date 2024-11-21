@@ -45,11 +45,27 @@ public class Player {
             ny = this.y + 1;
         }
 
-        if (Main.board.getTileLetter(nx, ny).equals("D") || Main.board.getTileLetter(nx, ny).equals("P")) {
+
+        if (dir.equals("left") && Main.board.getTileLetter(nx, ny).equals("@") && Main.board.getTileLetter(nx - 1, ny).equals("P")) {
+            for (int i = 0; i < Main.boulders.size(); i++) {
+                if (Main.boulders.get(i).getX() == nx && Main.boulders.get(i).getY() == ny) {
+                    Main.boulders.get(i).push("left");
+                }
+            }
+            return true;
+        } else if (dir.equals("right") && Main.board.getTileLetter(nx, ny).equals("@") && Main.board.getTileLetter(nx + 1, ny).equals("P")) {
+            for (int i = 0; i < Main.boulders.size(); i++) {
+                if (Main.boulders.get(i).getX() == nx && Main.boulders.get(i).getY() == ny) {
+                    Main.boulders.get(i).push("right");
+                }
+            }
+            return true;
+        }
+
+        else if (Main.board.getTileLetter(nx, ny).equals("D") || Main.board.getTileLetter(nx, ny).equals("P")) {
             return true;
         } else if (Main.board.getTileLetter(nx, ny).equals("*")) {
             for (int i = 0; i < Main.diamonds.size(); i++) {
-                int[] pos = {nx, ny};
                 if (Main.diamonds.get(i).getX() == nx && Main.diamonds.get(i).getY() == ny) {
                     Main.diamonds.remove(Main.diamonds.get(i));
                     this.diamondCount++;
