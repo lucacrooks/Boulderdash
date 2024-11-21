@@ -7,6 +7,7 @@ public class Player {
     private int y;
     private Image image;
     private int diamondCount;
+    private boolean isAlive;
 
     public Player(int start_x, int start_y) {
         this.start_x = start_x;
@@ -15,6 +16,7 @@ public class Player {
         this.y = start_y;
         this.image = new Image("PLAYER_FRONT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
         this.diamondCount = 0;
+        this.isAlive = true;
     }
 
     public void reset() {
@@ -23,6 +25,10 @@ public class Player {
     }
 
     public boolean checkValidMove(String dir) {
+        if (this.isAlive == false) {
+            return false;
+        }
+
         int nx = 0;
         int ny = 0;
         if (dir.equals("right")) {
@@ -71,6 +77,14 @@ public class Player {
 
     public void dig() {
         Main.board.getArray()[this.y][this.x] = new Tile(this.x, this.y, "X");
+    }
+
+    public boolean getIsAlive() {
+        return this.isAlive;
+    }
+
+    public void setIsAlive(boolean b) {
+        this.isAlive = b;
     }
 
     public Image getImage() {

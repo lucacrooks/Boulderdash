@@ -40,6 +40,13 @@ import java.util.ArrayList;
  */
 public class Main extends Application {
 
+	// player instance
+	public static Player player = new Player(3, 2);
+	// board creation from file
+	public static Board board = new Board("src/LEVEL1.txt");
+	public static ArrayList<Diamond> diamonds = board.makeDiamondsArray();
+	public static ArrayList<Boulder> boulders = board.makeBouldersArray();
+
 	// The width and height (in pixels) of each cell that makes up the game.
 	public static final int GRID_CELL_WIDTH = 30;
 	public static final int GRID_CELL_HEIGHT = 30;
@@ -63,12 +70,6 @@ public class Main extends Application {
 	
 	// Timeline which will cause tick method to be called periodically.
 	private Timeline tickTimeline;
-
-	// player instance
-	public static Player player = new Player(3, 2);
-	// board creation from file
-	public static Board board = new Board("src/LEVEL1.txt");
-	public static ArrayList<Diamond> diamonds = board.makeDiamondsArray();
 	
 	/**
 	 * Setup the new application.
@@ -87,7 +88,7 @@ public class Main extends Application {
 				
 		// Register a tick method to be called periodically.
 		// Make a new timeline with one keyframe that triggers the tick method every half a second.
-		tickTimeline = new Timeline(new KeyFrame(Duration.millis(500), event -> tick()));
+		tickTimeline = new Timeline(new KeyFrame(Duration.millis(250), event -> tick()));
 		 // Loop the timeline forever
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
 		// We start the timeline.
@@ -169,7 +170,9 @@ public class Main extends Application {
 	public void tick() {
 		// We then redraw the whole canvas.
 		diamonds.forEach((d) -> d.update());
-		diamonds = board.makeDiamondsArray();
+
+		boulders.forEach((b) -> b.update());
+
 		board.draw(canvas);
 	}
 
@@ -201,6 +204,7 @@ public class Main extends Application {
 		// Setup the behaviour of the button.
 		resetPlayerLocationButton.setOnAction(e -> {
 			// We keep this method short and use a method for the bulk of the work.
+			player.setIsAlive(true);
 			player.setPos(3, 2);
 		});
 

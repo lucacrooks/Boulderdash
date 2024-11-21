@@ -27,6 +27,11 @@ public class Board {
         this.diamondsArray = makeDiamondsArray();
     }
 
+    /**
+     * Reads the level file then takes the data and arranges it into a 2d array.
+     * @param fn name of the file to read from.
+     * @author Luca Crooks.
+     */
     public Tile[][] makeArray(String fn) {
         Tile[][] a = new Tile[Main.GRID_HEIGHT][Main.GRID_WIDTH];
         try {
@@ -59,6 +64,18 @@ public class Board {
             }
         }
         return da;
+    }
+
+    public ArrayList<Boulder> makeBouldersArray() {
+        ArrayList<Boulder> ba = new ArrayList<Boulder>();
+        for (int row = 0; row < Main.GRID_HEIGHT; row++) {
+            for (int col = 0; col < Main.GRID_WIDTH; col++) {
+                if (this.array[row][col].getLetter().equals("@")) {
+                    ba.add(new Boulder(col, row));
+                }
+            }
+        }
+        return ba;
     }
 
     public void replace(int x, int y, Tile t) {
@@ -108,7 +125,9 @@ public class Board {
         }
 
         // Draw player at current location
-        gc.drawImage(playerFrontImage, Main.player.getX() * Main.GRID_CELL_WIDTH, Main.player.getY() * Main.GRID_CELL_HEIGHT);
+        if (Main.player.getIsAlive()) {
+            gc.drawImage(playerFrontImage, Main.player.getX() * Main.GRID_CELL_WIDTH, Main.player.getY() * Main.GRID_CELL_HEIGHT);
+        }
     }
 
 }
