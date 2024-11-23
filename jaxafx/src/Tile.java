@@ -1,4 +1,4 @@
-public class Tile {
+public abstract class Tile {
     private int x;
     private int y;
     private String letter;
@@ -9,6 +9,7 @@ public class Tile {
         this.letter = letter;
     }
 
+    public abstract boolean isTraversable();
     public int getY() {
         return this.y;
     }
