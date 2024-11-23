@@ -19,16 +19,18 @@ public class Boulder {
     }
 
     public int canFall() {
-        String below = Main.board.getArray()[this.y + 1][this.x].getLetter();
-        String left = Main.board.getArray()[this.y][this.x - 1].getLetter();
-        String right = Main.board.getArray()[this.y][this.x + 1].getLetter();
-        String belowLeft = Main.board.getArray()[this.y + 1][this.x - 1].getLetter();
-        String belowRight = Main.board.getArray()[this.y + 1][this.x + 1].getLetter();
+        String below = Main.board.getTileLetter(this.x, this.y + 1);
+        String left = Main.board.getTileLetter(this.x - 1, this.y);
+        String right = Main.board.getTileLetter(this.x + 1, this.y);
+        String belowLeft = Main.board.getTileLetter(this.x - 1, this.y + 1);
+        String belowRight = Main.board.getTileLetter(this.x + 1, this.y + 1);
 
         if (below.equals("X") && this.isFalling) {
             Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "P"));
             Main.board.explode(this.x, this.y);
             this.killPlayer();
+        } else if (below.equals("M")) {
+            return 4;
         } else if (below.equals("P") || below.equals("f") || below.equals("F") || below.equals("B")) {
             return 2;
         } else if (below.equals("@") || below.equals("W") || below.equals("*")) {
@@ -48,6 +50,12 @@ public class Boulder {
             Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "P"));
             this.y++;
             Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "@"));
+            this.isFalling = true;
+
+        } else if (dir == 4) {
+            MagicWall mw = Main.board.getMagicWallByPos(this.x, this.y + 1);
+            mw.setContains("@");
+            Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "P"));
             this.isFalling = true;
 
         } else if (dir == 1) {
@@ -82,6 +90,7 @@ public class Boulder {
     }
 }
 
+//version 1 of boulder (adapted further to be cohesive with rest of code)
 /*public class Boulder {
     private int x;
     private int y;

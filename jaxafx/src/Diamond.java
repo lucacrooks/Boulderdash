@@ -22,6 +22,8 @@ public class Diamond {
 
         if (below.equals("P")) {
             return 2;
+        } else if (below.equals("M")) {
+            return 4;
         } else if (below.equals("@") || below.equals("W") || below.equals("*")) {
             if (left.equals("P") && belowLeft.equals("P")) {
                 return 1;
@@ -38,6 +40,12 @@ public class Diamond {
             Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "P"));
             this.y++;
             Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "*"));
+            this.isFalling = true;
+
+        } else if (dir == 4) {
+            MagicWall mw = Main.board.getMagicWallByPos(this.x, this.y + 1);
+            mw.setContains("*");
+            Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "P"));
             this.isFalling = true;
 
         } else if (dir == 1) {

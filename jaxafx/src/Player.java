@@ -47,11 +47,7 @@ public class Player {
 
 
         if (dir.equals("left") && Main.board.getTileLetter(nx, ny).equals("@") && Main.board.getTileLetter(nx - 1, ny).equals("P")) {
-            for (int i = 0; i < Main.boulders.size(); i++) {
-                if (Main.boulders.get(i).getX() == nx && Main.boulders.get(i).getY() == ny) {
-                    Main.boulders.get(i).push("left");
-                }
-            }
+            Main.board.getBoulderByPos(nx, ny).push("left");
             return true;
         } else if (dir.equals("right") && Main.board.getTileLetter(nx, ny).equals("@") && Main.board.getTileLetter(nx + 1, ny).equals("P")) {
             for (int i = 0; i < Main.boulders.size(); i++) {

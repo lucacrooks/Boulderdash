@@ -21,6 +21,8 @@ public class Board {
     private Image diamondImage = new Image("DIAMOND.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
     private Image titaniumWallImage = new Image("TITANIUM_WALL.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
     private Image exitImage = new Image("EXIT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+    private Image magicWallImage = new Image("MAGIC_WALL.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+
 
     public Board (String fn) {
         this.array = makeArray(fn);
@@ -78,6 +80,48 @@ public class Board {
         return ba;
     }
 
+    public ArrayList<MagicWall> makeMagicWallsArray() {
+        ArrayList<MagicWall> mwa = new ArrayList<MagicWall>();
+        for (int row = 0; row < Main.GRID_HEIGHT; row++) {
+            for (int col = 0; col < Main.GRID_WIDTH; col++) {
+                if (this.array[row][col].getLetter().equals("M")) {
+                    mwa.add(new MagicWall(col, row));
+                }
+            }
+        }
+        return mwa;
+    }
+
+    public Boulder getBoulderByPos (int x, int y) {
+        for (int i = 0; i < Main.boulders.size(); i++) {
+            Boulder b = Main.boulders.get(i);
+            if (b.getX() == x && b.getY() == y) {
+                return b;
+            }
+        }
+        return null;
+    }
+
+    public Diamond getDiamondByPos (int x, int y) {
+        for (int i = 0; i < Main.diamonds.size(); i++) {
+            Diamond d = Main.diamonds.get(i);
+            if (d.getX() == x && d.getY() == y) {
+                return d;
+            }
+        }
+        return null;
+    }
+
+    public MagicWall getMagicWallByPos (int x, int y) {
+        for (int i = 0; i < Main.magicWalls.size(); i++) {
+            MagicWall mw = Main.magicWalls.get(i);
+            if (mw.getX() == x && mw.getY() == y) {
+                return mw;
+            }
+        }
+        return null;
+    }
+
     public void replace(int x, int y, Tile t) {
         this.array[y][x] = t;
     }
@@ -110,6 +154,8 @@ public class Board {
             for (int col = 0; col < Main.GRID_WIDTH; col++) {
                 if (array[row][col].getLetter().equals("D")) {
                     gc.drawImage(dirtImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                } else if (array[row][col].getLetter().equals("M")) {
+                    gc.drawImage(magicWallImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 } else if (array[row][col].getLetter().equals("@")) {
                     gc.drawImage(boulderImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 } else if (array[row][col].getLetter().equals("X")) {

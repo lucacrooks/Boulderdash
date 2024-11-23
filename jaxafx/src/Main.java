@@ -46,10 +46,11 @@ public class Main extends Application {
 	public static Board board = new Board("src/LEVEL1.txt");
 	public static ArrayList<Diamond> diamonds = board.makeDiamondsArray();
 	public static ArrayList<Boulder> boulders = board.makeBouldersArray();
+	public static ArrayList<MagicWall> magicWalls = board.makeMagicWallsArray();
 
 	// The width and height (in pixels) of each cell that makes up the game.
-	public static final int GRID_CELL_WIDTH = 30;
-	public static final int GRID_CELL_HEIGHT = 30;
+	public static final int GRID_CELL_WIDTH = 25;
+	public static final int GRID_CELL_HEIGHT = 25;
 	
 	// The width of the grid in number of cells.
 	public static final int GRID_WIDTH = 40;
@@ -76,6 +77,7 @@ public class Main extends Application {
 	 * @param primaryStage The stage that is to be used for the application.
 	 */
 	public void start(Stage primaryStage) {
+
 		// Build the GUI
 		Pane root = buildGUI();
 
@@ -168,11 +170,11 @@ public class Main extends Application {
 	 * over them all and calling their own tick method). 
 	 */
 	public void tick() {
-		// We then redraw the whole canvas.
+		magicWalls.forEach((mw) -> mw.update());
 		diamonds.forEach((d) -> d.update());
-
 		boulders.forEach((b) -> b.update());
-
+		System.out.println(board.getMagicWallByPos(5, 7).getContains());
+		// We then redraw the whole canvas.
 		board.draw(canvas);
 	}
 
