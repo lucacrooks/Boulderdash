@@ -173,7 +173,6 @@ public class Main extends Application {
 		magicWalls.forEach((mw) -> mw.update());
 		diamonds.forEach((d) -> d.update());
 		boulders.forEach((b) -> b.update());
-		System.out.println(board.getMagicWallByPos(5, 7).getContains());
 		// We then redraw the whole canvas.
 		board.draw(canvas);
 	}
