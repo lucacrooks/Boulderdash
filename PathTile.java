@@ -1,4 +1,4 @@
-/*public class PathTile extends Tile{
+public class PathTile extends Tile{
     public PathTile(int x, int y){
         super(x,y,"PATH.png");
     }
@@ -7,4 +7,4 @@
     public boolean isTraversable(){
         return true;
     }
-}*/
+}

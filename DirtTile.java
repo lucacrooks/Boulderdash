@@ -1,4 +1,4 @@
-/*public class DirtTile extends Tile{
+public class DirtTile extends Tile{
 
     private boolean compacted;
 
@@ -19,4 +19,4 @@
     public boolean isTraversable(){
         return true;
     }
-}*/
+}

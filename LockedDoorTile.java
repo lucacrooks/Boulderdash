@@ -1,4 +1,4 @@
-/*public class LockedDoorTile extends Tile{
+public class LockedDoorTile extends Tile{
 
     private String colour;
 
@@ -31,4 +31,4 @@
         return false;
     }
 
-}*/
+}

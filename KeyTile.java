@@ -1,4 +1,4 @@
-/*public class KeyTile extends Tile {
+public class KeyTile extends Tile {
 
     private String colour;
 
@@ -31,4 +31,4 @@
         return true;
     }
 
-}*/
+}

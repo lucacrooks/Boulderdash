@@ -1,9 +1,9 @@
-/*public abstract class TilePearly {
+public abstract class Tile {
     private int x;
     private int y;
     private String letter;
 
-    public TilePearly (int x, int y, String letter) {
+    public Tile (int x, int y, String letter) {
         this.x = x;
         this.y = y;
         this.letter = letter;
@@ -30,4 +30,4 @@
     public void setL(String letter) {
         this.letter = letter;
     }
-}*/
+}
