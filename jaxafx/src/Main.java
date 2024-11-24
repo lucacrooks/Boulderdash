@@ -144,7 +144,7 @@ public class Main extends Application {
 	 * over them all and calling their own tick method). 
 	 */
 	public void tick() {
-		for (int row = 0; row < Main.GRID_HEIGHT; row++) {
+		for (int row = Main.GRID_HEIGHT - 1; row >= 0; row--) {
 			for (int col = 0; col < Main.GRID_WIDTH; col++) {
 				String l = Main.board.getTileLetter(col, row);
 				Tile obj = Main.board.get(col, row);

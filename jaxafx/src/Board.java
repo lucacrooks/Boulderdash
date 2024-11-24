@@ -49,6 +49,14 @@ public class Board {
                         a[row][col] = new TitaniumWall(col, row);
                     } else if (l.equals("E")) {
                         a[row][col] = new Exit(col, row);
+                    } else if (l.equals("F")) {
+                        //
+                    } else if (l.equals("f")) {
+                        //
+                    } else if (l.equals("B")) {
+                        //
+                    } else if (l.equals("A")) {
+                        //
                     }
                 }
                 row++;
