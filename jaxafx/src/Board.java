@@ -109,9 +109,7 @@ public class Board {
         for (int row = 0; row < Main.GRID_HEIGHT; row++) {
             for (int col = 0; col < Main.GRID_WIDTH; col++) {
                 Image img = array[row][col].getImage();
-                if (!array[row][col].getLetter().equals("P")) {
-                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
-                }
+                gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
             }
         }
 
@@ -120,5 +118,4 @@ public class Board {
             gc.drawImage(Main.player.getImage(), Main.player.getX() * Main.GRID_CELL_WIDTH, Main.player.getY() * Main.GRID_CELL_HEIGHT);
         }
     }
-
 }
