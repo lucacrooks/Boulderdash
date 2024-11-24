@@ -18,9 +18,11 @@ public class Boulder extends Tile {
         if (dir.equals("left")) {
             Main.board.swap(this.x, this.y, this.x - 1, this.y);
             this.x--;
+            this.checked = true;
         } else {
             Main.board.swap(this.x, this.y, this.x + 1, this.y);
             this.x++;
+            this.checked = true;
         }
     }
 
