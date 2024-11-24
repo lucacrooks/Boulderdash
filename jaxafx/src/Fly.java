@@ -5,6 +5,7 @@ public class Fly extends Enemy {
     private String enemyType;
     private Image image;
     private boolean isAlive;
+    private String letter;
 
     public Fly(String enemyType, int x, int y) {
         super(enemyType, x, y);
@@ -14,6 +15,7 @@ public class Fly extends Enemy {
         } else if (enemyType.equals("f")) {
             this.image = new Image("FIREFLY.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
         }
+        this.letter = enemyType;
     }
 
     public void Move() {
@@ -52,7 +54,7 @@ public class Fly extends Enemy {
 
     @Override
     public String getLetter() {
-        return this.enemyType;
+        return this.letter;
     }
 
     @Override

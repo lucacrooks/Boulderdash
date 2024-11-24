@@ -43,7 +43,7 @@ public class Main extends Application {
 	// player instance
 	public static Player player = new Player(3, 2);
 	// board creation from file
-	public static Board board = new Board("src\EnemyTest.txt");
+	public static Board board = new Board("src/EnemyTest.txt");
 
 	// The width and height (in pixels) of each cell that makes up the game.
 	public static final int GRID_CELL_WIDTH = 50;

@@ -1,5 +1,7 @@
+import javafx.scene.image.Image;
+
 import java.util.ArrayList;
-public class Enemy extends Tile{
+public class Enemy extends Tile {
     protected String enemyType;
     protected int x;
     protected int y;
