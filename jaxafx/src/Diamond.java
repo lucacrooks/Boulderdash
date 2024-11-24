@@ -22,6 +22,7 @@ public class Diamond extends Tile {
         String belowRight = Main.board.getArray()[this.y + 1][this.x + 1].getLetter();
 
         if (below.equals("X") && this.isFalling) {
+            Main.board.replace(this.x, this.y, new Path(this.x, this.y));
             this.killPlayer();
         } else if (below.equals("P")) {
             return 2;
@@ -39,6 +40,7 @@ public class Diamond extends Tile {
     }
 
     public void fall(int dir) {
+        this.isFalling = false;
         if (dir == 2){
             Main.board.swap(this.x, this.y, this.x, this.y + 1);
             this.y++;

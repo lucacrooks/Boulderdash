@@ -33,7 +33,6 @@ public class Boulder extends Tile {
         if (below.equals("X") && this.isFalling) {
             Main.board.replace(this.x, this.y, new Path(this.x, this.y));
             this.killPlayer();
-
         } else if (below.equals("P") || below.equals("f") || below.equals("F") || below.equals("B")) {
             return 2;
         } else if (below.equals("@") || below.equals("W") || below.equals("*")) {
