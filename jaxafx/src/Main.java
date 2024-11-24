@@ -60,6 +60,9 @@ public class Main extends Application {
 	// The dimensions of the window
 	public static final int WINDOW_WIDTH = CANVAS_WIDTH + 100;
 	public static final int WINDOW_HEIGHT = CANVAS_HEIGHT + 100;
+
+	// tick speed
+	public static final int TICK_SPEED = 175;
 	
 	// The canvas in the GUI. This needs to be a global variable
 	// (in this setup) as we need to access it in different methods.
@@ -87,7 +90,7 @@ public class Main extends Application {
 				
 		// Register a tick method to be called periodically.
 		// Make a new timeline with one keyframe that triggers the tick method every half a second.
-		tickTimeline = new Timeline(new KeyFrame(Duration.millis(250), event -> tick()));
+		tickTimeline = new Timeline(new KeyFrame(Duration.millis(TICK_SPEED), event -> tick()));
 		 // Loop the timeline forever
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
 		// We start the timeline.

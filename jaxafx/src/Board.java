@@ -127,6 +127,12 @@ public class Board {
                     gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 } else if (array[row][col].getLetter().equals("X")) {
                     gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                } else if (array[row][col].getLetter().equals("B")) {
+                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                } else if (array[row][col].getLetter().equals("f")) {
+                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                } else if (array[row][col].getLetter().equals("A")) {
+                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 }
             }
         }
