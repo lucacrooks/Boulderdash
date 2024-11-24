@@ -16,11 +16,12 @@ public class Boulder extends Tile {
 
     public void push(String dir) {
         if (dir.equals("left")) {
+            Main.board.swap(this.x, this.y, this.x - 1, this.y);
             this.x--;
         } else {
+            Main.board.swap(this.x, this.y, this.x + 1, this.y);
             this.x++;
         }
-        Main.board.replace(this.x, this.y, new Boulder(this.x, this.y));
     }
 
     public int canFall() {

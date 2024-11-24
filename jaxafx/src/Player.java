@@ -31,15 +31,19 @@ public class Player extends Tile {
         int nx = 0;
         int ny = 0;
         if (dir.equals("right")) {
+            this.image = new Image("PLAYER_RIGHT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
             nx = this.x + 1;
             ny = this.y;
         } else if (dir.equals("left")) {
+            this.image = new Image("PLAYER_LEFT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
             nx = this.x - 1;
             ny = this.y;
         } else if (dir.equals("up")) {
+            this.image = new Image("PLAYER_BACK.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
             nx = this.x;
             ny = this.y - 1;
         } else {
+            this.image = new Image("PLAYER_FRONT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
             nx = this.x;
             ny = this.y + 1;
         }
