@@ -9,7 +9,7 @@ public class Path extends Tile {
     public Path(int x, int y) {
         super(x, y);
         this.letter = "P";
-        this.image = new Image("DIAMOND.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+        this.image = new Image("PATH.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
     }
 
     @Override

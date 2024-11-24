@@ -109,29 +109,7 @@ public class Board {
         for (int row = 0; row < Main.GRID_HEIGHT; row++) {
             for (int col = 0; col < Main.GRID_WIDTH; col++) {
                 Image img = array[row][col].getImage();
-                if (array[row][col].getLetter().equals("D")) {
-                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
-                } else if (array[row][col].getLetter().equals("M")) {
-                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
-                } else if (array[row][col].getLetter().equals("@")) {
-                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
-                } else if (array[row][col].getLetter().equals("X")) {
-                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
-                } else if (array[row][col].getLetter().equals("*")) {
-                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
-                } else if (array[row][col].getLetter().equals("W")) {
-                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
-                } else if (array[row][col].getLetter().equals("T")) {
-                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
-                } else if (array[row][col].getLetter().equals("E")) {
-                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
-                } else if (array[row][col].getLetter().equals("X")) {
-                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
-                } else if (array[row][col].getLetter().equals("B")) {
-                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
-                } else if (array[row][col].getLetter().equals("f")) {
-                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
-                } else if (array[row][col].getLetter().equals("A")) {
+                if (!array[row][col].getLetter().equals("P")) {
                     gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 }
             }
