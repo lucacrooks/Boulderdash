@@ -1,19 +1,18 @@
 import javafx.scene.image.Image;
 
-public class Player {
+public class Player extends Tile {
     private int start_x;
     private int start_y;
-    private int x;
-    private int y;
     private Image image;
     private int diamondCount;
     private boolean isAlive;
+    private String letter;
 
-    public Player(int start_x, int start_y) {
-        this.start_x = start_x;
-        this.start_y = start_y;
-        this.x = start_x;
-        this.y = start_y;
+    public Player(int x, int y) {
+        super(x, y);
+        this.start_x = this.x;
+        this.start_y = this.y;
+        this.letter = "X";
         this.image = new Image("PLAYER_FRONT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
         this.diamondCount = 0;
         this.isAlive = true;
@@ -47,25 +46,18 @@ public class Player {
 
 
         if (dir.equals("left") && Main.board.getTileLetter(nx, ny).equals("@") && Main.board.getTileLetter(nx - 1, ny).equals("P")) {
-            Main.board.getBoulderByPos(nx, ny).push("left");
+            Boulder b = (Boulder) Main.board.get(nx, ny);
+            b.push("left");
             return true;
         } else if (dir.equals("right") && Main.board.getTileLetter(nx, ny).equals("@") && Main.board.getTileLetter(nx + 1, ny).equals("P")) {
-            for (int i = 0; i < Main.boulders.size(); i++) {
-                if (Main.boulders.get(i).getX() == nx && Main.boulders.get(i).getY() == ny) {
-                    Main.boulders.get(i).push("right");
-                }
-            }
+            Boulder b = (Boulder) Main.board.get(nx, ny);
+            b.push("right");
             return true;
         }
         else if (Main.board.getTileLetter(nx, ny).equals("D") || Main.board.getTileLetter(nx, ny).equals("P")) {
             return true;
         } else if (Main.board.getTileLetter(nx, ny).equals("*")) {
-            for (int i = 0; i < Main.diamonds.size(); i++) {
-                if (Main.diamonds.get(i).getX() == nx && Main.diamonds.get(i).getY() == ny) {
-                    Main.diamonds.remove(Main.diamonds.get(i));
-                    this.diamondCount++;
-                }
-            }
+            this.diamondCount++;
             return true;
         } else if (Main.board.getTileLetter(nx, ny).equals("E")) {
             this.reset();
@@ -74,20 +66,32 @@ public class Player {
     }
 
     public void move(String dir) {
-        Main.board.getArray()[this.y][this.x] = new Tile(this.x, this.y, "P");
+        Main.board.replace(this.x, this.y, new Player(this.x, this.y));
         if (dir.equals("right")) {
+            Main.board.swap(this.x, this.y, this.x + 1, this.y);
+            Main.board.replace(this.x, this.y, new Path(this.x, this.y));
             this.x++;
+            Main.player.setX(this.x);
         } else if (dir.equals("left")){
+            Main.board.swap(this.x, this.y, this.x - 1, this.y);
+            Main.board.replace(this.x, this.y, new Path(this.x, this.y));
             this.x--;
+            Main.player.setX(this.x);
         } else if (dir.equals("up")){
+            Main.board.swap(this.x, this.y, this.x, this.y - 1);
+            Main.board.replace(this.x, this.y, new Path(this.x, this.y));
             this.y--;
+            Main.player.setY(this.y);
         } else {
+            Main.board.swap(this.x, this.y, this.x, this.y + 1);
+            Main.board.replace(this.x, this.y, new Path(this.x, this.y));
             this.y++;
+            Main.player.setY(this.y);
         }
     }
 
     public void dig() {
-        Main.board.getArray()[this.y][this.x] = new Tile(this.x, this.y, "X");
+        Main.board.replace(this.x, this.y, Main.player);
     }
 
     public boolean getIsAlive() {
@@ -98,7 +102,13 @@ public class Player {
         this.isAlive = b;
     }
 
-    public Image getImage() {
+    public void kill() {
+        this.isAlive = false;
+        Main.board.explode(this.x, this.y);
+    }
+
+    @Override
+    public Image getImage () {
         return this.image;
     }
 
@@ -110,16 +120,28 @@ public class Player {
         return this.y;
     }
 
+    @Override
+    public String getLetter() {
+        return this.letter;
+    }
+
     /**
      * move the players x and y position to the new ones passed in.
      * @param x current x pos of player.
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    /**
+     * move the players x and y position to the new ones passed in.
      * @param y current y pos of player.
      */
-    public void setPos(int x, int y) {
-        this.x = x;
+    public void setY(int y) {
         this.y = y;
     }
 
+    @Override
     public void update(String dir) {
         if (this.checkValidMove(dir)) {
             this.move(dir);

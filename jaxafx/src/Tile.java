@@ -1,12 +1,12 @@
-public class Tile {
-    private int x;
-    private int y;
-    private String letter;
+import javafx.scene.image.Image;
 
-    public Tile (int x, int y, String letter) {
+public class Tile {
+    protected int x;
+    protected int y;
+
+    public Tile (int x, int y) {
         this.x = x;
         this.y = y;
-        this.letter = letter;
     }
 
     public int getY() {
@@ -18,7 +18,7 @@ public class Tile {
     }
 
     public String getLetter() {
-        return this.letter;
+        return null;
     }
 
     public void setXY(int x, int y) {
@@ -26,7 +26,21 @@ public class Tile {
         this.y = y;
     }
 
-    public void setL(String letter) {
-        this.letter = letter;
+    public void update() {
     }
+
+    public void update(String dir) {
+    }
+
+    public Image getImage() {
+        return null;
+    }
+
+    public boolean getChecked() {
+        return true;
+    }
+
+    public void setChecked(boolean checked) {
+    }
+
 }

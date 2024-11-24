@@ -11,22 +11,9 @@ import java.util.Scanner;
 public class Board {
 
     private Tile[][] array;
-    private ArrayList<Diamond> diamondsArray;
-
-    // Loaded images
-    private Image playerFrontImage = Main.player.getImage();
-    private Image dirtImage = new Image("DIRT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-    private Image boulderImage = new Image("BOULDER.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-    private Image normalWallImage = new Image("NORMAL_WALL.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-    private Image diamondImage = new Image("DIAMOND.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-    private Image titaniumWallImage = new Image("TITANIUM_WALL.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-    private Image exitImage = new Image("EXIT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-    private Image magicWallImage = new Image("MAGIC_WALL.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-
 
     public Board (String fn) {
         this.array = makeArray(fn);
-        this.diamondsArray = makeDiamondsArray();
     }
 
     /**
@@ -40,11 +27,29 @@ public class Board {
             int row = 0;
             File f = new File(fn);
             Scanner reader = new Scanner(f);
-            while (reader.hasNextLine()) {
+            while (row < Main.GRID_HEIGHT) {
                 String data = reader.nextLine();
                 for (int col = 0; col < Main.GRID_WIDTH; col++) {
                     String l = data.substring(col, col + 1);
-                    a[row][col] = new Tile(row, col, l);
+                    if (l.equals("X")) {
+                        a[row][col] = new Player(col, row);
+                    } else if (l.equals("*")) {
+                        a[row][col] = new Diamond(col, row);
+                    } else if (l.equals("@")) {
+                        a[row][col] = new Boulder(col, row);
+                    } else if (l.equals("M")) {
+                        a[row][col] = new MagicWall(col, row);
+                    } else if (l.equals("D")) {
+                        a[row][col] = new Dirt(col, row);
+                    } else if (l.equals("P")) {
+                        a[row][col] = new Path(col, row);
+                    } else if (l.equals("W")) {
+                        a[row][col] = new Wall(col, row);
+                    } else if (l.equals("T")) {
+                        a[row][col] = new TitaniumWall(col, row);
+                    } else if (l.equals("E")) {
+                        a[row][col] = new Exit(col, row);
+                    }
                 }
                 row++;
             }
@@ -56,74 +61,14 @@ public class Board {
         return a;
     }
 
-    public ArrayList<Diamond> makeDiamondsArray() {
-        ArrayList<Diamond> da = new ArrayList<Diamond>();
-        for (int row = 0; row < Main.GRID_HEIGHT; row++) {
-            for (int col = 0; col < Main.GRID_WIDTH; col++) {
-                if (this.array[row][col].getLetter().equals("*")) {
-                    da.add(new Diamond(col, row));
-                }
-            }
-        }
-        return da;
-    }
-
-    public ArrayList<Boulder> makeBouldersArray() {
-        ArrayList<Boulder> ba = new ArrayList<Boulder>();
-        for (int row = 0; row < Main.GRID_HEIGHT; row++) {
-            for (int col = 0; col < Main.GRID_WIDTH; col++) {
-                if (this.array[row][col].getLetter().equals("@")) {
-                    ba.add(new Boulder(col, row));
-                }
-            }
-        }
-        return ba;
-    }
-
-    public ArrayList<MagicWall> makeMagicWallsArray() {
-        ArrayList<MagicWall> mwa = new ArrayList<MagicWall>();
-        for (int row = 0; row < Main.GRID_HEIGHT; row++) {
-            for (int col = 0; col < Main.GRID_WIDTH; col++) {
-                if (this.array[row][col].getLetter().equals("M")) {
-                    mwa.add(new MagicWall(col, row));
-                }
-            }
-        }
-        return mwa;
-    }
-
-    public Boulder getBoulderByPos (int x, int y) {
-        for (int i = 0; i < Main.boulders.size(); i++) {
-            Boulder b = Main.boulders.get(i);
-            if (b.getX() == x && b.getY() == y) {
-                return b;
-            }
-        }
-        return null;
-    }
-
-    public Diamond getDiamondByPos (int x, int y) {
-        for (int i = 0; i < Main.diamonds.size(); i++) {
-            Diamond d = Main.diamonds.get(i);
-            if (d.getX() == x && d.getY() == y) {
-                return d;
-            }
-        }
-        return null;
-    }
-
-    public MagicWall getMagicWallByPos (int x, int y) {
-        for (int i = 0; i < Main.magicWalls.size(); i++) {
-            MagicWall mw = Main.magicWalls.get(i);
-            if (mw.getX() == x && mw.getY() == y) {
-                return mw;
-            }
-        }
-        return null;
-    }
-
     public void replace(int x, int y, Tile t) {
         this.array[y][x] = t;
+    }
+
+    public void swap (int x, int y, int x2, int y2) {
+        Tile temp = this.array[y][x];
+        this.array[y][x] = this.array[y2][x2];
+        this.array[y2][x2] = temp;
     }
 
     public Tile[][] getArray() {
@@ -134,8 +79,19 @@ public class Board {
         return this.array[y][x].getLetter();
     }
 
-    public void explode(int x, int y) {
+    public Tile get(int x, int y) {
+        return this.array[y][x];
+    }
 
+    public void explode(int x, int y) {
+        for (int dx = -1; dx < 2; dx++) {
+            for (int dy = -1; dy < 2; dy++) {
+                String l = this.array[y + dy][x + dx].getLetter();
+                if (!l.equals("T")) {
+                    this.replace(x + dx, y + dy, new Path(x + dx, y + dy));
+                }
+            }
+        }
     }
 
     public void draw(Canvas canvas) {
@@ -152,31 +108,32 @@ public class Board {
         // We multiply by the cell width and height to turn a coordinate in our grid into a pixel coordinate.
         for (int row = 0; row < Main.GRID_HEIGHT; row++) {
             for (int col = 0; col < Main.GRID_WIDTH; col++) {
+                Image img = array[row][col].getImage();
                 if (array[row][col].getLetter().equals("D")) {
-                    gc.drawImage(dirtImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 } else if (array[row][col].getLetter().equals("M")) {
-                    gc.drawImage(magicWallImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 } else if (array[row][col].getLetter().equals("@")) {
-                    gc.drawImage(boulderImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 } else if (array[row][col].getLetter().equals("X")) {
-                    gc.drawImage(playerFrontImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 } else if (array[row][col].getLetter().equals("*")) {
-                    gc.drawImage(diamondImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 } else if (array[row][col].getLetter().equals("W")) {
-                    gc.drawImage(normalWallImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 } else if (array[row][col].getLetter().equals("T")) {
-                    gc.drawImage(titaniumWallImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 } else if (array[row][col].getLetter().equals("E")) {
-                    gc.drawImage(exitImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 } else if (array[row][col].getLetter().equals("X")) {
-                    gc.drawImage(playerFrontImage, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
+                    gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
                 }
             }
         }
 
         // Draw player at current location
         if (Main.player.getIsAlive()) {
-            gc.drawImage(playerFrontImage, Main.player.getX() * Main.GRID_CELL_WIDTH, Main.player.getY() * Main.GRID_CELL_HEIGHT);
+            gc.drawImage(Main.player.getImage(), Main.player.getX() * Main.GRID_CELL_WIDTH, Main.player.getY() * Main.GRID_CELL_HEIGHT);
         }
     }
 

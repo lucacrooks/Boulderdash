@@ -1,12 +1,17 @@
-public class Boulder {
-    private int x;
-    private int y;
+import javafx.scene.image.Image;
+
+public class Boulder extends Tile {
+    private String letter;
+    private Image image;
     private boolean isFalling;
+    private boolean checked;
 
     public Boulder(int x, int y) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
+        this.letter = "@";
+        this.image = new Image("BOULDER.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
         this.isFalling = false;
+        this.checked = false;
     }
 
     public void push(String dir) {
@@ -15,7 +20,7 @@ public class Boulder {
         } else {
             this.x++;
         }
-        Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "@"));
+        Main.board.replace(this.x, this.y, new Boulder(this.x, this.y));
     }
 
     public int canFall() {
@@ -26,11 +31,9 @@ public class Boulder {
         String belowRight = Main.board.getTileLetter(this.x + 1, this.y + 1);
 
         if (below.equals("X") && this.isFalling) {
-            Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "P"));
-            Main.board.explode(this.x, this.y);
+            Main.board.replace(this.x, this.y, new Path(this.x, this.y));
             this.killPlayer();
-        } else if (below.equals("M")) {
-            return 4;
+
         } else if (below.equals("P") || below.equals("f") || below.equals("F") || below.equals("B")) {
             return 2;
         } else if (below.equals("@") || below.equals("W") || below.equals("*")) {
@@ -40,6 +43,8 @@ public class Boulder {
             if (right.equals("P") && belowRight.equals("P")) {
                 return 3;
             }
+        } else if (below.equals("M")) {
+            return 4;
         }
         return 0;
     }
@@ -47,36 +52,34 @@ public class Boulder {
     public void fall(int dir) {
         this.isFalling = false;
         if (dir == 2) {
-            Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "P"));
+            Main.board.swap(this.x, this.y, this.x, this.y + 1);
             this.y++;
-            Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "@"));
             this.isFalling = true;
 
         } else if (dir == 4) {
-            MagicWall mw = Main.board.getMagicWallByPos(this.x, this.y + 1);
+            MagicWall mw = (MagicWall) Main.board.get(this.x, this.y + 1);
             mw.setContains("@");
-            Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "P"));
+            Main.board.replace(this.x, this.y, new Path(this.x, this.y));
             this.isFalling = true;
 
         } else if (dir == 1) {
-            Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "P"));
+            Main.board.swap(this.x, this.y, this.x - 1, this.y);
             this.x--;
-            Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "@"));
 
         } else if (dir == 3) {
-            Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "P"));
+            Main.board.swap(this.x, this.y, this.x + 1, this.y);
             this.x++;
-            Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "@"));
         }
     }
 
     public void killPlayer() {
-        Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "P"));
+        Main.board.swap(this.x, this.y, this.x, this.y + 1);
+        Main.board.replace(this.x, this.y, new Path(this.x, this.y));
         this.y++;
-        Main.board.replace(this.x, this.y, new Tile(this.x, this.y, "@"));
-        Main.player.setIsAlive(false);
+        Main.player.kill();
     }
 
+    @Override
     public void update() {
         this.fall(this.canFall());
     }
@@ -87,6 +90,26 @@ public class Boulder {
 
     public int getY() {
         return this.y;
+    }
+
+    @Override
+    public Image getImage () {
+        return this.image;
+    }
+
+    @Override
+    public String getLetter() {
+        return this.letter;
+    }
+
+    @Override
+    public boolean getChecked() {
+        return checked;
+    }
+
+    @Override
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }
 

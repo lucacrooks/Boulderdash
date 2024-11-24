@@ -44,17 +44,14 @@ public class Main extends Application {
 	public static Player player = new Player(3, 2);
 	// board creation from file
 	public static Board board = new Board("src/LEVEL1.txt");
-	public static ArrayList<Diamond> diamonds = board.makeDiamondsArray();
-	public static ArrayList<Boulder> boulders = board.makeBouldersArray();
-	public static ArrayList<MagicWall> magicWalls = board.makeMagicWallsArray();
 
 	// The width and height (in pixels) of each cell that makes up the game.
 	public static final int GRID_CELL_WIDTH = 25;
 	public static final int GRID_CELL_HEIGHT = 25;
 	
 	// The width of the grid in number of cells.
-	public static final int GRID_WIDTH = 40;
-	public static final int GRID_HEIGHT = 22;
+	public static final int GRID_WIDTH = 13;
+	public static final int GRID_HEIGHT = 13;
 
 	// The dimensions of the canvas
 	public static final int CANVAS_WIDTH = GRID_WIDTH * GRID_CELL_WIDTH;
@@ -103,32 +100,6 @@ public class Main extends Application {
 	}
 
 	/**
-	 * Reads the level file then takes the data and arranges it into a 2d array.
-	 * @param fn name of the file to read from.
-	 * @author Luca Crooks.
-	 */
-	public Tile[][] ReadLevelFile (String fn) {
-		Tile[][] a = new Tile[GRID_HEIGHT][GRID_WIDTH];
-		try {
-			int row = 0;
-			File f = new File(fn);
-			Scanner reader = new Scanner(f);
-			while (reader.hasNextLine()) {
-				String data = reader.nextLine();
-				for (int col = 0; col < GRID_WIDTH; col++) {
-					a[row][col] = new Tile(row, col, data.substring(col, col + 1));
-				}
-				row++;
-			}
-			reader.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("An error occurred.");
-			e.printStackTrace();
-		}
-		return a;
-	}
-
-	/**
 	 * Process a key event due to a key being pressed, e.g., to move the player.
 	 * @param event The key event that was pressed.
 	 */
@@ -170,9 +141,31 @@ public class Main extends Application {
 	 * over them all and calling their own tick method). 
 	 */
 	public void tick() {
-		magicWalls.forEach((mw) -> mw.update());
-		diamonds.forEach((d) -> d.update());
-		boulders.forEach((b) -> b.update());
+		for (int row = 0; row < Main.GRID_HEIGHT; row++) {
+			for (int col = 0; col < Main.GRID_WIDTH; col++) {
+				String l = Main.board.getTileLetter(col, row);
+				Tile obj = Main.board.get(col, row);
+				if (l.equals("@") || l.equals("*") || l.equals("M")) {
+					if (!obj.getChecked()) {
+						Main.board.get(col, row).update();
+						obj.setChecked(true);
+					}
+				} else {
+					Main.board.get(col, row).update();
+				}
+			}
+		}
+
+		for (int row = 0; row < Main.GRID_HEIGHT; row++) {
+			for (int col = 0; col < Main.GRID_WIDTH; col++) {
+				String l = Main.board.getTileLetter(col, row);
+				Tile obj = Main.board.get(col, row);
+				if (l.equals("@") || l.equals("*") || l.equals("M")) {
+					obj.setChecked(false);
+				}
+			}
+		}
+
 		// We then redraw the whole canvas.
 		board.draw(canvas);
 	}
@@ -206,7 +199,8 @@ public class Main extends Application {
 		resetPlayerLocationButton.setOnAction(e -> {
 			// We keep this method short and use a method for the bulk of the work.
 			player.setIsAlive(true);
-			player.setPos(3, 2);
+			player.setX(3);
+			player.setY(2);
 		});
 
 		// Tick Timeline buttons

@@ -1,12 +1,17 @@
-public class MagicWall{
-    private int x;
-    private int y;
+import javafx.scene.image.Image;
+
+public class MagicWall extends Tile{
+    private String letter;
+    private Image image;
     private String contains;
+    private boolean checked;
 
     public MagicWall(int x, int y) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
+        this.letter = "M";
+        this.image = new Image("MAGIC_WALL.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
         this.contains = "";
+        this.checked = false;
     }
 
     public int getX() {
@@ -17,20 +22,17 @@ public class MagicWall{
         return this.y;
     }
 
+    @Override
+    public String getLetter() {
+        return this.letter;
+    }
+
     public String getContains () {
         return this.contains;
     }
 
     public void setContains (String c) {
         this.contains = c;
-    }
-
-    public void remove() {
-        if (this.contains.equals("@")) {
-            Main.boulders.remove(Main.board.getBoulderByPos(this.x, this.y - 1));
-        } else if (this.contains.equals("*")) {
-            Main.diamonds.remove(Main.board.getDiamondByPos(this.x, this.y - 1));
-        }
     }
 
     public void transform () {
@@ -41,12 +43,15 @@ public class MagicWall{
             this.contains = "@";
         }
 
-        if (Main.board.getTileLetter(this.x, this.y + 1).equals("P") && !this.contains.equals("")) {
-            Main.board.replace(this.x, this.y + 1, new Tile(this.x, this.y + 1, this.contains));
+        if (Main.board.getTileLetter(this.x, this.y + 1).equals("P")) {
             if (this.contains.equals("*")) {
-                Main.diamonds.add(new Diamond(this.x, this.y + 1));
+                Main.board.replace(this.x, this.y + 1, new Diamond(this.x, this.y + 1));
+                Diamond d = (Diamond) Main.board.get(this.x, this.y + 1);
+                d.setChecked(true);
             } else if (this.contains.equals("@")) {
-                Main.boulders.add(new Boulder(this.x, this.y + 1));
+                Main.board.replace(this.x, this.y + 1, new Boulder(this.x, this.y + 1));
+                Boulder b = (Boulder) Main.board.get(this.x, this.y + 1);
+                b.setChecked(true);
             }
         }
     }
@@ -55,10 +60,24 @@ public class MagicWall{
         this.contains = "";
     }
 
+    @Override
     public void update() {
-        this.remove();
         this.transform();
         this.reset();
     }
 
+    @Override
+    public Image getImage () {
+        return this.image;
+    }
+
+    @Override
+    public boolean getChecked() {
+        return checked;
+    }
+
+    @Override
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 }
