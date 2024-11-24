@@ -49,6 +49,10 @@ public class Board {
                         a[row][col] = new TitaniumWall(col, row);
                     } else if (l.equals("E")) {
                         a[row][col] = new Exit(col, row);
+                    } else if (l.equals("B")) {
+                        a[row][col] = new Fly("B", col, row);
+                    } else if (l.equals("f")) {
+                        a[row][col] = new Fly("f", col, row);
                     }
                 }
                 row++;
@@ -83,12 +87,16 @@ public class Board {
         return this.array[y][x];
     }
 
-    public void explode(int x, int y) {
+    public void explode(String enemyType, int x, int y) {
         for (int dx = -1; dx < 2; dx++) {
             for (int dy = -1; dy < 2; dy++) {
                 String l = this.array[y + dy][x + dx].getLetter();
                 if (!l.equals("T")) {
-                    this.replace(x + dx, y + dy, new Path(x + dx, y + dy));
+                    if(enemyType.equals("B")) {
+                        this.replace(x + dx, y + dy, new Diamond(x + dx, y + dy));
+                    } else {
+                        this.replace(x + dx, y + dy, new Path(x + dx, y + dy));
+                    }
                 }
             }
         }

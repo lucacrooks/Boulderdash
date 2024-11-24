@@ -48,7 +48,7 @@ public class Player extends Tile {
             ny = this.y + 1;
         }
 
-
+        //can make these 2 into one
         if (dir.equals("left") && Main.board.getTileLetter(nx, ny).equals("@") && Main.board.getTileLetter(nx - 1, ny).equals("P")) {
             Boulder b = (Boulder) Main.board.get(nx, ny);
             b.push("left");
@@ -108,7 +108,7 @@ public class Player extends Tile {
 
     public void kill() {
         this.isAlive = false;
-        Main.board.explode(this.x, this.y);
+        Main.board.explode("X", this.x, this.y);
     }
 
     @Override

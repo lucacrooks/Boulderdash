@@ -9,13 +9,9 @@ public class Tile {
         this.y = y;
     }
 
-    public int getY() {
-        return this.y;
-    }
+    //public int getY() { return this.y; }
 
-    public int getX() {
-        return this.x;
-    }
+    //public int getX() { return this.x; }
 
     public String getLetter() {
         return null;
