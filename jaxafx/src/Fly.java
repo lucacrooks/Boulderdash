@@ -9,6 +9,7 @@ public class Fly extends Enemy {
     public Fly(String enemyType, int x, int y) {
         super(enemyType, x, y);
         this.isAlive = true;
+        this.checked = false;
         if (enemyType.equals("B")) {
             this.image = new Image("BUTTERFLY.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
         } else if (enemyType.equals("f")) {
@@ -22,23 +23,22 @@ public class Fly extends Enemy {
         if (!isStuck() && isAlive) {
             if (Main.board.getTileLetter(this.x, this.y - 1).equals("P") && !Main.board.getTileLetter(this.x + 1, this.y).equals("P")) {
                 Main.board.swap(this.x, this.y, this.x, this.y - 1);
-                System.out.println("doing up");
+                System.out.println("going up");
                 this.y--;
             } else if (Main.board.getTileLetter(this.x - 1, this.y).equals("P") && !Main.board.getTileLetter(this.x, this.y - 1).equals("P")) {
                 Main.board.swap(this.x, this.y, this.x - 1, this.y);
+                System.out.println("going left");
                 this.x--;
-                System.out.println("doing left");
             } else if (Main.board.getTileLetter(this.x, this.y + 1).equals("P") && !Main.board.getTileLetter(this.x - 1, this.y).equals("P")) {
                 Main.board.swap(this.x, this.y, this.x, this.y + 1);
-                System.out.println("doing down");
+                System.out.println("going down");
                 this.y++;
             } else if (Main.board.getTileLetter(this.x + 1, this.y).equals("P") && !Main.board.getTileLetter(this.x, this.y + 1).equals("P")) {
                 Main.board.swap(this.x, this.y, this.x + 1, this.y);
-                System.out.println("doing right");
+                System.out.println("going right");
                 this.x++;
             } else {
                 Main.board.swap(this.x, this.y, this.x + 1, this.y);
-                System.out.println("doing5");
             }
         }
     }
@@ -70,14 +70,13 @@ public class Fly extends Enemy {
         this.move();
         checkPlayer(this.x, this.y);
     }
-
     @Override
     public boolean getChecked() {
         return checked;
     }
 
     @Override
-    public void setChecked(boolean c) {
-        this.checked = c;
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }
