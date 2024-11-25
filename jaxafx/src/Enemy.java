@@ -1,12 +1,11 @@
-import javafx.scene.image.Image;
-
-import java.util.ArrayList;
 public class Enemy extends Tile {
     protected String enemyType;
+    protected boolean isAlive;
 
-    public Enemy(String enemyType, int x, int y) {
+    public Enemy(String enemyType, int x, int y, boolean isAlive) {
         super(x, y);
         this.enemyType = enemyType;
+        this.isAlive = isAlive;
     }
 
     protected void checkNextToPlayer() {
@@ -17,4 +16,9 @@ public class Enemy extends Tile {
             Main.player.kill();
         }
     }
+
+    protected void kill() {
+        this.isAlive = false;
+    }
+
 }

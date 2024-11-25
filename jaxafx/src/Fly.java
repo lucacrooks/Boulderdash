@@ -1,15 +1,12 @@
 import javafx.scene.image.Image;
 public class Fly extends Enemy {
-    private String enemyType;
     private Image image;
-    private boolean isAlive;
     private String letter;
     private boolean checked;
     private String direction;
 
-    public Fly(String enemyType, int x, int y) {
-        super(enemyType, x, y);
-        this.isAlive = true;
+    public Fly(String enemyType, int x, int y, boolean isAlive) {
+        super(enemyType, x, y, isAlive);
         this.checked = false;
         if (enemyType.equals("B")) {
             this.image = new Image("BUTTERFLY.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);

@@ -43,7 +43,11 @@ public class MagicWall extends Tile{
             this.contains = "@";
         }
 
-        if (Main.board.getTileLetter(this.x, this.y + 1).equals("P")) {
+        String l = Main.board.getTileLetter(this.x, this.y + 1);
+        boolean enemyBelow = l.equals("f") || l.equals("B") || l.equals("F");
+
+        if (l.equals("P") || enemyBelow) {
+
             if (this.contains.equals("*")) {
                 Main.board.replace(this.x, this.y + 1, new Diamond(this.x, this.y + 1));
                 Diamond d = (Diamond) Main.board.get(this.x, this.y + 1);

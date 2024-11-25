@@ -50,9 +50,9 @@ public class Board {
                     } else if (l.equals("E")) {
                         a[row][col] = new Exit(col, row);
                     } else if (l.equals("B")) {
-                        a[row][col] = new Fly("B", col, row);
+                        a[row][col] = new Fly("B", col, row, true);
                     } else if (l.equals("f")) {
-                        a[row][col] = new Fly("f", col, row);
+                        a[row][col] = new Fly("f", col, row, true);
                     } else if (l.equals("F")) {
                         //
                     } else if (l.equals("A")) {
