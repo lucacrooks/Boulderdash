@@ -5,6 +5,7 @@ public class Fly extends Enemy {
     private boolean isAlive;
     private String letter;
     private boolean checked;
+    private String direction;
 
     public Fly(String enemyType, int x, int y) {
         super(enemyType, x, y);
@@ -17,28 +18,101 @@ public class Fly extends Enemy {
         }
         this.letter = enemyType;
         this.checked = false;
+        this.direction = "down";
     }
 
     public void move() {
         if (!isStuck() && isAlive) {
-            if (Main.board.getTileLetter(this.x, this.y - 1).equals("P") && !Main.board.getTileLetter(this.x + 1, this.y).equals("P")) {
-                Main.board.swap(this.x, this.y, this.x, this.y - 1);
-                System.out.println("going up");
-                this.y--;
-            } else if (Main.board.getTileLetter(this.x - 1, this.y).equals("P") && !Main.board.getTileLetter(this.x, this.y - 1).equals("P")) {
-                Main.board.swap(this.x, this.y, this.x - 1, this.y);
-                System.out.println("going left");
-                this.x--;
-            } else if (Main.board.getTileLetter(this.x, this.y + 1).equals("P") && !Main.board.getTileLetter(this.x - 1, this.y).equals("P")) {
-                Main.board.swap(this.x, this.y, this.x, this.y + 1);
-                System.out.println("going down");
-                this.y++;
-            } else if (Main.board.getTileLetter(this.x + 1, this.y).equals("P") && !Main.board.getTileLetter(this.x, this.y + 1).equals("P")) {
-                Main.board.swap(this.x, this.y, this.x + 1, this.y);
-                System.out.println("going right");
-                this.x++;
-            } else {
-                Main.board.swap(this.x, this.y, this.x + 1, this.y);
+            Boolean front;
+            Boolean back;
+            Boolean left;
+            Boolean right;
+            int ox = this.x;
+            int oy = this.y;
+
+            if (this.direction == "down") {
+                front = Main.board.getTileLetter(this.x, this.y + 1).equals("P");
+                back = Main.board.getTileLetter(this.x, this.y - 1).equals("P");
+                right = Main.board.getTileLetter(this.x - 1, this.y).equals("P");
+                left = Main.board.getTileLetter(this.x + 1, this.y).equals("P");
+
+                if (left) {
+                    this.x++;
+                    this.direction = "right";
+                } else if (front) {
+                    this.y++;
+                    this.direction = "down";
+                } else if (right) {
+                    this.x--;
+                    this.direction = "left";
+                } else if (back) {
+                    this.y--;
+                    this.direction = "up";
+                }
+                Main.board.swap(this.x, this.y, ox, oy);
+
+            } else if (this.direction == "up") {
+                front = Main.board.getTileLetter(this.x, this.y - 1).equals("P");
+                back = Main.board.getTileLetter(this.x, this.y + 1).equals("P");
+                right = Main.board.getTileLetter(this.x + 1, this.y).equals("P");
+                left = Main.board.getTileLetter(this.x - 1, this.y).equals("P");
+
+                if (left) {
+                    this.x--;
+                    this.direction = "left";
+                } else if (front) {
+                    this.y--;
+                    this.direction = "up";
+                } else if (right) {
+                    this.x++;
+                    this.direction = "right";
+                } else if (back) {
+                    this.y++;
+                    this.direction = "down";
+                }
+                Main.board.swap(this.x, this.y, ox, oy);
+
+            } else if (this.direction == "right") {
+                front = Main.board.getTileLetter(this.x + 1, this.y).equals("P");
+                back = Main.board.getTileLetter(this.x - 1, this.y).equals("P");
+                right = Main.board.getTileLetter(this.x, this.y + 1).equals("P");
+                left = Main.board.getTileLetter(this.x, this.y - 1).equals("P");
+
+                if (left) {
+                    this.y--;
+                    this.direction = "up";
+                } else if (front) {
+                    this.x++;
+                    this.direction = "right";
+                } else if (right) {
+                    this.y++;
+                    this.direction = "down";
+                } else if (back) {
+                    this.x--;
+                    this.direction = "left";
+                }
+                Main.board.swap(this.x, this.y, ox, oy);
+
+            } else if (this.direction == "left") {
+                front = Main.board.getTileLetter(this.x - 1, this.y).equals("P");
+                back = Main.board.getTileLetter(this.x + 1, this.y).equals("P");
+                right = Main.board.getTileLetter(this.x, this.y - 1).equals("P");
+                left = Main.board.getTileLetter(this.x, this.y + 1).equals("P");
+
+                if (left) {
+                    this.y++;
+                    this.direction = "down";
+                } else if (front) {
+                    this.x--;
+                    this.direction = "left";
+                } else if (right) {
+                    this.y--;
+                    this.direction = "up";
+                } else if (back) {
+                    this.x++;
+                    this.direction = "right";
+                }
+                Main.board.swap(this.x, this.y, ox, oy);
             }
         }
     }
