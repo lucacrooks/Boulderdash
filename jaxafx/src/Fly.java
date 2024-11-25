@@ -118,7 +118,7 @@ public class Fly extends Enemy {
     }
 
     public void die() {
-        explode(enemyType, this.x, this.y);
+        explode(this.x, this.y);
         this.isAlive = false;
     }
 
@@ -135,7 +135,7 @@ public class Fly extends Enemy {
     @Override
     public void update() {
         this.move();
-        checkPlayer(this.x, this.y);
+        this.checkNextToPlayer();
     }
     @Override
     public boolean getChecked() {

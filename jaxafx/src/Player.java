@@ -23,6 +23,15 @@ public class Player extends Tile {
         this.y = this.start_y;
     }
 
+    public void checkNextToEnemy() {
+        if (Main.board.getTileLetter(this.x + 1, this.y).equals("B")
+                || Main.board.getTileLetter(this.x - 1, this.y).equals("B")
+                || Main.board.getTileLetter(this.x, this.y + 1).equals("B")
+                || Main.board.getTileLetter(this.x, this.y - 1).equals("B")) {
+            this.kill();
+        }
+    }
+
     public boolean checkValidMove(String dir) {
         if (this.isAlive == false) {
             return false;
@@ -108,7 +117,7 @@ public class Player extends Tile {
 
     public void kill() {
         this.isAlive = false;
-        Main.board.explode("X", this.x, this.y);
+        Main.board.explode(this.x, this.y);
     }
 
     @Override
@@ -151,6 +160,7 @@ public class Player extends Tile {
             this.move(dir);
             this.dig();
         }
+        this.checkNextToEnemy();
     }
 
 }

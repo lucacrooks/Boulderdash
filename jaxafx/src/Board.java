@@ -91,16 +91,23 @@ public class Board {
         return this.array[y][x];
     }
 
-    public void explode(String enemyType, int x, int y) {
+    public void explode(int x, int y) {
         for (int dx = -1; dx < 2; dx++) {
             for (int dy = -1; dy < 2; dy++) {
                 String l = this.array[y + dy][x + dx].getLetter();
                 if (!l.equals("T")) {
-                    if(enemyType.equals("B")) {
-                        this.replace(x + dx, y + dy, new Diamond(x + dx, y + dy));
-                    } else {
-                        this.replace(x + dx, y + dy, new Path(x + dx, y + dy));
-                    }
+                    this.replace(x + dx, y + dy, new Path(x + dx, y + dy));
+                }
+            }
+        }
+    }
+
+    public void explodeDiamond(int x, int y) {
+        for (int dx = -1; dx < 2; dx++) {
+            for (int dy = -1; dy < 2; dy++) {
+                String l = this.array[y + dy][x + dx].getLetter();
+                if (!l.equals("T") && !l.equals("X")) {
+                    this.replace(x + dx, y + dy, new Diamond(x + dx, y + dy));
                 }
             }
         }

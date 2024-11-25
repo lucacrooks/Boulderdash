@@ -62,7 +62,7 @@ public class Main extends Application {
 	public static final int WINDOW_HEIGHT = CANVAS_HEIGHT + 100;
 
 	// tick speed
-	public static final int TICK_SPEED = 175;
+	public static final int TICK_SPEED = 1000;
 	
 	// The canvas in the GUI. This needs to be a global variable
 	// (in this setup) as we need to access it in different methods.
