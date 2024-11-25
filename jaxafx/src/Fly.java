@@ -6,10 +6,12 @@ public class Fly extends Enemy {
     private Image image;
     private boolean isAlive;
     private String letter;
+    private boolean checked;
 
     public Fly(String enemyType, int x, int y) {
         super(enemyType, x, y);
         this.isAlive = true;
+        this.checked = false;
         if (enemyType.equals("B")) {
             this.image = new Image("BUTTERFLY.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
         } else if (enemyType.equals("f")) {
@@ -58,8 +60,16 @@ public class Fly extends Enemy {
     }
 
     @Override
-    public void update(String dir) {
+    public void update() {
         this.Move();
         checkPlayer(this.x, this.y);
+    }
+    @Override
+    public boolean getChecked() {
+        return checked;
+    }
+    @Override
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }
