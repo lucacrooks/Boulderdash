@@ -22,7 +22,7 @@ public class Fly extends Enemy {
     }
 
     public void move() {
-        if (!isStuck() && isAlive) {
+        if (this.isAlive) {
             Boolean front;
             Boolean back;
             Boolean left;
@@ -115,13 +115,6 @@ public class Fly extends Enemy {
                 Main.board.swap(this.x, this.y, ox, oy);
             }
         }
-    }
-
-    private boolean isStuck() {
-        return !Main.board.getTileLetter(this.x + 1, this.y).equals("P")
-                && !Main.board.getTileLetter(this.x - 1, this.y).equals("P")
-                && !Main.board.getTileLetter(this.x, this.y + 1).equals("P")
-                && !Main.board.getTileLetter(this.x, this.y - 1).equals("P");
     }
 
     public void die() {

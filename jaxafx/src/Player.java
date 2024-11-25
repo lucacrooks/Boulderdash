@@ -42,7 +42,7 @@ public class Player extends Tile {
             this.image = new Image("PLAYER_BACK.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
             nx = this.x;
             ny = this.y - 1;
-        } else {
+        } else if (dir.equals("down")) {
             this.image = new Image("PLAYER_FRONT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
             nx = this.x;
             ny = this.y + 1;

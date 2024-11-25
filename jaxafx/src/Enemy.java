@@ -23,15 +23,20 @@ public class Enemy extends Tile {
         }
     }
     private ArrayList<Integer> getSurroundings(int x, int y) {
-        x = x-1;
-        y = y-1;
         ArrayList<Integer> surroundings = new ArrayList<Integer>();
-        for(int i = 0; i < 2; i++) {
-            for(int j = 0; j < 2; j++) {
-                surroundings.add(x+i);
-                surroundings.add(y+j);
-            }
-        }
+
+        surroundings.add(x + 1);
+        surroundings.add(y);
+
+        surroundings.add(x - 1);
+        surroundings.add(y);
+
+        surroundings.add(x);
+        surroundings.add(y + 1);
+
+        surroundings.add(x);
+        surroundings.add(y - 1);
+
         return surroundings;
     }
 }
