@@ -19,6 +19,7 @@ public class Player extends Tile {
     }
 
     public void reset() {
+        Main.board.swap(this.x, this.y, this.start_x, this.start_y);
         this.x = this.start_x;
         this.y = this.start_y;
     }

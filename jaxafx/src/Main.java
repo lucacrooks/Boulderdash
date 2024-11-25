@@ -50,8 +50,8 @@ public class Main extends Application {
 	public static final int GRID_CELL_HEIGHT = 50;
 	
 	// The width of the grid in number of cells.
-	public static final int GRID_WIDTH = 13;
-	public static final int GRID_HEIGHT = 13;
+	public static final int GRID_WIDTH = 15;
+	public static final int GRID_HEIGHT = 15;
 
 	// The dimensions of the canvas
 	public static final int CANVAS_WIDTH = GRID_WIDTH * GRID_CELL_WIDTH;
@@ -62,7 +62,7 @@ public class Main extends Application {
 	public static final int WINDOW_HEIGHT = CANVAS_HEIGHT + 100;
 
 	// tick speed
-	public static final int TICK_SPEED = 1000;
+	public static final int TICK_SPEED = 200;
 	
 	// The canvas in the GUI. This needs to be a global variable
 	// (in this setup) as we need to access it in different methods.
