@@ -3,13 +3,10 @@ import javafx.scene.image.Image;
 import java.util.ArrayList;
 public class Enemy extends Tile {
     protected String enemyType;
-    protected int x;
-    protected int y;
+
     public Enemy(String enemyType, int x, int y) {
         super(x, y);
         this.enemyType = enemyType;
-        this.x = x;
-        this.y = y;
     }
     public void explode(String enemyType, int x, int y) {
         Main.board.explode(enemyType, x, y);

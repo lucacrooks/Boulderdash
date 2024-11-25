@@ -148,7 +148,7 @@ public class Main extends Application {
 			for (int col = 0; col < Main.GRID_WIDTH; col++) {
 				String l = Main.board.getTileLetter(col, row);
 				Tile obj = Main.board.get(col, row);
-				if (l.equals("@") || l.equals("*") || l.equals("M")) {
+				if (l.equals("@") || l.equals("*") || l.equals("M") || l.equals("f") || l.equals("B")) {
 					if (!obj.getChecked()) {
 						Main.board.get(col, row).update();
 						obj.setChecked(true);
@@ -163,7 +163,7 @@ public class Main extends Application {
 			for (int col = 0; col < Main.GRID_WIDTH; col++) {
 				String l = Main.board.getTileLetter(col, row);
 				Tile obj = Main.board.get(col, row);
-				if (l.equals("@") || l.equals("*") || l.equals("M")) {
+				if (l.equals("@") || l.equals("*") || l.equals("M") || l.equals("f") || l.equals("B")) {
 					obj.setChecked(false);
 				}
 			}
