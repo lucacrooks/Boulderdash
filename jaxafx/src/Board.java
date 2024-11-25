@@ -99,7 +99,7 @@ public class Board {
                     this.replace(x + dx, y + dy, new Path(x + dx, y + dy));
                 }
             }
-        }gitgit
+        }
     }
 
     public void explodeDiamond(int x, int y) {
