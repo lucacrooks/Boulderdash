@@ -8,10 +8,6 @@ public class Enemy extends Tile {
         super(x, y);
         this.enemyType = enemyType;
     }
-    public void explode(int x, int y) {
-        Main.board.explode(x, y);
-
-    }
 
     protected void checkNextToPlayer() {
         if (Main.board.getTileLetter(this.x + 1, this.y).equals("X")

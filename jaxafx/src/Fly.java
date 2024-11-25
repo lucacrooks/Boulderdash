@@ -102,11 +102,6 @@ public class Fly extends Enemy {
         }
     }
 
-    public void die() {
-        explode(this.x, this.y);
-        this.isAlive = false;
-    }
-
     @Override
     public Image getImage () {
         return this.image;
