@@ -114,6 +114,7 @@ public class Fly extends Enemy {
         this.move();
         this.checkNextToPlayer();
     }
+
     @Override
     public boolean getChecked() {
         return checked;

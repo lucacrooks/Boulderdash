@@ -1,5 +1,9 @@
 import javafx.scene.image.Image;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 public class Player extends Tile {
     private int start_x;
     private int start_y;
@@ -25,10 +29,11 @@ public class Player extends Tile {
     }
 
     public void checkNextToEnemy() {
-        if (Main.board.getTileLetter(this.x + 1, this.y).equals("B")
-                || Main.board.getTileLetter(this.x - 1, this.y).equals("B")
-                || Main.board.getTileLetter(this.x, this.y + 1).equals("B")
-                || Main.board.getTileLetter(this.x, this.y - 1).equals("B")) {
+        String[] surround = {Main.board.getTileLetter(this.x + 1, this.y),
+                Main.board.getTileLetter(this.x - 1, this.y),
+                Main.board.getTileLetter(this.x, this.y + 1),
+                Main.board.getTileLetter(this.x, this.y - 1)};
+        if (Arrays.stream(surround).anyMatch("B"::equals) || Arrays.stream(surround).anyMatch("F"::equals) || Arrays.stream(surround).anyMatch("f"::equals)) {
             this.kill();
         }
     }
@@ -74,7 +79,10 @@ public class Player extends Tile {
             this.diamondCount++;
             return true;
         } else if (Main.board.getTileLetter(nx, ny).equals("E")) {
-            this.reset();
+            Exit e = (Exit) Main.board.get(nx, ny);
+            if (e.getOpen()) {
+                this.reset();
+            }
         }
         return false;
     }

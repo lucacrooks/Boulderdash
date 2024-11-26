@@ -54,7 +54,7 @@ public class Board {
                     } else if (l.equals("f")) {
                         a[row][col] = new Fly("f", col, row, true);
                     } else if (l.equals("F")) {
-                        //
+                        a[row][col] = new Frog("F", col, row, true);
                     } else if (l.equals("A")) {
                         //
                     }

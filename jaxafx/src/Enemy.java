@@ -16,14 +16,4 @@ public class Enemy extends Tile {
             Main.player.kill();
         }
     }
-
-    protected void kill() {
-        this.isAlive = false;
-        if (this.enemyType.equals("B")) {
-            Main.board.explodeDiamond(this.x, this.y);
-        } else if (this.enemyType.equals("f")) {
-            Main.board.explode(this.x, this.y);
-        }
-    }
-
 }
