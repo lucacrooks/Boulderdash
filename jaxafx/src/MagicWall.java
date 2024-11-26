@@ -46,7 +46,7 @@ public class MagicWall extends Tile{
         String l = Main.board.getTileLetter(this.x, this.y + 1);
         boolean enemyBelow = l.equals("f") || l.equals("B") || l.equals("F");
 
-        if (l.equals("P") || enemyBelow) {
+        if (l.equals("P")) {
 
             if (this.contains.equals("*")) {
                 Main.board.replace(this.x, this.y + 1, new Diamond(this.x, this.y + 1));
@@ -56,6 +56,14 @@ public class MagicWall extends Tile{
                 Main.board.replace(this.x, this.y + 1, new Boulder(this.x, this.y + 1));
                 Boulder b = (Boulder) Main.board.get(this.x, this.y + 1);
                 b.setChecked(true);
+            }
+
+        } else if (enemyBelow && (this.contains.equals("*") || this.contains.equals("@"))) {
+
+            if (l.equals("f") || l.equals("F")) {
+                Main.board.explodeDiamond(this.x, this.y + 1);
+            } else {
+                Main.board.explodeDiamond(this.x, this.y + 1);
             }
         }
     }
