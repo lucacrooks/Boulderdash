@@ -60,10 +60,10 @@ public class MagicWall extends Tile{
 
         } else if (enemyBelow && (this.contains.equals("*") || this.contains.equals("@"))) {
 
-            if (l.equals("f") || l.equals("F")) {
+            if (l.equals("B") || l.equals("F")) {
                 Main.board.explodeDiamond(this.x, this.y + 1);
             } else {
-                Main.board.explodeDiamond(this.x, this.y + 1);
+                Main.board.explode(this.x, this.y + 1);
             }
         }
     }
