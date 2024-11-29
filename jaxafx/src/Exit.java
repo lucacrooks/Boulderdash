@@ -9,7 +9,7 @@ public class Exit extends Tile {
         super(x, y);
         this.letter = "E";
         this.image = new Image("EXIT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-        this.open = false;
+        this.open = true;
     }
 
     public boolean getOpen() {

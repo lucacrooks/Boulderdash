@@ -1,4 +1,5 @@
 import javafx.scene.image.Image;
+import java.util.Random;
 
 public class Frog extends Enemy {
     private Image image;
@@ -64,9 +65,6 @@ public class Frog extends Enemy {
                     this.checkMove(this.x + 1, this.y);
                 } else if (px <= this.x) {
                     this.checkMove(this.x - 1, this.y);
-                }
-                if (!this.moved) {
-                    xLock = true;
                 }
             }
         }
