@@ -56,7 +56,7 @@ public class Board {
                     } else if (l.equals("F")) {
                         a[row][col] = new Frog("F", col, row, true);
                     } else if (l.equals("A")) {
-                        //
+                        a[row][col] = new Amoeba(col, row, 1, 10);
                     }
                 }
                 row++;
