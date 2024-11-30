@@ -56,7 +56,7 @@ public class Board {
                     } else if (l.equals("F")) {
                         a[row][col] = new Frog("F", col, row, true);
                     } else if (l.equals("A")) {
-                        a[row][col] = new Amoeba(col, row, 1, 10);
+                        a[row][col] = new Amoeba(col, row, Main.MAX_AMOEBA_CAP, 0);
                     }
                 }
                 row++;
@@ -108,6 +108,17 @@ public class Board {
                 String l = this.array[y + dy][x + dx].getLetter();
                 if (!l.equals("T")) {
                     this.replace(x + dx, y + dy, new Diamond(x + dx, y + dy));
+                }
+            }
+        }
+    }
+
+    public void unlockAmoebas() {
+        for (int row = Main.GRID_HEIGHT - 1; row >= 0; row--) {
+            for (int col = 0; col < Main.GRID_WIDTH; col++) {
+                if (Main.board.get(row, col).getLetter().equals("A")) {
+                    Amoeba a = (Amoeba) Main.board.get(row, col);
+                    a.setLocked(false);
                 }
             }
         }

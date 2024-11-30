@@ -63,6 +63,8 @@ public class Main extends Application {
 
 	// tick speed
 	public static final int TICK_SPEED = 200;
+	// amoeba capacity
+	public static final int MAX_AMOEBA_CAP = 50;
 	
 	// The canvas in the GUI. This needs to be a global variable
 	// (in this setup) as we need to access it in different methods.
@@ -169,6 +171,7 @@ public class Main extends Application {
 			}
 		}
 
+		board.unlockAmoebas();
 		// We then redraw the whole canvas.
 		board.draw(canvas);
 	}
