@@ -5,6 +5,7 @@ public class Fly extends Enemy {
     private String letter;
     private boolean checked;
     private String direction;
+    private boolean setup;
 
     public Fly(String enemyType, int x, int y, boolean isAlive) {
         super(enemyType, x, y, isAlive);
@@ -16,8 +17,28 @@ public class Fly extends Enemy {
         }
         this.letter = enemyType;
         this.checked = false;
-        this.direction = "S";
+        this.direction = "N";
+        this.setup = false;
     }
+
+    public String setDirection() {
+        boolean n = Main.board.getTileLetter(this.x, this.y - 1).equals("P");
+        boolean s = Main.board.getTileLetter(this.x, this.y + 1).equals("P");
+        boolean e = Main.board.getTileLetter(this.x + 1, this.y).equals("P");
+        boolean w = Main.board.getTileLetter(this.x - 1, this.y).equals("P");
+
+        if (!n) {
+            return "E";
+        } else if (!e) {
+            return "S";
+        } else if (!s) {
+            return "W";
+        } else if (!w) {
+            return "N";
+        }
+        return "N";
+    }
+
 
     public void move() {
         if (this.isAlive) {
@@ -83,6 +104,10 @@ public class Fly extends Enemy {
 
     @Override
     public void update() {
+        if (!setup) {
+            setup = true;
+            this.direction = setDirection();
+        }
         this.move();
         if (this.checkNextTo("X")) {
             Main.player.kill();
