@@ -38,7 +38,7 @@ public class Boulder extends Tile {
     }
 
     /** Returns a number based on which case the boulder can move
-     * @author Luca Crooks
+     * @author Luca Crooks, Iolo Staniland, Gregory Picton-Turberville
      * @return a number based on what case the boulder is falling under, 0 if it cannot fall
      */
     public int canFall() {
@@ -85,32 +85,34 @@ public class Boulder extends Tile {
     }
 
     /** Moves the boulder and/or tiles around it based on which case it falls under
-     * @author Luca Crooks
-     * @return a number based on what case the boulder is falling under, 0 if it cannot fall
+     * @author Luca Crooks, Iolo Staniland, Gregory Picton-Turberville
      */
     public void fall(int dir) {
         this.isFalling = false;
-        if (dir == 2) {
+        if (dir == 2) { // fall directly down
             Main.board.swap(this.x, this.y, this.x, this.y + 1);
             this.y++;
             this.isFalling = true;
 
-        } else if (dir == 4) {
+        } else if (dir == 4) { // fall through magic wall
             MagicWall mw = (MagicWall) Main.board.get(this.x, this.y + 1);
             mw.setContains("@");
             Main.board.replace(this.x, this.y, new Path(this.x, this.y));
             this.isFalling = true;
 
-        } else if (dir == 1) {
+        } else if (dir == 1) { // slide left
             Main.board.swap(this.x, this.y, this.x - 1, this.y);
             this.x--;
 
-        } else if (dir == 3) {
+        } else if (dir == 3) { // slide right
             Main.board.swap(this.x, this.y, this.x + 1, this.y);
             this.x++;
         }
     }
 
+    /** Calls kill() in player class and replaces it with the falling boulder
+     * @author Luca Crooks
+     */
     public void killPlayer() {
         Main.board.swap(this.x, this.y, this.x, this.y + 1);
         Main.board.replace(this.x, this.y, new Path(this.x, this.y));
@@ -118,6 +120,9 @@ public class Boulder extends Tile {
         Main.player.kill();
     }
 
+    /** Calls fall() if canFall()
+     * @author Luca Crooks
+     */
     @Override
     public void update() {
         this.fall(this.canFall());

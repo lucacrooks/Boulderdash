@@ -1,5 +1,8 @@
 import javafx.scene.image.Image;
 
+/** Diamond class
+ * @author Luca Crooks
+ */
 public class Diamond extends Tile {
     private String letter;
     private Image image;
