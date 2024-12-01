@@ -130,10 +130,6 @@ public class Player extends Tile {
         return this.isAlive;
     }
 
-    public void setIsAlive(boolean b) {
-        this.isAlive = b;
-    }
-
     public void kill() {
         this.isAlive = false;
         Main.board.explode(this.x, this.y);
