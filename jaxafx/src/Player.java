@@ -1,14 +1,14 @@
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Player extends Tile {
     private int start_x;
     private int start_y;
     private Image image;
     private int diamondCount;
+    private ArrayList<String> inventory;
     private boolean isAlive;
     private String letter;
 
@@ -20,6 +20,7 @@ public class Player extends Tile {
         this.image = new Image("PLAYER_FRONT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
         this.diamondCount = 0;
         this.isAlive = true;
+        this.inventory = new ArrayList<>();
     }
 
     public void reset() {
@@ -63,22 +64,31 @@ public class Player extends Tile {
             ny = this.y + 1;
         }
 
-        //can make these 2 into one
-        if (dir.equals("left") && Main.board.getTileLetter(nx, ny).equals("@") && Main.board.getTileLetter(nx - 1, ny).equals("P")) {
+        String targetLetter = Main.board.getTileLetter(nx, ny);
+
+        if (targetLetter.equals("1") || targetLetter.equals("2") || targetLetter.equals("3") || targetLetter.equals("4")) {
+            this.inventory.add(targetLetter);
+            return true;
+        } else if ((targetLetter.equals("a") && this.inventory.contains("1"))
+                || (targetLetter.equals("b") && this.inventory.contains("2"))
+                || (targetLetter.equals("c") && this.inventory.contains("3"))
+                || (targetLetter.equals("d") && this.inventory.contains("4"))) {
+            return true;
+        } else if (dir.equals("left") && targetLetter.equals("@") && Main.board.getTileLetter(nx - 1, ny).equals("P")) {
             Boulder b = (Boulder) Main.board.get(nx, ny);
             b.push("left");
             return true;
-        } else if (dir.equals("right") && Main.board.getTileLetter(nx, ny).equals("@") && Main.board.getTileLetter(nx + 1, ny).equals("P")) {
+        } else if (dir.equals("right") && targetLetter.equals("@") && Main.board.getTileLetter(nx + 1, ny).equals("P")) {
             Boulder b = (Boulder) Main.board.get(nx, ny);
             b.push("right");
             return true;
-        }
-        else if (Main.board.getTileLetter(nx, ny).equals("D") || Main.board.getTileLetter(nx, ny).equals("P")) {
+        } else if (targetLetter.equals("D") || targetLetter.equals("P")) {
             return true;
-        } else if (Main.board.getTileLetter(nx, ny).equals("*")) {
+        } else if (targetLetter.equals("*")) {
             this.diamondCount++;
+            System.out.println(this.diamondCount);
             return true;
-        } else if (Main.board.getTileLetter(nx, ny).equals("E")) {
+        } else if (targetLetter.equals("E")) {
             Exit e = (Exit) Main.board.get(nx, ny);
             if (e.getOpen()) {
                 this.reset();

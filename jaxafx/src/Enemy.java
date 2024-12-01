@@ -8,12 +8,13 @@ public class Enemy extends Tile {
         this.isAlive = isAlive;
     }
 
-    protected void checkNextToPlayer() {
-        if (Main.board.getTileLetter(this.x + 1, this.y).equals("X")
-                || Main.board.getTileLetter(this.x - 1, this.y).equals("X")
-                || Main.board.getTileLetter(this.x, this.y + 1).equals("X")
-                || Main.board.getTileLetter(this.x, this.y - 1).equals("X")) {
-            Main.player.kill();
+    protected boolean checkNextTo(String l) {
+        if (Main.board.getTileLetter(this.x + 1, this.y).equals(l)
+                || Main.board.getTileLetter(this.x - 1, this.y).equals(l)
+                || Main.board.getTileLetter(this.x, this.y + 1).equals(l)
+                || Main.board.getTileLetter(this.x, this.y - 1).equals(l)) {
+            return true;
         }
+        return false;
     }
 }

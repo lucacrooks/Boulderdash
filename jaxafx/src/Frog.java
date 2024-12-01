@@ -1,5 +1,4 @@
 import javafx.scene.image.Image;
-import java.util.Random;
 
 public class Frog extends Enemy {
     private Image image;
@@ -72,7 +71,16 @@ public class Frog extends Enemy {
 
     public void update() {
         this.move();
-        this.checkNextToPlayer();
+        if (this.checkNextTo("X")) {
+            Main.player.kill();
+        }
+        if (this.checkNextTo("A")) {
+            this.kill();
+        }
+    }
+
+    public void kill() {
+        Main.board.explode(this.x, this.y);
     }
 
     @Override

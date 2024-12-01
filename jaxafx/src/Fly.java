@@ -1,4 +1,5 @@
 import javafx.scene.image.Image;
+
 public class Fly extends Enemy {
     private Image image;
     private String letter;
@@ -20,10 +21,6 @@ public class Fly extends Enemy {
 
     public void move() {
         if (this.isAlive) {
-            boolean front;
-            boolean back;
-            boolean left;
-            boolean right;
             int ox = this.x;
             int oy = this.y;
 
@@ -112,7 +109,16 @@ public class Fly extends Enemy {
     @Override
     public void update() {
         this.move();
-        this.checkNextToPlayer();
+        if (this.checkNextTo("X")) {
+            Main.player.kill();
+        }
+        if (this.checkNextTo("A")) {
+            this.kill();
+        }
+    }
+
+    public void kill() {
+        Main.board.explode(this.x, this.y);
     }
 
     @Override

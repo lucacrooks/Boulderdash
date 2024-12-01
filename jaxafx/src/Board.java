@@ -57,6 +57,22 @@ public class Board {
                         a[row][col] = new Frog("F", col, row, true);
                     } else if (l.equals("A")) {
                         a[row][col] = new Amoeba(col, row, Main.MAX_AMOEBA_CAP, 0);
+                    } else if (l.equals("a")) {
+                        a[row][col] = new LockedDoor(col, row, "a");
+                    } else if (l.equals("b")) {
+                        a[row][col] = new LockedDoor(col, row, "b");
+                    } else if (l.equals("c")) {
+                        a[row][col] = new LockedDoor(col, row, "c");
+                    } else if (l.equals("d")) {
+                        a[row][col] = new LockedDoor(col, row, "d");
+                    } else if (l.equals("1")) {
+                        a[row][col] = new Key(col, row, "1");
+                    } else if (l.equals("2")) {
+                        a[row][col] = new Key(col, row, "2");
+                    } else if (l.equals("3")) {
+                        a[row][col] = new Key(col, row, "3");
+                    } else if (l.equals("4")) {
+                        a[row][col] = new Key(col, row, "4");
                     }
                 }
                 row++;

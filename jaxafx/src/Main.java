@@ -41,7 +41,7 @@ import java.util.ArrayList;
 public class Main extends Application {
 
 	// player instance
-	public static Player player = new Player(3, 2);
+	public static Player player = new Player(2, 2);
 	// board creation from file
 	public static Board board = new Board("src/EnemyTest.txt");
 
@@ -64,7 +64,7 @@ public class Main extends Application {
 	// tick speed
 	public static final int TICK_SPEED = 200;
 	// amoeba capacity
-	public static final int MAX_AMOEBA_CAP = 50;
+	public static final int MAX_AMOEBA_CAP = 1000;
 	
 	// The canvas in the GUI. This needs to be a global variable
 	// (in this setup) as we need to access it in different methods.
@@ -165,6 +165,8 @@ public class Main extends Application {
 			for (int col = 0; col < Main.GRID_WIDTH; col++) {
 				String l = Main.board.getTileLetter(col, row);
 				Tile obj = Main.board.get(col, row);
+				obj.setY(row);
+				obj.setX(col);
 				if (l.equals("@") || l.equals("*") || l.equals("M") || l.equals("f") || l.equals("B") || l.equals("F")) {
 					obj.setChecked(false);
 				}

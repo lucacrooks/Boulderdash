@@ -125,7 +125,7 @@ public class Amoeba extends Tile {
     @Override
     public void update() {
         this.elapsed++;
-        if (this.elapsed % 1 == 0) {
+        if (this.elapsed % 10 == 0) {
             this.makeAmoebasArray();
             this.makeValidTiles();
             if (!this.locked) {
