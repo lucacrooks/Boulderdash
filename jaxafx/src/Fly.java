@@ -16,7 +16,7 @@ public class Fly extends Enemy {
         }
         this.letter = enemyType;
         this.checked = false;
-        this.direction = "down";
+        this.direction = "S";
     }
 
     public void move() {
@@ -24,7 +24,29 @@ public class Fly extends Enemy {
             int ox = this.x;
             int oy = this.y;
 
-            boolean f = Main.board.getTileLetter(this.x, this.y - 1).equals("P");
+            String[][] dirs = {
+                    {"N", "W", "N", "E", "S"},
+                    {"S", "E", "S", "W", "N"},
+                    {"E", "N", "E", "S", "W"},
+                    {"W", "S", "W", "N", "E"}
+            };
+
+            int i = 0;
+            while (!dirs[i][0].equals(this.direction)) {
+                i++;
+            }
+
+            if (dirs[i][1].equals("N")) {
+
+            } else if (dirs[i][1].equals("E")) {
+
+            } else if (dirs[i][1].equals("S")) {
+
+            } else if (dirs[i][1].equals("W")) {
+
+            }
+
+            /*boolean f = Main.board.getTileLetter(this.x, this.y - 1).equals("P");
             boolean b = Main.board.getTileLetter(this.x, this.y + 1).equals("P");
             boolean r = Main.board.getTileLetter(this.x + 1, this.y).equals("P");
             boolean l = Main.board.getTileLetter(this.x - 1, this.y).equals("P");
@@ -92,7 +114,7 @@ public class Fly extends Enemy {
                     this.direction = "right";
                 }
                 Main.board.swap(this.x, this.y, ox, oy);
-            }
+            }*/
         }
     }
 
