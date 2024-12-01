@@ -36,43 +36,38 @@ public class Fly extends Enemy {
                     {"W", "S", "W", "N", "E"}
             };
 
+            boolean[][] truth = {
+                    {n, w, n, e, s},
+                    {s, e, s, w, n},
+                    {e, n, e, s, w},
+                    {w, s, w, n, e}
+            };
+
+            int[][][] coords = {
+                    {{0, -1}, {-1, 0}, {0, -1}, {1, 0}, {0, 1}},
+                    {{0, 1}, {1, 0}, {0, 1}, {-1, 0}, {0, -1}},
+                    {{1, 0}, {0, -1}, {1, 0}, {0, 1}, {-1, 0}},
+                    {{-1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 0}}
+            };
+
             int i = 0;
             while (!dirs[i][0].equals(this.direction)) {
                 i++;
             }
 
-            boolean done = false;
             int j = 1;
+            boolean done = false;
             while (!done && j <= 4) {
-                if (dirs[i][j].equals("N")) {
-                    if (Main.board.getTileLetter(this.x, this.y - 1).equals("P")) {
-                        done = true;
-                        this.y--;
-                        this.direction = "N";
-                    }
-                } else if (dirs[i][j].equals("S")) {
-                     if (Main.board.getTileLetter(this.x, this.y + 1).equals("P")) {
-                         done = true;
-                         this.y++;
-                         this.direction = "S";
-                     }
-                } else if (dirs[i][j].equals("E")) {
-                    if (Main.board.getTileLetter(this.x + 1, this.y).equals("P")) {
-                        done = true;
-                        x++;
-                        this.direction = "E";
-                    }
-                } else if (dirs[i][j].equals("W")) {
-                    if (Main.board.getTileLetter(this.x - 1, this.y).equals("P")) {
-                        done = true;
-                        x--;
-                        this.direction = "W";
-                    }
+                if (truth[i][j]) {
+                    done = true;
+                    this.x += coords[i][j][0];
+                    this.y += coords[i][j][1];
+                    this.direction = dirs[i][j];
                 }
-
-                Main.board.swap(this.x, this.y, ox, oy);
                 j++;
             }
+
+            Main.board.swap(this.x, this.y, ox, oy);
         }
     }
 
