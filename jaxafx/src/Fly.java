@@ -24,6 +24,11 @@ public class Fly extends Enemy {
             int ox = this.x;
             int oy = this.y;
 
+            boolean n = Main.board.getTileLetter(this.x, this.y - 1).equals("P");
+            boolean s = Main.board.getTileLetter(this.x, this.y + 1).equals("P");
+            boolean e = Main.board.getTileLetter(this.x + 1, this.y).equals("P");
+            boolean w = Main.board.getTileLetter(this.x - 1, this.y).equals("P");
+
             String[][] dirs = {
                     {"N", "W", "N", "E", "S"},
                     {"S", "E", "S", "W", "N"},
@@ -36,85 +41,38 @@ public class Fly extends Enemy {
                 i++;
             }
 
-            if (dirs[i][1].equals("N")) {
+            boolean done = false;
+            int j = 1;
+            while (!done && j <= 4) {
+                if (dirs[i][j].equals("N")) {
+                    if (Main.board.getTileLetter(this.x, this.y - 1).equals("P")) {
+                        done = true;
+                        this.y--;
+                        this.direction = "N";
+                    }
+                } else if (dirs[i][j].equals("S")) {
+                     if (Main.board.getTileLetter(this.x, this.y + 1).equals("P")) {
+                         done = true;
+                         this.y++;
+                         this.direction = "S";
+                     }
+                } else if (dirs[i][j].equals("E")) {
+                    if (Main.board.getTileLetter(this.x + 1, this.y).equals("P")) {
+                        done = true;
+                        x++;
+                        this.direction = "E";
+                    }
+                } else if (dirs[i][j].equals("W")) {
+                    if (Main.board.getTileLetter(this.x - 1, this.y).equals("P")) {
+                        done = true;
+                        x--;
+                        this.direction = "W";
+                    }
+                }
 
-            } else if (dirs[i][1].equals("E")) {
-
-            } else if (dirs[i][1].equals("S")) {
-
-            } else if (dirs[i][1].equals("W")) {
-
+                Main.board.swap(this.x, this.y, ox, oy);
+                j++;
             }
-
-            /*boolean f = Main.board.getTileLetter(this.x, this.y - 1).equals("P");
-            boolean b = Main.board.getTileLetter(this.x, this.y + 1).equals("P");
-            boolean r = Main.board.getTileLetter(this.x + 1, this.y).equals("P");
-            boolean l = Main.board.getTileLetter(this.x - 1, this.y).equals("P");
-
-            if (this.direction == "down") {
-                if (r) {
-                    this.x++;
-                    this.direction = "right";
-                } else if (b) {
-                    this.y++;
-                    this.direction = "down";
-                } else if (l) {
-                    this.x--;
-                    this.direction = "left";
-                } else if (f) {
-                    this.y--;
-                    this.direction = "up";
-                }
-                Main.board.swap(this.x, this.y, ox, oy);
-
-            } else if (this.direction == "up") {
-                if (l) {
-                    this.x--;
-                    this.direction = "left";
-                } else if (f) {
-                    this.y--;
-                    this.direction = "up";
-                } else if (r) {
-                    this.x++;
-                    this.direction = "right";
-                } else if (b) {
-                    this.y++;
-                    this.direction = "down";
-                }
-                Main.board.swap(this.x, this.y, ox, oy);
-
-            } else if (this.direction == "right") {
-                if (f) {
-                    this.y--;
-                    this.direction = "up";
-                } else if (r) {
-                    this.x++;
-                    this.direction = "right";
-                } else if (b) {
-                    this.y++;
-                    this.direction = "down";
-                } else if (l) {
-                    this.x--;
-                    this.direction = "left";
-                }
-                Main.board.swap(this.x, this.y, ox, oy);
-
-            } else if (this.direction == "left") {
-                if (b) {
-                    this.y++;
-                    this.direction = "down";
-                } else if (l) {
-                    this.x--;
-                    this.direction = "left";
-                } else if (f) {
-                    this.y--;
-                    this.direction = "up";
-                } else if (r) {
-                    this.x++;
-                    this.direction = "right";
-                }
-                Main.board.swap(this.x, this.y, ox, oy);
-            }*/
         }
     }
 
