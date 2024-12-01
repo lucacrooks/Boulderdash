@@ -39,7 +39,7 @@ public class Boulder extends Tile {
 
     /** Returns a number based on which case the boulder can move
      * @author Luca Crooks
-     * @return a number based on what case the boulder is falling under
+     * @return a number based on what case the boulder is falling under, 0 if it cannot fall
      */
     public int canFall() {
 
@@ -84,6 +84,10 @@ public class Boulder extends Tile {
         return 0;
     }
 
+    /** Moves the boulder and/or tiles around it based on which case it falls under
+     * @author Luca Crooks
+     * @return a number based on what case the boulder is falling under, 0 if it cannot fall
+     */
     public void fall(int dir) {
         this.isFalling = false;
         if (dir == 2) {
