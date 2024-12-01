@@ -146,6 +146,8 @@ public class Main extends Application {
 	 * over them all and calling their own tick method). 
 	 */
 	public void tick() {
+		// updates every tile object from the bottom up
+		// if it is a moving object, set it to be checked to avoid multiple moves per frame
 		for (int row = Main.GRID_HEIGHT - 1; row >= 0; row--) {
 			for (int col = 0; col < Main.GRID_WIDTH; col++) {
 				String l = Main.board.getTileLetter(col, row);
@@ -161,12 +163,18 @@ public class Main extends Application {
 			}
 		}
 
+		// setup for next frame
 		for (int row = 0; row < Main.GRID_HEIGHT; row++) {
 			for (int col = 0; col < Main.GRID_WIDTH; col++) {
 				String l = Main.board.getTileLetter(col, row);
 				Tile obj = Main.board.get(col, row);
+
+				// stops tiles getting fragmented when many swaps() are called each frame
+				// below ensures each tiles x,y position on the board matches their attributes
 				obj.setY(row);
 				obj.setX(col);
+
+				// set checked on moving objects to false, ready for next frame
 				if (l.equals("@") || l.equals("*") || l.equals("M") || l.equals("f") || l.equals("B") || l.equals("F")) {
 					obj.setChecked(false);
 				}

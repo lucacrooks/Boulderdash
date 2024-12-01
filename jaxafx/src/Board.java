@@ -8,18 +8,25 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/** Board class
+ * @author Luca Crooks
+ */
 public class Board {
 
     private Tile[][] array;
 
+    /** Board constructor
+     * @param fn file name to be referenced when instance of board is created
+     * @author Luca Crooks
+     */
     public Board (String fn) {
         this.array = makeArray(fn);
     }
 
-    /**
-     * Reads the level file then takes the data and arranges it into a 2d array.
-     * @param fn name of the file to read from.
-     * @author Luca Crooks.
+    /** Reads the level file then takes the data and arranges it into a 2d array of tile objects
+     * @author Luca Crooks
+     * @param fn name of the file to read from
+     * @returns the array full of the respective tile objects based on the level file
      */
     public Tile[][] makeArray(String fn) {
         Tile[][] a = new Tile[Main.GRID_HEIGHT][Main.GRID_WIDTH];
@@ -27,6 +34,8 @@ public class Board {
             int row = 0;
             File f = new File(fn);
             Scanner reader = new Scanner(f);
+
+            // creates an instance of each subclass based on the letter it corresponds to
             while (row < Main.GRID_HEIGHT) {
                 String data = reader.nextLine();
                 for (int col = 0; col < Main.GRID_WIDTH; col++) {
@@ -78,35 +87,69 @@ public class Board {
                 row++;
             }
             reader.close();
-        } catch (FileNotFoundException e) {
+
+        } catch (FileNotFoundException e) { // always catch a reader error
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
         return a;
     }
 
+    /** Replaces a given x,y position in the board with a new given tile
+     * @author Luca Crooks
+     * @param x position of target tile
+     * @param y position of target tile
+     */
     public void replace(int x, int y, Tile t) {
         this.array[y][x] = t;
     }
 
+    /** Performs a swap of tiles at position x,y and x2,y2
+     * @author Luca Crooks
+     * @param x x position of first tile
+     * @param y y position of first tile
+     * @param x2 x position of second tile
+     * @param y2 y position of second tile
+     */
     public void swap (int x, int y, int x2, int y2) {
         Tile temp = this.array[y][x];
         this.array[y][x] = this.array[y2][x2];
         this.array[y2][x2] = temp;
     }
 
+    /** Getter for attribute array
+     * @author Luca Crooks
+     * @returns attribute array
+     */
     public Tile[][] getArray() {
         return this.array;
     }
 
+    /** Gets letter of target tile
+     * @author Luca Crooks
+     * @param x position of tile
+     * @param y position of tile
+     * @returns letter of target tile
+     */
     public String getTileLetter(int x, int y) {
         return this.array[y][x].getLetter();
     }
 
+    /** Gets a tile given an x,y
+     * @author Luca Crooks
+     * @param x position of tile
+     * @param y position of tile
+     * @returns a tile based on x,y position
+     */
     public Tile get(int x, int y) {
         return this.array[y][x];
     }
 
+    /** Removes all destructible tiles in the surrounding 3x3 square
+     * @author Luca Crooks
+     * @param x position of explosion centre
+     * @param y position of explosion centre
+     */
     public void explode(int x, int y) {
         for (int dx = -1; dx < 2; dx++) {
             for (int dy = -1; dy < 2; dy++) {
@@ -118,6 +161,11 @@ public class Board {
         }
     }
 
+    /** Replaces all destructible tiles in the surrounding 3x3 square with diamonds
+     * @author Luca Crooks
+     * @param x position of explosion centre
+     * @param y position of explosion centre
+     */
     public void explodeDiamond(int x, int y) {
         for (int dx = -1; dx < 2; dx++) {
             for (int dy = -1; dy < 2; dy++) {
@@ -129,6 +177,9 @@ public class Board {
         }
     }
 
+    /** Unlocks each amoeba to prevent more than one from spreading each frame
+     * @author Luca Crooks
+     */
     public void unlockAmoebas() {
         for (int row = Main.GRID_HEIGHT - 1; row >= 0; row--) {
             for (int col = 0; col < Main.GRID_WIDTH; col++) {
@@ -140,28 +191,27 @@ public class Board {
         }
     }
 
+    /** Draws the board using the overridden image getter in each subclass of tile
+     * @author Luca Crooks
+     * @param canvas the canvas where the graphics window will reside
+     */
     public void draw(Canvas canvas) {
-        // Get the Graphic Context of the canvas. This is what we draw on.
+        // get the graphic context of the canvas
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        // Clear canvas
+        // clear canvas
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        // Set the background to gray.
+        // set the background to black
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        // We multiply by the cell width and height to turn a coordinate in our grid into a pixel coordinate.
+        // draw each tile in the x,y position it holds, multiplied by a factor of GRID_CELL_WIDTH / HEIGHT
         for (int row = 0; row < Main.GRID_HEIGHT; row++) {
             for (int col = 0; col < Main.GRID_WIDTH; col++) {
                 Image img = array[row][col].getImage();
                 gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
             }
-        }
-
-        // Draw player at current location
-        if (Main.player.getIsAlive()) {
-            gc.drawImage(Main.player.getImage(), Main.player.getX() * Main.GRID_CELL_WIDTH, Main.player.getY() * Main.GRID_CELL_HEIGHT);
         }
     }
 }
