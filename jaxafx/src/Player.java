@@ -25,6 +25,7 @@ public class Player extends Tile {
 
     public void reset() {
         Main.board.swap(this.x, this.y, this.start_x, this.start_y);
+        Main.board.replace(this.x, this.y, new Path(this.x, this.y));
         this.x = this.start_x;
         this.y = this.start_y;
     }
@@ -124,10 +125,6 @@ public class Player extends Tile {
 
     public void dig() {
         Main.board.replace(this.x, this.y, Main.player);
-    }
-
-    public boolean getIsAlive() {
-        return this.isAlive;
     }
 
     public void kill() {
