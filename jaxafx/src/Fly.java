@@ -10,6 +10,13 @@ public class Fly extends Enemy {
     private String direction;
     private boolean setup;
 
+    /** Fly constructor
+     * @author Ellis Mann
+     * @param enemyType "B" for butterfly "f" for firefly
+     * @param x position of fly
+     * @param y position of fly
+     * @param isAlive whether fly is alive or not
+     */
     public Fly(String enemyType, int x, int y, boolean isAlive) {
         super(enemyType, x, y, isAlive);
         this.checked = false;
@@ -24,12 +31,18 @@ public class Fly extends Enemy {
         this.setup = false;
     }
 
+    /** Setting move convenient direction based on starting position
+     * @author Luca Crooks
+     * @return most favorable starting direction
+     */
     public String setDirection() {
+        // free space truth values of each cardinal direction
         boolean n = Main.board.getTileLetter(this.x, this.y - 1).equals("P");
         boolean s = Main.board.getTileLetter(this.x, this.y + 1).equals("P");
         boolean e = Main.board.getTileLetter(this.x + 1, this.y).equals("P");
         boolean w = Main.board.getTileLetter(this.x - 1, this.y).equals("P");
 
+        // ideal start is the direction one turn clockwise of where a wall is present
         if (!n) {
             return "E";
         } else if (!e) {
@@ -42,17 +55,24 @@ public class Fly extends Enemy {
         return "N";
     }
 
-
+    /** Logic for moving the fly using lookup tables
+     * Having the predefined lookup tables makes the logic for the butterfly very elegant and non-repeating
+     * @author Luca Crooks
+     */
     public void move() {
         if (this.isAlive) {
+
             int ox = this.x;
             int oy = this.y;
 
+            // redefining free space truth values
             boolean n = Main.board.getTileLetter(this.x, this.y - 1).equals("P");
             boolean s = Main.board.getTileLetter(this.x, this.y + 1).equals("P");
             boolean e = Main.board.getTileLetter(this.x + 1, this.y).equals("P");
             boolean w = Main.board.getTileLetter(this.x - 1, this.y).equals("P");
 
+            // lookup priority table for each direction
+            // format {current direction, priority1, priority2, priority3, priority4}
             String[][] dirs = {
                     {"N", "W", "N", "E", "S"},
                     {"S", "E", "S", "W", "N"},
@@ -60,6 +80,7 @@ public class Fly extends Enemy {
                     {"W", "S", "W", "N", "E"}
             };
 
+            // sam as above but holding the truth values to indicate whether the desired space is free
             boolean[][] truth = {
                     {n, w, n, e, s},
                     {s, e, s, w, n},
@@ -67,6 +88,7 @@ public class Fly extends Enemy {
                     {w, s, w, n, e}
             };
 
+            // the amount to change the player x and y values by when a direction is chosen
             int[][][] coords = {
                     {{0, -1}, {-1, 0}, {0, -1}, {1, 0}, {0, 1}},
                     {{0, 1}, {1, 0}, {0, 1}, {-1, 0}, {0, -1}},
@@ -74,11 +96,14 @@ public class Fly extends Enemy {
                     {{-1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 0}}
             };
 
+            // locates the row the current direction is located in so the checking priority queue can be accessed
             int i = 0;
             while (!dirs[i][0].equals(this.direction)) {
                 i++;
             }
 
+            // once the row is found, highest priority is checked it can be moved to and so on...
+            // once found, the variable done acts as a flag and stops the while loop
             int j = 1;
             boolean done = false;
             while (!done && j <= 4) {
@@ -91,20 +116,21 @@ public class Fly extends Enemy {
                 j++;
             }
 
+            // position on the board is updated accordingly
             Main.board.swap(this.x, this.y, ox, oy);
         }
     }
 
-    @Override
-    public Image getImage () {
-        return this.image;
+    /** Explodes a 3x3 area around an x,y position given (see board class)
+     * @author Luca Crooks
+     */
+    public void kill() {
+        Main.board.explode(this.x, this.y);
     }
 
-    @Override
-    public String getLetter() {
-        return this.letter;
-    }
-
+    /** Sets the fly up once per instance, then moves, the checks for an amoeba or player (see enemy class)
+     * @author Luca Crooks, Ellis Mann
+     */
     @Override
     public void update() {
         if (!setup) {
@@ -120,10 +146,6 @@ public class Fly extends Enemy {
         }
     }
 
-    public void kill() {
-        Main.board.explode(this.x, this.y);
-    }
-
     @Override
     public boolean getChecked() {
         return checked;
@@ -132,5 +154,15 @@ public class Fly extends Enemy {
     @Override
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    @Override
+    public Image getImage () {
+        return this.image;
+    }
+
+    @Override
+    public String getLetter() {
+        return this.letter;
     }
 }

@@ -1,7 +1,7 @@
 import javafx.scene.image.Image;
 
-/** Boulder class
- * @author Luca Crooks, Iolo Staniland, Gregory Picton-Turberville
+/** Falling object class (boulder or diamond)
+ * @author Luca Crooks, Iolo Staniland, Gregory Picton-Turberville, Ellis Mann
  */
 public class FallingObject extends Tile {
     private String letter;
@@ -42,7 +42,7 @@ public class FallingObject extends Tile {
     }
 
     /** Returns a number based on which case the boulder can move
-     * @author Luca Crooks, Iolo Staniland, Gregory Picton-Turberville
+     * @author Luca Crooks, Iolo Staniland, Gregory Picton-Turberville, Ellis Mann
      * @return a number based on what case the boulder is falling under, 0 if it cannot fall
      */
     public int canFall() {
@@ -89,7 +89,7 @@ public class FallingObject extends Tile {
     }
 
     /** Moves the boulder and/or tiles around it based on which case it falls under
-     * @author Luca Crooks, Iolo Staniland, Gregory Picton-Turberville
+     * @author Luca Crooks, Iolo Staniland, Gregory Picton-Turberville, Ellis Mann
      */
     public void fall(int dir) {
         this.isFalling = false;
