@@ -1,5 +1,8 @@
 import javafx.scene.image.Image;
 
+/** Fly class (Both firefly and butterfly)
+ * @author Luca Crooks, Ellis Mann
+ */
 public class Fly extends Enemy {
     private Image image;
     private String letter;
