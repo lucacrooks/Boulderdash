@@ -79,7 +79,7 @@ public class Amoeba extends Tile {
         if(!isMaxCapReached()) {
             if (validTiles.isEmpty()) { //turns all amoebas into diamonds
                 for (Amoeba amoeba : amoebas) {
-                    Main.board.replace(amoeba.x, amoeba.y, new Diamond(amoeba.x, amoeba.y));
+                    Main.board.replace(amoeba.x, amoeba.y, new FallingObject("*", amoeba.x, amoeba.y));
                 }
             } else {
                 // chooses a random tile from the list
@@ -99,7 +99,7 @@ public class Amoeba extends Tile {
             }
         } else { // turns all amoebas into boulders
             for (Amoeba amoeba : amoebas) {
-                Main.board.replace(amoeba.x, amoeba.y, new Boulder(amoeba.x, amoeba.y));
+                Main.board.replace(amoeba.x, amoeba.y, new FallingObject("@", amoeba.x, amoeba.y));
             }
         }
     }

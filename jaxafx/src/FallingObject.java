@@ -3,21 +3,25 @@ import javafx.scene.image.Image;
 /** Boulder class
  * @author Luca Crooks, Iolo Staniland, Gregory Picton-Turberville
  */
-public class Boulder extends Tile {
+public class FallingObject extends Tile {
     private String letter;
     private Image image;
     private boolean isFalling;
     private boolean checked;
 
     /** Boulder constructor
-     * @author Iolo Staniland, Gregory Picton-Turberville
+     * @author Iolo Staniland, Gregory Picton-Turberville, Ellis Mann
      * @param x position of boulder
      * @param y position of boulder
      */
-    public Boulder(int x, int y) {
+    public FallingObject(String letter, int x, int y) {
         super(x, y);
-        this.letter = "@";
-        this.image = new Image("BOULDER.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+        this.letter = letter;
+        if (this.letter.equals("@")) {
+            this.image = new Image("BOULDER.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+        } else if (this.letter.equals("*")) {
+            this.image = new Image("DIAMOND.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+        }
         this.isFalling = false;
         this.checked = false;
     }

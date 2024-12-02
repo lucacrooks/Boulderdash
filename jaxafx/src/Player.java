@@ -75,11 +75,11 @@ public class Player extends Tile {
                 || (targetLetter.equals("d") && this.inventory.contains("4"))) {
             return true;
         } else if (dir.equals("left") && targetLetter.equals("@") && Main.board.getTileLetter(nx - 1, ny).equals("P")) {
-            Boulder b = (Boulder) Main.board.get(nx, ny);
+            FallingObject b = (FallingObject) Main.board.get(nx, ny);
             b.push("left");
             return true;
         } else if (dir.equals("right") && targetLetter.equals("@") && Main.board.getTileLetter(nx + 1, ny).equals("P")) {
-            Boulder b = (Boulder) Main.board.get(nx, ny);
+            FallingObject b = (FallingObject) Main.board.get(nx, ny);
             b.push("right");
             return true;
         } else if (targetLetter.equals("D") || targetLetter.equals("P")) {

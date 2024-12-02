@@ -43,9 +43,9 @@ public class Board {
                     if (l.equals("X")) {
                         a[row][col] = new Player(col, row);
                     } else if (l.equals("*")) {
-                        a[row][col] = new Diamond(col, row);
+                        a[row][col] = new FallingObject("*", col, row);
                     } else if (l.equals("@")) {
-                        a[row][col] = new Boulder(col, row);
+                        a[row][col] = new FallingObject("@", col, row);
                     } else if (l.equals("M")) {
                         a[row][col] = new MagicWall(col, row);
                     } else if (l.equals("D")) {
@@ -171,7 +171,7 @@ public class Board {
             for (int dy = -1; dy < 2; dy++) {
                 String l = this.array[y + dy][x + dx].getLetter();
                 if (!l.equals("T") && !l.equals("E")) {
-                    this.replace(x + dx, y + dy, new Diamond(x + dx, y + dy));
+                    this.replace(x + dx, y + dy, new FallingObject("*", x + dx, y + dy));
                 }
             }
         }

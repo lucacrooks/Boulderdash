@@ -49,12 +49,12 @@ public class MagicWall extends Tile{
         if (l.equals("P")) {
 
             if (this.contains.equals("*")) {
-                Main.board.replace(this.x, this.y + 1, new Diamond(this.x, this.y + 1));
-                Diamond d = (Diamond) Main.board.get(this.x, this.y + 1);
+                Main.board.replace(this.x, this.y + 1, new FallingObject("*", this.x, this.y + 1));
+                FallingObject d = (FallingObject) Main.board.get(this.x, this.y + 1);
                 d.setChecked(true);
             } else if (this.contains.equals("@")) {
-                Main.board.replace(this.x, this.y + 1, new Boulder(this.x, this.y + 1));
-                Boulder b = (Boulder) Main.board.get(this.x, this.y + 1);
+                Main.board.replace(this.x, this.y + 1, new FallingObject("@", this.x, this.y + 1));
+                FallingObject b = (FallingObject) Main.board.get(this.x, this.y + 1);
                 b.setChecked(true);
             }
 
