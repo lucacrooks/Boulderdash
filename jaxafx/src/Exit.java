@@ -4,7 +4,7 @@ public class Exit extends Tile {
     private String letter;
     private Image image;
     private boolean open;
-    private int diamondGoal = 5;
+    private int diamondGoal = 10;
 
     public Exit(int x, int y) {
         super(x, y);
