@@ -46,8 +46,8 @@ public class Main extends Application {
 	public static Board board = new Board("src/EnemyTest.txt");
 
 	// The width and height (in pixels) of each cell that makes up the game.
-	public static final int GRID_CELL_WIDTH = 50;
-	public static final int GRID_CELL_HEIGHT = 50;
+	public static final int GRID_CELL_WIDTH = 40;
+	public static final int GRID_CELL_HEIGHT = 40;
 	
 	// The width of the grid in number of cells.
 	public static final int GRID_WIDTH = 15;

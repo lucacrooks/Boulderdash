@@ -153,6 +153,8 @@ public class Player extends Tile {
         return this.letter;
     }
 
+    public int getDiamondCount() { return this.diamondCount; }
+
     /**
      * move the players x and y position to the new ones passed in.
      * @param x current x pos of player.
