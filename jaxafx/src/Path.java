@@ -1,11 +1,15 @@
 import javafx.scene.image.Image;
 
+/** Path class
+ * @author Luca Crooks
+ */
 public class Path extends Tile {
-    private int x;
-    private int y;
-    private String letter;
-    private Image image;
+    private final String letter;
+    private final Image image;
 
+    /** Path constructor
+     * @author Luca Crooks
+     */
     public Path(int x, int y) {
         super(x, y);
         this.letter = "P";
@@ -20,10 +24,5 @@ public class Path extends Tile {
     @Override
     public String getLetter() {
         return this.letter;
-    }
-
-    @Override
-    public void update() {
-
     }
 }

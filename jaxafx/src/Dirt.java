@@ -4,8 +4,8 @@ import javafx.scene.image.Image;
  * @author Luca Crooks
  */
 public class Dirt extends Tile {
-    private String letter;
-    private Image image;
+    private final String letter;
+    private final Image image;
 
     /** Dirt constructor
      * @author Luca Crooks
@@ -26,9 +26,5 @@ public class Dirt extends Tile {
     @Override
     public String getLetter() {
         return this.letter;
-    }
-
-    @Override
-    public void update() {
     }
 }

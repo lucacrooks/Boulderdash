@@ -1,17 +1,24 @@
 import javafx.scene.image.Image;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/** Player class
+ * @author Luca Crooks
+ */
 public class Player extends Tile {
-    private int start_x;
-    private int start_y;
+    private final int start_x;
+    private final int start_y;
     private Image image;
     private int diamondCount;
-    private ArrayList<String> inventory;
+    private final ArrayList<String> inventory;
     private boolean isAlive;
-    private String letter;
+    private final String letter;
 
+    /** Player constructor
+     * @author Luca Crooks
+     * @param x position of player
+     * @param y position of player
+     */
     public Player(int x, int y) {
         super(x, y);
         this.start_x = this.x;
@@ -23,6 +30,9 @@ public class Player extends Tile {
         this.inventory = new ArrayList<>();
     }
 
+    /** Moves player to original start position
+     * @author Luca Crooks
+     */
     public void reset() {
         Main.board.swap(this.x, this.y, this.start_x, this.start_y);
         Main.board.replace(this.x, this.y, new Path(this.x, this.y));
@@ -30,43 +40,60 @@ public class Player extends Tile {
         this.y = this.start_y;
     }
 
+    /** Kills self if there is an enemy occupying any of the 4 adjacent squares
+     * @author Luca Crooks
+     */
     public void checkNextToEnemy() {
         String[] surround = {Main.board.getTileLetter(this.x + 1, this.y),
                 Main.board.getTileLetter(this.x - 1, this.y),
                 Main.board.getTileLetter(this.x, this.y + 1),
                 Main.board.getTileLetter(this.x, this.y - 1)};
-        if (Arrays.stream(surround).anyMatch("B"::equals) || Arrays.stream(surround).anyMatch("F"::equals) || Arrays.stream(surround).anyMatch("f"::equals)) {
+        if (Arrays.asList(surround).contains("B") || Arrays.asList(surround).contains("F") || Arrays.asList(surround).contains("f")) {
             this.kill();
         }
     }
 
+    /** Checks all cases to see if a move is valid before moving
+     * @author Luca Crooks
+     * @param dir direction of desired move to check
+     * @return true if player can move, false if not
+     */
     public boolean checkValidMove(String dir) {
-        if (this.isAlive == false) {
+
+        // moves only if alive
+        if (!this.isAlive) {
             return false;
         }
 
+        // holds what new square the player is trying to move to in nx,ny
         int nx = 0;
         int ny = 0;
-        if (dir.equals("right")) {
-            this.image = new Image("PLAYER_RIGHT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-            nx = this.x + 1;
-            ny = this.y;
-        } else if (dir.equals("left")) {
-            this.image = new Image("PLAYER_LEFT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-            nx = this.x - 1;
-            ny = this.y;
-        } else if (dir.equals("up")) {
-            this.image = new Image("PLAYER_BACK.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-            nx = this.x;
-            ny = this.y - 1;
-        } else if (dir.equals("down")) {
-            this.image = new Image("PLAYER_FRONT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
-            nx = this.x;
-            ny = this.y + 1;
+        switch (dir) {
+            case "right" -> {
+                this.image = new Image("PLAYER_RIGHT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+                nx = this.x + 1;
+                ny = this.y;
+            }
+            case "left" -> {
+                this.image = new Image("PLAYER_LEFT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+                nx = this.x - 1;
+                ny = this.y;
+            }
+            case "up" -> {
+                this.image = new Image("PLAYER_BACK.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+                nx = this.x;
+                ny = this.y - 1;
+            }
+            case "down" -> {
+                this.image = new Image("PLAYER_FRONT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
+                nx = this.x;
+                ny = this.y + 1;
+            }
         }
-
         String targetLetter = Main.board.getTileLetter(nx, ny);
 
+        // checks the logic for each case a player can come across
+        // keys, doors, pushing boulders, walls, diamonds, exits
         if (targetLetter.equals("1") || targetLetter.equals("2") || targetLetter.equals("3") || targetLetter.equals("4")) {
             this.inventory.add(targetLetter);
             return true;
@@ -98,35 +125,50 @@ public class Player extends Tile {
         return false;
     }
 
+    /** Moves player if it can be moved
+     * @author Luca Crooks
+     * @param dir direction of desired move to check
+     */
     public void move(String dir) {
         Main.board.replace(this.x, this.y, new Player(this.x, this.y));
-        if (dir.equals("right")) {
-            Main.board.swap(this.x, this.y, this.x + 1, this.y);
-            Main.board.replace(this.x, this.y, new Path(this.x, this.y));
-            this.x++;
-            Main.player.setX(this.x);
-        } else if (dir.equals("left")){
-            Main.board.swap(this.x, this.y, this.x - 1, this.y);
-            Main.board.replace(this.x, this.y, new Path(this.x, this.y));
-            this.x--;
-            Main.player.setX(this.x);
-        } else if (dir.equals("up")){
-            Main.board.swap(this.x, this.y, this.x, this.y - 1);
-            Main.board.replace(this.x, this.y, new Path(this.x, this.y));
-            this.y--;
-            Main.player.setY(this.y);
-        } else {
-            Main.board.swap(this.x, this.y, this.x, this.y + 1);
-            Main.board.replace(this.x, this.y, new Path(this.x, this.y));
-            this.y++;
-            Main.player.setY(this.y);
+        switch (dir) {
+            case "right" -> {
+                Main.board.swap(this.x, this.y, this.x + 1, this.y);
+                Main.board.replace(this.x, this.y, new Path(this.x, this.y));
+                this.x++;
+                Main.player.setX(this.x);
+            }
+            case "left" -> {
+                Main.board.swap(this.x, this.y, this.x - 1, this.y);
+                Main.board.replace(this.x, this.y, new Path(this.x, this.y));
+                this.x--;
+                Main.player.setX(this.x);
+            }
+            case "up" -> {
+                Main.board.swap(this.x, this.y, this.x, this.y - 1);
+                Main.board.replace(this.x, this.y, new Path(this.x, this.y));
+                this.y--;
+                Main.player.setY(this.y);
+            }
+            default -> {
+                Main.board.swap(this.x, this.y, this.x, this.y + 1);
+                Main.board.replace(this.x, this.y, new Path(this.x, this.y));
+                this.y++;
+                Main.player.setY(this.y);
+            }
         }
     }
 
+    /** Puts the player in its new spot
+     * @author Luca Crooks
+     */
     public void dig() {
         Main.board.replace(this.x, this.y, Main.player);
     }
 
+    /** Explodes when player dies
+     * @author Luca Crooks
+     */
     public void kill() {
         this.isAlive = false;
         Main.board.explode(this.x, this.y);
@@ -137,14 +179,6 @@ public class Player extends Tile {
         return this.image;
     }
 
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
     @Override
     public String getLetter() {
         return this.letter;
@@ -152,22 +186,10 @@ public class Player extends Tile {
 
     public int getDiamondCount() { return this.diamondCount; }
 
-    /**
-     * move the players x and y position to the new ones passed in.
-     * @param x current x pos of player.
+    /** Moves if move is valid, then digs, then checks for an enemy
+     * @author Luca Crooks
+     * @param dir direction of desired move to check
      */
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    /**
-     * move the players x and y position to the new ones passed in.
-     * @param y current y pos of player.
-     */
-    public void setY(int y) {
-        this.y = y;
-    }
-
     @Override
     public void update(String dir) {
         if (this.checkValidMove(dir)) {

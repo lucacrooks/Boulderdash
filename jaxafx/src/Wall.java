@@ -1,9 +1,17 @@
 import javafx.scene.image.Image;
 
+/** Wall class
+ * @author Luca Crooks
+ */
 public class Wall extends Tile {
-    private String letter;
-    private Image image;
+    private final String letter;
+    private final Image image;
 
+    /** Wall constructor
+     * @author Luca Crooks
+     * @param x position of wall
+     * @param y position of wall
+     */
     public Wall(int x, int y) {
         super(x, y);
         this.letter = "W";
@@ -18,10 +26,5 @@ public class Wall extends Tile {
     @Override
     public String getLetter() {
         return this.letter;
-    }
-
-    @Override
-    public void update() {
-
     }
 }

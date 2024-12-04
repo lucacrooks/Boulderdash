@@ -12,20 +12,20 @@ import java.util.Scanner;
  */
 public class Board {
 
-    private Tile[][] array;
+    private final Tile[][] array;
 
     /** Board constructor
      * @param fn file name to be referenced when instance of board is created
      * @author Luca Crooks
      */
-    public Board (String fn) {
+    public Board(String fn) {
         this.array = makeArray(fn);
     }
 
     /** Reads the level file then takes the data and arranges it into a 2d array of tile objects
      * @author Luca Crooks
      * @param fn name of the file to read from
-     * @returns the array full of the respective tile objects based on the level file
+     * @return the array full of the respective tile objects based on the level file
      */
     public Tile[][] makeArray(String fn) {
         Tile[][] a = new Tile[Main.GRID_HEIGHT][Main.GRID_WIDTH];
@@ -39,48 +39,28 @@ public class Board {
                 String data = reader.nextLine();
                 for (int col = 0; col < Main.GRID_WIDTH; col++) {
                     String l = data.substring(col, col + 1);
-                    if (l.equals("X")) {
-                        a[row][col] = new Player(col, row);
-                    } else if (l.equals("*")) {
-                        a[row][col] = new FallingObject("*", col, row);
-                    } else if (l.equals("@")) {
-                        a[row][col] = new FallingObject("@", col, row);
-                    } else if (l.equals("M")) {
-                        a[row][col] = new MagicWall(col, row);
-                    } else if (l.equals("D")) {
-                        a[row][col] = new Dirt(col, row);
-                    } else if (l.equals("P")) {
-                        a[row][col] = new Path(col, row);
-                    } else if (l.equals("W")) {
-                        a[row][col] = new Wall(col, row);
-                    } else if (l.equals("T")) {
-                        a[row][col] = new TitaniumWall(col, row);
-                    } else if (l.equals("E")) {
-                        a[row][col] = new Exit(col, row);
-                    } else if (l.equals("B")) {
-                        a[row][col] = new Fly("B", col, row, true);
-                    } else if (l.equals("f")) {
-                        a[row][col] = new Fly("f", col, row, true);
-                    } else if (l.equals("F")) {
-                        a[row][col] = new Frog("F", col, row, true);
-                    } else if (l.equals("A")) {
-                        a[row][col] = new Amoeba(col, row, Main.MAX_AMOEBA_CAP, 0);
-                    } else if (l.equals("a")) {
-                        a[row][col] = new LockedDoor(col, row, "a");
-                    } else if (l.equals("b")) {
-                        a[row][col] = new LockedDoor(col, row, "b");
-                    } else if (l.equals("c")) {
-                        a[row][col] = new LockedDoor(col, row, "c");
-                    } else if (l.equals("d")) {
-                        a[row][col] = new LockedDoor(col, row, "d");
-                    } else if (l.equals("1")) {
-                        a[row][col] = new Key(col, row, "1");
-                    } else if (l.equals("2")) {
-                        a[row][col] = new Key(col, row, "2");
-                    } else if (l.equals("3")) {
-                        a[row][col] = new Key(col, row, "3");
-                    } else if (l.equals("4")) {
-                        a[row][col] = new Key(col, row, "4");
+                    switch (l) {
+                        case "X" -> a[row][col] = new Player(col, row);
+                        case "*" -> a[row][col] = new FallingObject("*", col, row);
+                        case "@" -> a[row][col] = new FallingObject("@", col, row);
+                        case "M" -> a[row][col] = new MagicWall(col, row);
+                        case "D" -> a[row][col] = new Dirt(col, row);
+                        case "P" -> a[row][col] = new Path(col, row);
+                        case "W" -> a[row][col] = new Wall(col, row);
+                        case "T" -> a[row][col] = new TitaniumWall(col, row);
+                        case "E" -> a[row][col] = new Exit(col, row, 10);
+                        case "B" -> a[row][col] = new Fly("B", col, row, true);
+                        case "f" -> a[row][col] = new Fly("f", col, row, true);
+                        case "F" -> a[row][col] = new Frog("F", col, row, true);
+                        case "A" -> a[row][col] = new Amoeba(col, row, Main.MAX_AMOEBA_CAP, 0);
+                        case "a" -> a[row][col] = new LockedDoor(col, row, "a");
+                        case "b" -> a[row][col] = new LockedDoor(col, row, "b");
+                        case "c" -> a[row][col] = new LockedDoor(col, row, "c");
+                        case "d" -> a[row][col] = new LockedDoor(col, row, "d");
+                        case "1" -> a[row][col] = new Key(col, row, "1");
+                        case "2" -> a[row][col] = new Key(col, row, "2");
+                        case "3" -> a[row][col] = new Key(col, row, "3");
+                        case "4" -> a[row][col] = new Key(col, row, "4");
                     }
                 }
                 row++;
@@ -89,7 +69,6 @@ public class Board {
 
         } catch (FileNotFoundException e) { // always catch a reader error
             System.out.println("An error occurred.");
-            e.printStackTrace();
         }
         return a;
     }
@@ -105,10 +84,10 @@ public class Board {
 
     /** Performs a swap of tiles at position x,y and x2,y2
      * @author Luca Crooks
-     * @param x x position of first tile
-     * @param y y position of first tile
-     * @param x2 x position of second tile
-     * @param y2 y position of second tile
+     * @param x position of first tile
+     * @param y position of first tile
+     * @param x2 position of second tile
+     * @param y2 position of second tile
      */
     public void swap (int x, int y, int x2, int y2) {
         Tile temp = this.array[y][x];
@@ -116,19 +95,11 @@ public class Board {
         this.array[y2][x2] = temp;
     }
 
-    /** Getter for attribute array
-     * @author Luca Crooks
-     * @returns attribute array
-     */
-    public Tile[][] getArray() {
-        return this.array;
-    }
-
     /** Gets letter of target tile
      * @author Luca Crooks
      * @param x position of tile
      * @param y position of tile
-     * @returns letter of target tile
+     * @return letter of target tile
      */
     public String getTileLetter(int x, int y) {
         return this.array[y][x].getLetter();
@@ -138,7 +109,7 @@ public class Board {
      * @author Luca Crooks
      * @param x position of tile
      * @param y position of tile
-     * @returns a tile based on x,y position
+     * @return a tile based on x,y position
      */
     public Tile get(int x, int y) {
         return this.array[y][x];

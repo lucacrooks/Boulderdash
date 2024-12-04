@@ -6,11 +6,11 @@ import java.util.Random;
  * @author Luca Crooks, Iolo Staniland, Gregory Picton-Turberville
  */
 public class Amoeba extends Tile {
-    private int maxCap;
-    private String letter;
-    private Image image;
-    private ArrayList<Amoeba> amoebas;
-    private ArrayList<Tile> validTiles;
+    private final int maxCap;
+    private final String letter;
+    private final Image image;
+    private final ArrayList<Amoeba> amoebas;
+    private final ArrayList<Tile> validTiles;
     private boolean locked;
     private int elapsed;
 
@@ -18,7 +18,7 @@ public class Amoeba extends Tile {
      * @author Iolo Staniland, Gregory Picton-Turberville
      * @param x Amoeba x position on the board
      * @param y Amoeba y position on the board
-     * @param maxCap maximim capacity one amoeba cluster can reach before dissipating into boulders
+     * @param maxCap maximum capacity one amoeba cluster can reach before dissipating into boulders
      * @param elapsed ticks elapsed since first update
      */
     public Amoeba(int x, int y, int maxCap, int elapsed) {
@@ -35,7 +35,6 @@ public class Amoeba extends Tile {
 
     /** Adds all amoebas on the board to an array
      * @author Luca Crooks
-     * @return
      */
     public void makeAmoebasArray() {
         this.amoebas.clear();
@@ -109,11 +108,7 @@ public class Amoeba extends Tile {
      * @return True if the size of amoebas array is above the predefined threshold, false if not
      */
     public boolean isMaxCapReached() {
-        if (amoebas.size() >= maxCap){
-            return true;
-        } else {
-            return false;
-        }
+        return amoebas.size() >= maxCap;
     }
 
     /** Checks if a given x, y position is in bounds of the board
@@ -123,10 +118,7 @@ public class Amoeba extends Tile {
      * @return true if the given x,y position is a valid position on the board
      */
     public boolean isInBounds(int x, int y) {
-        if (x >= 0 && x < Main.GRID_WIDTH && y >= 0 && y < Main.GRID_HEIGHT) {
-            return true;
-        }
-        return false;
+        return x >= 0 && x < Main.GRID_WIDTH && y >= 0 && y < Main.GRID_HEIGHT;
     }
 
     /** Checks if a given x,y position can be spread to by an amoeba

@@ -1,8 +1,15 @@
+/** GamePlayer class
+ * @author Plabata Guha
+ */
 public class GamePlayer {
     private String name;
     private int currentScore;
     private int highestScore;
 
+    /** GamePlayer constructor
+     * @author Plabata Guha
+     * @param name of player
+     */
     public GamePlayer(String name){
         this.name = name;
         this.currentScore = 0;

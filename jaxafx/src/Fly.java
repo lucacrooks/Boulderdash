@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
  */
 public class Fly extends Enemy {
     private Image image;
-    private String letter;
+    private final String letter;
     private boolean checked;
     private String direction;
     private boolean setup;

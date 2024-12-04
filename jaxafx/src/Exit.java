@@ -4,20 +4,20 @@ import javafx.scene.image.Image;
  * @author Luca Crooks, Ellis Mann
  */
 public class Exit extends Tile {
-    private String letter;
+    private final String letter;
     private Image image;
     private boolean open;
-    private int diamondGoal = 10;
+    private final int diamondGoal;
 
     /** Exit constructor
      * @author Luca Crooks, Ellis Mann
      * @param x position of exit
      * @param y position of exit
      */
-    public Exit(int x, int y) {
+    public Exit(int x, int y, int diamondGoal) {
         super(x, y);
         this.letter = "E";
-        // sort these out based on diamond quota
+        this.diamondGoal = diamondGoal;
         this.image = new Image("CLOSED_EXIT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
         this.open = false;
     }
