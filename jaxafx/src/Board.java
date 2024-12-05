@@ -40,7 +40,7 @@ public class Board {
                 for (int col = 0; col < Main.GRID_WIDTH; col++) {
                     String l = data.substring(col, col + 1);
                     switch (l) {
-                        case "X" -> a[row][col] = new Player(col, row);
+                        case "X" -> a[row][col] = new Player(col, row, Main.player.getLives());
                         case "*" -> a[row][col] = new FallingObject("*", col, row);
                         case "@" -> a[row][col] = new FallingObject("@", col, row);
                         case "M" -> a[row][col] = new MagicWall(col, row);
@@ -176,12 +176,18 @@ public class Board {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
+        // game over image
+        Image gameOverImage = new Image("GAME_OVER.png", Main.CANVAS_WIDTH, Main.CANVAS_HEIGHT, false, false);
+
         // draw each tile in the x,y position it holds, multiplied by a factor of GRID_CELL_WIDTH / HEIGHT
         for (int row = 0; row < Main.GRID_HEIGHT; row++) {
             for (int col = 0; col < Main.GRID_WIDTH; col++) {
                 Image img = array[row][col].getImage();
                 gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
             }
+        }
+        if (Main.player.getLives() == 0) {
+            gc.drawImage(gameOverImage, 0, 0);
         }
     }
 }

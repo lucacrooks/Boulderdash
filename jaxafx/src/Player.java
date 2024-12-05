@@ -13,13 +13,14 @@ public class Player extends Tile {
     private final ArrayList<String> inventory;
     private boolean isAlive;
     private final String letter;
+    private int lives;
 
     /** Player constructor
      * @author Luca Crooks
      * @param x position of player
      * @param y position of player
      */
-    public Player(int x, int y) {
+    public Player(int x, int y, int lives) {
         super(x, y);
         this.start_x = this.x;
         this.start_y = this.y;
@@ -28,6 +29,7 @@ public class Player extends Tile {
         this.diamondCount = 0;
         this.isAlive = true;
         this.inventory = new ArrayList<>();
+        this.lives = lives;
     }
 
     /** Moves player to original start position
@@ -130,7 +132,7 @@ public class Player extends Tile {
      * @param dir direction of desired move to check
      */
     public void move(String dir) {
-        Main.board.replace(this.x, this.y, new Player(this.x, this.y));
+        Main.board.replace(this.x, this.y, new Player(this.x, this.y, this.lives));
         switch (dir) {
             case "right" -> {
                 Main.board.swap(this.x, this.y, this.x + 1, this.y);
@@ -166,12 +168,19 @@ public class Player extends Tile {
         Main.board.replace(this.x, this.y, Main.player);
     }
 
-    /** Explodes when player dies
+    /** Subtracts life when player dies and shows game over screen when all lives are lost
      * @author Luca Crooks
      */
     public void kill() {
-        this.isAlive = false;
-        Main.board.explode(this.x, this.y);
+        this.lives--;
+        if (this.lives <= 0) {
+            Main.board.explode(this.x, this.y);
+        } else {
+            Main.board.explode(this.x, this.y);
+            Main.board = new Board("src/EnemyTest.txt");
+            Main.player = new Player(2, 2, this.lives);
+            System.out.println("LIVES: " + this.lives);
+        }
     }
 
     @Override
@@ -182,6 +191,10 @@ public class Player extends Tile {
     @Override
     public String getLetter() {
         return this.letter;
+    }
+
+    public int getLives() {
+        return this.lives;
     }
 
     public int getDiamondCount() { return this.diamondCount; }

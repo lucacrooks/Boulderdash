@@ -41,7 +41,7 @@ import java.util.ArrayList;
 public class Main extends Application {
 
 	// player instance
-	public static Player player = new Player(2, 2);
+	public static Player player = new Player(2, 2, 3);
 	// board creation from file
 	public static Board board = new Board("src/EnemyTest.txt");
 
