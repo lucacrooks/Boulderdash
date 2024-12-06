@@ -12,26 +12,26 @@ import java.util.Scanner;
  */
 public class Board {
 
-    private final Tile[][] array;
+    private Tile[][] array;
+    private int level;
 
     /** Board constructor
-     * @param fn file name to be referenced when instance of board is created
      * @author Luca Crooks
      */
-    public Board(String fn) {
-        this.array = makeArray(fn);
+    public Board() {
+        this.array = makeArray();
+        this.level = 0;
     }
 
     /** Reads the level file then takes the data and arranges it into a 2d array of tile objects
      * @author Luca Crooks
-     * @param fn name of the file to read from
      * @return the array full of the respective tile objects based on the level file
      */
-    public Tile[][] makeArray(String fn) {
+    public Tile[][] makeArray() {
         Tile[][] a = new Tile[Main.GRID_HEIGHT][Main.GRID_WIDTH];
         try {
             int row = 0;
-            File f = new File(fn);
+            File f = new File(Main.levels[level]);
             Scanner reader = new Scanner(f);
 
             // creates an instance of each subclass based on the letter it corresponds to
@@ -159,6 +159,22 @@ public class Board {
                 }
             }
         }
+    }
+
+    /** Moves to next level, redraws it to screen
+     * @author Luca Crooks
+     */
+    public void nextLevel() {
+        this.level += 1;
+        this.resetLevel();
+    }
+
+    /** Redraws original level to screen
+     * @author Luca Crooks
+     */
+    public void resetLevel() {
+        this.array = this.makeArray();
+        Main.player = new Player(2, 2, 3);
     }
 
     /** Draws the board using the overridden image getter in each subclass of tile

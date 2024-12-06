@@ -23,27 +23,19 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-import java.util.ArrayList;
-
 /**
- * Sample application that demonstrates the use of JavaFX Canvas for a Game.
- * This class is intentionally not structured very well. This is just a starting point to show
- * how to draw an image on a canvas, respond to arrow key presses, use a tick method that is
- * called periodically, and use drag and drop.
- * 
- * Do not build the whole application in one file. This file should probably remain very small.
- *
- * @author Liam O'Reilly
+ * @author Luca Crooks
  */
 public class Main extends Application {
 
 	// player instance
 	public static Player player = new Player(2, 2, 3);
+
+	// list of each level file src in order
+	public static final String[] levels = {"src/EnemyTest.txt", "src/LEVEL1.txt"};
+
 	// board creation from file
-	public static Board board = new Board("src/EnemyTest.txt");
+	public static Board board = new Board();
 
 	// The width and height (in pixels) of each cell that makes up the game.
 	public static final int GRID_CELL_WIDTH = 40;

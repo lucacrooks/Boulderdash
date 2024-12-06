@@ -11,7 +11,7 @@ public class Player extends Tile {
     private Image image;
     private int diamondCount;
     private final ArrayList<String> inventory;
-    private boolean isAlive;
+    private final boolean isAlive;
     private final String letter;
     private int lives;
 
@@ -121,6 +121,7 @@ public class Player extends Tile {
         } else if (targetLetter.equals("E")) {
             Exit e = (Exit) Main.board.get(nx, ny);
             if (e.getOpen()) {
+                Main.board.nextLevel();
                 this.reset();
             }
         }
@@ -177,7 +178,7 @@ public class Player extends Tile {
             Main.board.explode(this.x, this.y);
         } else {
             Main.board.explode(this.x, this.y);
-            Main.board = new Board("src/EnemyTest.txt");
+            Main.board.resetLevel();
             Main.player = new Player(2, 2, this.lives);
             System.out.println("LIVES: " + this.lives);
         }
