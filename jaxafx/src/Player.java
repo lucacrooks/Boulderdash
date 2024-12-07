@@ -164,7 +164,7 @@ public class Player extends Tile {
         } else {
             Main.board.explode(this.x, this.y);
             Main.board.resetLevel();
-            Main.player = new Player(2, 2, this.lives);
+            Main.player = new Player(1, 1, this.lives);
             System.out.println("LIVES: " + this.lives);
         }
     }

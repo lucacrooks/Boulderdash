@@ -176,7 +176,7 @@ public class Board {
      */
     public void resetLevel() {
         this.array = this.makeArray();
-        Main.player = new Player(1, 1, 3);
+        Main.player = new Player(1, 1, Main.player.getLives());
     }
 
     public int getX() {
