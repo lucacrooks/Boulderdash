@@ -210,15 +210,18 @@ public class Main extends Application {
 		// Tick Timeline buttons
 		Button startTickTimelineButton = new Button("Start Ticks");
 		Button stopTickTimelineButton = new Button("Stop Ticks");
+		Button pauseButton = new Button("Pause");
 		// We add both buttons at the same time to the timeline (we could have done this in two steps).
-		toolbar.getChildren().addAll(startTickTimelineButton, stopTickTimelineButton);
+		toolbar.getChildren().addAll(startTickTimelineButton, stopTickTimelineButton, pauseButton);
 		// Stop button is disabled by default
 		stopTickTimelineButton.setDisable(true);
 
-
-
 		// Finally, return the border pane we built up.
         return root;
+	}
+
+	public void pauseButton(){
+
 	}
 
 	public static void main(String[] args) {
