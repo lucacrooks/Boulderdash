@@ -70,8 +70,12 @@ public class MagicWall extends Tile{
         this.reset();
     }
 
-    public void setContains (String c) {
+    public void setContains(String c) {
         this.contains = c;
+    }
+
+    public String getContains() {
+        return this.contains;
     }
 
     @Override

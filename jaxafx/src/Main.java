@@ -29,20 +29,20 @@ import javafx.util.Duration;
 public class Main extends Application {
 
 	// player instance
-	public static Player player = new Player(2, 2, 3);
+	public static Player player = new Player(1, 1, 3);
 
 	// list of each level file src in order
-	public static final String[] levels = {"src/EnemyTest.txt", "src/LEVEL1.txt"};
+	public static final String[] levels = {"src/L1.txt", "src/L2.txt", "src/L3.txt", "src/L4.txt"};
 
 	// board creation from file
 	public static Board board = new Board();
 
 	// The width and height (in pixels) of each cell that makes up the game.
-	public static final int GRID_CELL_WIDTH = 40;
-	public static final int GRID_CELL_HEIGHT = 40;
-	
+	public static final int GRID_CELL_WIDTH = 50;
+	public static final int GRID_CELL_HEIGHT = 50;
+
 	// The width of the grid in number of cells.
-	public static final int GRID_WIDTH = 15;
+	public static final int GRID_WIDTH = 30;
 	public static final int GRID_HEIGHT = 15;
 
 	// The dimensions of the canvas
@@ -50,8 +50,8 @@ public class Main extends Application {
 	public static final int CANVAS_HEIGHT = GRID_HEIGHT * GRID_CELL_HEIGHT;
 
 	// The dimensions of the window
-	public static final int WINDOW_WIDTH = CANVAS_WIDTH + 100;
-	public static final int WINDOW_HEIGHT = CANVAS_HEIGHT + 100;
+	public static final int WINDOW_WIDTH = CANVAS_WIDTH;
+	public static final int WINDOW_HEIGHT = CANVAS_HEIGHT + 50;
 
 	// tick speed
 	public static final int TICK_SPEED = 200;
@@ -65,7 +65,7 @@ public class Main extends Application {
 	
 	// Timeline which will cause tick method to be called periodically.
 	private Timeline tickTimeline;
-	
+
 	/**
 	 * Setup the new application.
 	 * @param primaryStage The stage that is to be used for the application.
@@ -140,8 +140,8 @@ public class Main extends Application {
 	public void tick() {
 		// updates every tile object from the bottom up
 		// if it is a moving object, set it to be checked to avoid multiple moves per frame
-		for (int row = Main.GRID_HEIGHT - 1; row >= 0; row--) {
-			for (int col = 0; col < Main.GRID_WIDTH; col++) {
+		for (int row = GRID_HEIGHT - 1; row >= 0; row--) {
+			for (int col = 0; col < GRID_WIDTH; col++) {
 				String l = Main.board.getTileLetter(col, row);
 				Tile obj = Main.board.get(col, row);
 				if (l.equals("@") || l.equals("*") || l.equals("M") || l.equals("f") || l.equals("B") || l.equals("F")) {
@@ -156,8 +156,8 @@ public class Main extends Application {
 		}
 
 		// setup for next frame
-		for (int row = 0; row < Main.GRID_HEIGHT; row++) {
-			for (int col = 0; col < Main.GRID_WIDTH; col++) {
+		for (int row = 0; row < GRID_HEIGHT; row++) {
+			for (int col = 0; col < GRID_WIDTH; col++) {
 				String l = Main.board.getTileLetter(col, row);
 				Tile obj = Main.board.get(col, row);
 
@@ -200,7 +200,7 @@ public class Main extends Application {
 		// Create the toolbar content
 
 		// Reset Player Location Button
-		Button resetPlayerLocationButton = new Button("Reset Player");
+		Button resetPlayerLocationButton = new Button("BOULDERDASH HOLY MOLY!!!");
 		toolbar.getChildren().add(resetPlayerLocationButton);
 
 		// Setup the behaviour of the button.
@@ -223,6 +223,7 @@ public class Main extends Application {
 	public void pauseButton(){
 
 	}
+
 	public static void main(String[] args) {
 		launch(args);
 	}

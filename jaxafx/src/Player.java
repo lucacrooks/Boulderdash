@@ -6,8 +6,6 @@ import java.util.Arrays;
  * @author Luca Crooks
  */
 public class Player extends Tile {
-    private final int start_x;
-    private final int start_y;
     private Image image;
     private int diamondCount;
     private final ArrayList<String> inventory;
@@ -22,24 +20,12 @@ public class Player extends Tile {
      */
     public Player(int x, int y, int lives) {
         super(x, y);
-        this.start_x = this.x;
-        this.start_y = this.y;
         this.letter = "X";
         this.image = new Image("PLAYER_FRONT.png", Main.GRID_CELL_WIDTH, Main.GRID_CELL_HEIGHT, false, false);
         this.diamondCount = 0;
         this.isAlive = true;
         this.inventory = new ArrayList<>();
         this.lives = lives;
-    }
-
-    /** Moves player to original start position
-     * @author Luca Crooks
-     */
-    public void reset() {
-        Main.board.swap(this.x, this.y, this.start_x, this.start_y);
-        Main.board.replace(this.x, this.y, new Path(this.x, this.y));
-        this.x = this.start_x;
-        this.y = this.start_y;
     }
 
     /** Kills self if there is an enemy occupying any of the 4 adjacent squares
@@ -122,7 +108,6 @@ public class Player extends Tile {
             Exit e = (Exit) Main.board.get(nx, ny);
             if (e.getOpen()) {
                 Main.board.nextLevel();
-                this.reset();
             }
         }
         return false;
