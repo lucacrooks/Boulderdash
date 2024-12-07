@@ -14,6 +14,8 @@ public class Board {
 
     private Tile[][] array;
     private int level;
+    private int x;
+    private int y;
 
     /** Board constructor
      * @author Luca Crooks
@@ -31,7 +33,7 @@ public class Board {
         Tile[][] a = new Tile[Main.GRID_HEIGHT][Main.GRID_WIDTH];
         try {
             int row = 0;
-            File f = new File(Main.levels[level]);
+            File f = new File(Main.levels[this.level]);
             Scanner reader = new Scanner(f);
 
             // creates an instance of each subclass based on the letter it corresponds to
@@ -48,7 +50,7 @@ public class Board {
                         case "P" -> a[row][col] = new Path(col, row);
                         case "W" -> a[row][col] = new Wall(col, row);
                         case "T" -> a[row][col] = new TitaniumWall(col, row);
-                        case "E" -> a[row][col] = new Exit(col, row, 10);
+                        case "E" -> a[row][col] = new Exit(col, row, 5);
                         case "B" -> a[row][col] = new Fly("B", col, row, true);
                         case "f" -> a[row][col] = new Fly("f", col, row, true);
                         case "F" -> a[row][col] = new Frog("F", col, row, true);
@@ -153,8 +155,8 @@ public class Board {
     public void unlockAmoebas() {
         for (int row = Main.GRID_HEIGHT - 1; row >= 0; row--) {
             for (int col = 0; col < Main.GRID_WIDTH; col++) {
-                if (Main.board.get(row, col).getLetter().equals("A")) {
-                    Amoeba a = (Amoeba) Main.board.get(row, col);
+                if (Main.board.get(col, row).getLetter().equals("A")) {
+                    Amoeba a = (Amoeba) Main.board.get(col, row);
                     a.setLocked(false);
                 }
             }
@@ -174,7 +176,23 @@ public class Board {
      */
     public void resetLevel() {
         this.array = this.makeArray();
-        Main.player = new Player(2, 2, 3);
+        Main.player = new Player(1, 1, 3);
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public void setX(int nx) {
+        this.x = nx;
+    }
+
+    public void setY(int ny) {
+        this.y = ny;
     }
 
     /** Draws the board using the overridden image getter in each subclass of tile

@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
  * @author Luca Crooks, Iolo Staniland, Gregory Picton-Turberville, Ellis Mann
  */
 public class FallingObject extends Tile {
-    private String letter;
+    private final String letter;
     private Image image;
     private boolean isFalling;
     private boolean checked;
@@ -100,10 +100,15 @@ public class FallingObject extends Tile {
 
         } else if (dir == 4) { // fall through magic wall
             MagicWall mw = (MagicWall) Main.board.get(this.x, this.y + 1);
-            mw.setContains("@");
-            Main.board.replace(this.x, this.y, new Path(this.x, this.y));
-            this.isFalling = true;
-
+            if (mw.getContains().isEmpty()) {
+                if (this.letter.equals("@")) {
+                    mw.setContains("@");
+                } else {
+                    mw.setContains("*");
+                }
+                Main.board.replace(this.x, this.y, new Path(this.x, this.y));
+                this.isFalling = true;
+            }
         } else if (dir == 1) { // slide left
             Main.board.swap(this.x, this.y, this.x - 1, this.y);
             this.x--;
@@ -130,14 +135,6 @@ public class FallingObject extends Tile {
     @Override
     public void update() {
         this.fall(this.canFall());
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
     }
 
     @Override
