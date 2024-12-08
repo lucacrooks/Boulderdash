@@ -10,6 +10,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -75,6 +78,8 @@ public class Main extends Application {
 	private Scene game;
 	private Scene startMenu;
 
+	private Scene leaderboard;
+
 	/**
 	 * Setup the new application.
 	 * @param primaryStage The stage that is to be used for the application.
@@ -84,6 +89,7 @@ public class Main extends Application {
 		// Create a scene from the GUI
 		game = game(primaryStage);
 		startMenu = startMenu(primaryStage);
+		leaderboard = leaderboard(primaryStage);
 
 		// Register an event handler for key presses.
 		// This causes the processKeyEvent method to be called each time a key is pressed.
@@ -107,7 +113,7 @@ public class Main extends Application {
 		BorderPane root = new BorderPane();
 
 		Label title = new Label("BOULDERDASH");
-		title.setStyle("-fx-text-fill: #29a929; -fx-font-size: 50; -fx-background-image: url('NORMAL_WALL.png');");
+		title.setStyle("-fx-text-fill: #102c70; -fx-font-size: 100; -fx-background-image: url('MAGIC_WALL.png');");
 
 
 		VBox menu = new VBox(40);
@@ -116,15 +122,22 @@ public class Main extends Application {
 		root.setCenter(menu);
 
 		Button startGame = new Button("Start Game");
-		startGame.setStyle("-fx-background-image: url('NORMAL_WALL.png'); -fx-background-size: 20;" +
-				" -fx-font-size: 20; -fx-text-fill: #29a929");
-		menu.getChildren().add(title);
-		menu.getChildren().add(startGame);
+		startGame.setStyle("-fx-background-image: url('TITANIUM_WALL.png'); -fx-font-size: 30; -fx-text-fill: #173886");
+
+		Button highscore = new Button("Leaderboard");
+		highscore.setStyle("-fx-background-image: url('TITANIUM_WALL.png'); -fx-font-size: 30; -fx-text-fill: #173886");
+
+		menu.getChildren().addAll(title, startGame, highscore);
 
 		startGame.setOnAction(e -> {
 			primaryStage.setScene(game);
 			tickTimeline.play();
 			isPaused = false;
+		});
+
+		highscore.setOnAction(e -> {
+			primaryStage.setScene(leaderboard);
+
 		});
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -135,6 +148,26 @@ public class Main extends Application {
 		Pane root = buildGUI();
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
+
+	public Scene leaderboard(Stage primaryStage){
+		TableView tableView = new TableView();
+
+		TableColumn<GamePlayer, String> player = new TableColumn<>("Player");
+		tableView.getColumns().add(player);
+
+		VBox table = new VBox(tableView);
+		table.setAlignment(Pos.TOP_CENTER);
+
+		Button goBack = new Button("Back");
+		table.getChildren().add(goBack);
+
+		goBack.setOnAction(e -> {
+			primaryStage.setScene(startMenu);
+			primaryStage.show();
+		});
+
+		return new Scene(table, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
 	/**
