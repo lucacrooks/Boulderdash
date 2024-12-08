@@ -4,10 +4,12 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -19,6 +21,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -68,6 +71,9 @@ public class Main extends Application {
 	
 	// Timeline which will cause tick method to be called periodically.
 	private Timeline tickTimeline;
+	private boolean isPaused = true;
+	private Scene game;
+	private Scene startMenu;
 
 	/**
 	 * Setup the new application.
@@ -75,28 +81,60 @@ public class Main extends Application {
 	 */
 	public void start(Stage primaryStage) {
 
-		// Build the GUI
-		Pane root = buildGUI();
-
 		// Create a scene from the GUI
-		Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-				
+		game = game(primaryStage);
+		startMenu = startMenu(primaryStage);
+
 		// Register an event handler for key presses.
 		// This causes the processKeyEvent method to be called each time a key is pressed.
-		scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> processKeyEvent(event));
-				
+		game.addEventFilter(KeyEvent.KEY_PRESSED, event -> processKeyEvent(event));
+
 		// Register a tick method to be called periodically.
 		// Make a new timeline with one keyframe that triggers the tick method every half a second.
 		tickTimeline = new Timeline(new KeyFrame(Duration.millis(TICK_SPEED), event -> tick()));
-		 // Loop the timeline forever
+		// Loop the timeline forever
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
-		// We start the timeline.
-		tickTimeline.play();
 
 		// Display the scene on the stage
 		board.draw(canvas);
-		primaryStage.setScene(scene);
+
+		primaryStage.setTitle("Boulderdash");
+		primaryStage.setScene(startMenu);
 		primaryStage.show();
+	}
+
+	public Scene startMenu(Stage primaryStage) {
+		BorderPane root = new BorderPane();
+
+		Label title = new Label("BOULDERDASH");
+		title.setStyle("-fx-text-fill: #29a929; -fx-font-size: 50; -fx-background-image: url('NORMAL_WALL.png');");
+
+
+		VBox menu = new VBox(40);
+		menu.setStyle("-fx-background-image: url('DIRT.png');");
+		menu.setAlignment(Pos.CENTER);
+		root.setCenter(menu);
+
+		Button startGame = new Button("Start Game");
+		startGame.setStyle("-fx-background-image: url('NORMAL_WALL.png'); -fx-background-size: 20;" +
+				" -fx-font-size: 20; -fx-text-fill: #29a929");
+		menu.getChildren().add(title);
+		menu.getChildren().add(startGame);
+
+		startGame.setOnAction(e -> {
+			primaryStage.setScene(game);
+			tickTimeline.play();
+			isPaused = false;
+		});
+
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
+
+	public Scene game(Stage primaryStage) {
+		// Build the GUI
+		Pane root = buildGUI();
+
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
 	/**
@@ -105,33 +143,35 @@ public class Main extends Application {
 	 */
 	public void processKeyEvent(KeyEvent event) {
 		// We change the behaviour depending on the actual key that was pressed.
-		String direction = "";
-		switch (event.getCode()) {			
-		    case RIGHT:
-	        	direction = "right";
-	        	break;
-			case LEFT:
-				direction = "left";
-				break;
-			case UP:
-				direction = "up";
-				break;
-			case DOWN:
-				direction = "down";
-				break;
-			default:
-	        	// Do nothing for all other keys.
-	        	break;
+		if(!isPaused) {
+			String direction = "";
+			switch (event.getCode()) {
+				case RIGHT:
+					direction = "right";
+					break;
+				case LEFT:
+					direction = "left";
+					break;
+				case UP:
+					direction = "up";
+					break;
+				case DOWN:
+					direction = "down";
+					break;
+				default:
+					// Do nothing for all other keys.
+					break;
+			}
+
+			// calls update on player -> checks if move is valid, moves (or not), then digs its square if it is dirt.
+			player.update(direction);
+
+			// Redraw game as the player may have moved.
+			board.draw(canvas);
+
+			// Consume the event. This means we mark it as dealt with. This stops other GUI nodes (buttons etc) responding to it.
+			event.consume();
 		}
-
-		// calls update on player -> checks if move is valid, moves (or not), then digs its square if it is dirt.
-		player.update(direction);
-
-		// Redraw game as the player may have moved.
-		board.draw(canvas);
-		
-		// Consume the event. This means we mark it as dealt with. This stops other GUI nodes (buttons etc) responding to it.
-		event.consume();
 	}
 	
 	/**
@@ -211,20 +251,32 @@ public class Main extends Application {
 		});
 
 		// Tick Timeline buttons
-		Button startTickTimelineButton = new Button("Start Ticks");
-		Button stopTickTimelineButton = new Button("Stop Ticks");
+
 		Button pauseButton = new Button("Pause");
+		Button playButton = new Button("Play");
 		// We add both buttons at the same time to the timeline (we could have done this in two steps).
-		toolbar.getChildren().addAll(startTickTimelineButton, stopTickTimelineButton, pauseButton);
-		// Stop button is disabled by default
-		stopTickTimelineButton.setDisable(true);
+		toolbar.getChildren().addAll(pauseButton, playButton);
+
+		pauseButton.setOnAction(e -> {
+			pauseGame();
+		});
+
+		playButton.setOnAction(e -> {
+			playGame();
+		});
 
 		// Finally, return the border pane we built up.
         return root;
 	}
 
-	public void pauseButton(){
+	public void pauseGame(){
+		tickTimeline.pause();
+		isPaused = true;
+	}
 
+	public void playGame(){
+		tickTimeline.play();
+		isPaused = false;
 	}
 
 	public static void main(String[] args) {
