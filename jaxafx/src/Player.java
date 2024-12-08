@@ -185,6 +185,8 @@ public class Player extends Tile {
 
     public int getDiamondCount() { return this.diamondCount; }
 
+    public void setLives(int lives) { this.lives = lives; }
+
     /** Moves if move is valid, then digs, then checks for an enemy
      * @author Luca Crooks
      * @param dir direction of desired move to check

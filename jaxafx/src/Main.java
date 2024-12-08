@@ -64,6 +64,9 @@ public class Main extends Application {
 
 	// tick speed
 	public static final int TICK_SPEED = 200;
+	// time speed
+	public static final int TIMER_SPEED = 1;
+	public static final int TOTAL_TIME = 5;
 	// amoeba capacity
 	public static final int MAX_AMOEBA_CAP = 9;
 	
@@ -74,7 +77,14 @@ public class Main extends Application {
 	
 	// Timeline which will cause tick method to be called periodically.
 	private Timeline tickTimeline;
+
+	// Timer to track the level time left
+	private Timeline timer;
+	private int timeRemaining = TOTAL_TIME;
+	private Label timerLabel;
+	// Flag to check that game isn't paused
 	private boolean isPaused = true;
+	// Different window scenes
 	private Scene game;
 	private Scene startMenu;
 
@@ -101,8 +111,12 @@ public class Main extends Application {
 		// Loop the timeline forever
 		tickTimeline.setCycleCount(Animation.INDEFINITE);
 
+		//Create a timer to update every second
+		timer = new Timeline(new KeyFrame(Duration.seconds(TIMER_SPEED), event -> updateTimer()));
+		timer.setCycleCount(Timeline.INDEFINITE);
+
 		// Display the scene on the stage
-		board.draw(canvas);
+		board.draw(canvas, timeRemaining);
 
 		primaryStage.setTitle("Boulderdash");
 		primaryStage.setScene(startMenu);
@@ -132,12 +146,12 @@ public class Main extends Application {
 		startGame.setOnAction(e -> {
 			primaryStage.setScene(game);
 			tickTimeline.play();
+			timer.play();
 			isPaused = false;
 		});
 
 		highscore.setOnAction(e -> {
 			primaryStage.setScene(leaderboard);
-
 		});
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -200,7 +214,7 @@ public class Main extends Application {
 			player.update(direction);
 
 			// Redraw game as the player may have moved.
-			board.draw(canvas);
+			board.draw(canvas, timeRemaining);
 
 			// Consume the event. This means we mark it as dealt with. This stops other GUI nodes (buttons etc) responding to it.
 			event.consume();
@@ -251,7 +265,34 @@ public class Main extends Application {
 
 		board.unlockAmoebas();
 		// We then redraw the whole canvas.
-		board.draw(canvas);
+		board.draw(canvas, timeRemaining);
+	}
+
+	/**
+	 * Updates the timer
+	 * @author Plabata Guha
+	 */
+	private void updateTimer(){
+		if (!isPaused && timeRemaining >0){
+			timeRemaining--;
+		}
+		timerLabel.setText("Time Remaining: " + timeRemaining + "s");
+		if(timeRemaining == 0){
+			player.setLives(0);
+			player.kill();
+		}
+	}
+
+	/**
+	 * Resets the timer
+	 * @author Plabata Guha
+	 */
+	private void resetTimer(){
+		timeRemaining = TOTAL_TIME;
+		if (timer!=null){
+			timer.stop();
+		}
+		timer.play();
 	}
 
 	/**
@@ -298,18 +339,23 @@ public class Main extends Application {
 			playGame();
 		});
 
+		timerLabel = new Label("Time Remaining: " + timeRemaining + "s");
+		toolbar.getChildren().add(timerLabel);
+
 		// Finally, return the border pane we built up.
         return root;
 	}
 
-	public void pauseGame(){
+	public void pauseGame() {
 		tickTimeline.pause();
 		isPaused = true;
+		timer.pause();
 	}
 
 	public void playGame(){
 		tickTimeline.play();
 		isPaused = false;
+		timer.play();
 	}
 
 	public static void main(String[] args) {

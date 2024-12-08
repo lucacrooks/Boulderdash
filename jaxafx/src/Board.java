@@ -199,7 +199,7 @@ public class Board {
      * @author Luca Crooks
      * @param canvas the canvas where the graphics window will reside
      */
-    public void draw(Canvas canvas) {
+    public void draw(Canvas canvas, int timeRemaining) {
         // get the graphic context of the canvas
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
@@ -220,7 +220,7 @@ public class Board {
                 gc.drawImage(img, col * Main.GRID_CELL_WIDTH, row * Main.GRID_CELL_HEIGHT);
             }
         }
-        if (Main.player.getLives() == 0) {
+        if (Main.player.getLives() == 0 || timeRemaining == 0) {
             gc.drawImage(gameOverImage, 0, 0);
         }
     }
