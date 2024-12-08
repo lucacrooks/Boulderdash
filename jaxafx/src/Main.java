@@ -32,7 +32,10 @@ public class Main extends Application {
 	public static Player player = new Player(1, 1, 3);
 
 	// list of each level file src in order
-	public static final String[] levels = {"src/L5.txt", "src/L6.txt", "src/L7.txt", "src/L1.txt", "src/L2.txt", "src/L3.txt", "src/L4.txt", "src/L5.txt", "src/L6.txt", "src/L7.txt"};
+	public static final String[] levels = {
+			"src/L8.txt", "src/L1.txt", "src/L2.txt", "src/L3.txt",
+			"src/L4.txt", "src/L5.txt", "src/L6.txt", "src/L7.txt",
+			"src/l8.txt"};
 
 	// board creation from file
 	public static Board board = new Board();

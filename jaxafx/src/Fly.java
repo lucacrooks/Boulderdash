@@ -42,15 +42,27 @@ public class Fly extends Enemy {
         boolean e = Main.board.getTileLetter(this.x + 1, this.y).equals("P");
         boolean w = Main.board.getTileLetter(this.x - 1, this.y).equals("P");
 
-        // ideal start is the direction one turn clockwise of where a wall is present
-        if (!n) {
-            return "E";
-        } else if (!e) {
-            return "S";
-        } else if (!s) {
-            return "W";
-        } else if (!w) {
-            return "N";
+        // ideal start is the direction one turn clockwise/anti-clockwise of where a wall is present
+        if (this.letter.equals("B")) {
+            if (!n) {
+                return "E";
+            } else if (!e) {
+                return "S";
+            } else if (!s) {
+                return "W";
+            } else if (!w) {
+                return "N";
+            }
+        } else {
+            if (!n) {
+                return "W";
+            } else if (!w) {
+                return "S";
+            } else if (!s) {
+                return "E";
+            } else if (!e) {
+                return "N";
+            }
         }
         return "N";
     }
@@ -71,30 +83,61 @@ public class Fly extends Enemy {
             boolean e = Main.board.getTileLetter(this.x + 1, this.y).equals("P");
             boolean w = Main.board.getTileLetter(this.x - 1, this.y).equals("P");
 
-            // lookup priority table for each direction
+            String[][] dirs;
+            boolean[][] truth;
+            int[][][] coords;
+
+            // lookup priority table for each direction for butterfly and firefly
             // format {current direction, priority1, priority2, priority3, priority4}
-            String[][] dirs = {
-                    {"N", "W", "N", "E", "S"},
-                    {"S", "E", "S", "W", "N"},
-                    {"E", "N", "E", "S", "W"},
-                    {"W", "S", "W", "N", "E"}
-            };
+            if (this.letter.equals("B")) {
+                dirs = new String[][]{
+                        {"N", "W", "N", "E", "S"},
+                        {"S", "E", "S", "W", "N"},
+                        {"E", "N", "E", "S", "W"},
+                        {"W", "S", "W", "N", "E"}
+                };
+            } else {
+                dirs = new String[][]{
+                        {"N", "E", "N", "W", "S"},
+                        {"S", "W", "S", "E", "N"},
+                        {"E", "S", "E", "N", "W"},
+                        {"W", "N", "W", "S", "E"}
+                };
+            }
 
             // sam as above but holding the truth values to indicate whether the desired space is free
-            boolean[][] truth = {
-                    {n, w, n, e, s},
-                    {s, e, s, w, n},
-                    {e, n, e, s, w},
-                    {w, s, w, n, e}
-            };
+            if (this.letter.equals("B")) {
+                truth = new boolean[][]{
+                        {n, w, n, e, s},
+                        {s, e, s, w, n},
+                        {e, n, e, s, w},
+                        {w, s, w, n, e}
+                };
+            } else {
+                truth = new boolean[][]{
+                        {n, e, n, w, s},
+                        {s, w, s, e, n},
+                        {e, s, e, n, w},
+                        {w, n, w, s, e}
+                };
+            }
 
             // the amount to change the player x and y values by when a direction is chosen
-            int[][][] coords = {
-                    {{0, -1}, {-1, 0}, {0, -1}, {1, 0}, {0, 1}},
-                    {{0, 1}, {1, 0}, {0, 1}, {-1, 0}, {0, -1}},
-                    {{1, 0}, {0, -1}, {1, 0}, {0, 1}, {-1, 0}},
-                    {{-1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 0}}
-            };
+            if (this.letter.equals("B")) {
+                coords = new int[][][]{
+                        {{0, -1}, {-1, 0}, {0, -1}, {1, 0}, {0, 1}},
+                        {{0, 1}, {1, 0}, {0, 1}, {-1, 0}, {0, -1}},
+                        {{1, 0}, {0, -1}, {1, 0}, {0, 1}, {-1, 0}},
+                        {{-1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 0}}
+                };
+            } else {
+                coords = new int[][][]{
+                        {{0, -1}, {1, 0}, {0, -1}, {-1, 0}, {0, 1}},
+                        {{0, 1}, {-1, 0}, {0, 1}, {1, 0}, {0, -1}},
+                        {{1, 0}, {0, 1}, {1, 0}, {0, -1}, {-1, 0}},
+                        {{-1, 0}, {0, -1}, {-1, 0}, {0, 1}, {1, 0}}
+                };
+            }
 
             // locates the row the current direction is located in so the checking priority queue can be accessed
             int i = 0;
