@@ -32,7 +32,7 @@ public class Main extends Application {
 	public static Player player = new Player(1, 1, 3);
 
 	// list of each level file src in order
-	public static final String[] levels = {"src/L1.txt", "src/L2.txt", "src/L3.txt", "src/L4.txt", "src/L5.txt"};
+	public static final String[] levels = {"src/L5.txt", "src/L6.txt", "src/L7.txt", "src/L1.txt", "src/L2.txt", "src/L3.txt", "src/L4.txt", "src/L5.txt", "src/L6.txt", "src/L7.txt"};
 
 	// board creation from file
 	public static Board board = new Board();
@@ -56,7 +56,7 @@ public class Main extends Application {
 	// tick speed
 	public static final int TICK_SPEED = 200;
 	// amoeba capacity
-	public static final int MAX_AMOEBA_CAP = 1000;
+	public static final int MAX_AMOEBA_CAP = 9;
 	
 	// The canvas in the GUI. This needs to be a global variable
 	// (in this setup) as we need to access it in different methods.
