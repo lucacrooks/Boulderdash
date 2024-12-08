@@ -12,8 +12,8 @@ public class HighScoreTable {
     /** HighScoreTable constructor
      * @author Plabata Guha
      */
-    public HighScoreTable(String filePath) {
-        this.filePath = filePath;
+    public HighScoreTable() {
+        filePath = "src/Highscores.txt";
         loadFromFile();
     }
 

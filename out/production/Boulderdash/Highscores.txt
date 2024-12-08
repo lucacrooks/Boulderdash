@@ -1,0 +1,3 @@
+Alice, 250
+Bob, 200
+Charlie, 180

@@ -2,32 +2,23 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * @author Luca Crooks
@@ -43,6 +34,8 @@ public class Main extends Application {
 			"src/L4.txt", "src/L5.txt", "src/L6.txt", "src/L7.txt",
 			"src/l8.txt"};
 
+	// leaderboard creation from file
+	public static HighScoreTable highscores = new HighScoreTable();
 	// board creation from file
 	public static Board board = new Board();
 
@@ -66,7 +59,7 @@ public class Main extends Application {
 	public static final int TICK_SPEED = 200;
 	// time speed
 	public static final int TIMER_SPEED = 1;
-	public static final int TOTAL_TIME = 5;
+	public static final int TOTAL_TIME = 300;
 	// amoeba capacity
 	public static final int MAX_AMOEBA_CAP = 9;
 	
@@ -87,8 +80,10 @@ public class Main extends Application {
 	// Different window scenes
 	private Scene game;
 	private Scene startMenu;
-
 	private Scene leaderboard;
+	private Scene usernameMenu;
+	private String username;
+	private int previousLevel = -1;
 
 	/**
 	 * Setup the new application.
@@ -100,6 +95,7 @@ public class Main extends Application {
 		game = game(primaryStage);
 		startMenu = startMenu(primaryStage);
 		leaderboard = leaderboard(primaryStage);
+		usernameMenu = enterName(primaryStage);
 
 		// Register an event handler for key presses.
 		// This causes the processKeyEvent method to be called each time a key is pressed.
@@ -144,15 +140,32 @@ public class Main extends Application {
 		menu.getChildren().addAll(title, startGame, highscore);
 
 		startGame.setOnAction(e -> {
-			primaryStage.setScene(game);
-			tickTimeline.play();
-			timer.play();
-			isPaused = false;
+			primaryStage.setScene(usernameMenu);
+
 		});
 
 		highscore.setOnAction(e -> {
 			primaryStage.setScene(leaderboard);
+			highscores.displayHighScores();
 		});
+
+		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
+
+	public Scene enterName(Stage primaryStage) {
+		Label name = new Label("Enter your name:");
+		TextField usernameField = new TextField();
+		Button submitButton = new Button("Submit");
+
+		submitButton.setOnAction(e -> {
+			username = usernameField.getText();
+			primaryStage.setScene(game);
+			tickTimeline.play();
+			timer.play();
+			isPaused = false;
+
+		});
+		VBox root = new VBox(10, name, usernameField, submitButton);
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
@@ -168,6 +181,8 @@ public class Main extends Application {
 		TableView tableView = new TableView();
 
 		TableColumn<GamePlayer, String> player = new TableColumn<>("Player");
+		player.setCellValueFactory(new PropertyValueFactory<>("name"));
+
 		tableView.getColumns().add(player);
 
 		VBox table = new VBox(tableView);
@@ -182,6 +197,16 @@ public class Main extends Application {
 		});
 
 		return new Scene(table, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
+
+	public void updateFile(){
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/PlayerScores.txt", true))) {
+			writer.write(username + " " + (board.getLevel()+1));
+			writer.newLine();
+
+		} catch (IOException e){
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -262,7 +287,11 @@ public class Main extends Application {
 				}
 			}
 		}
-
+		int currentLevel = board.getLevel();
+		if(currentLevel != previousLevel){
+			previousLevel = currentLevel;
+			updateFile();
+		}
 		board.unlockAmoebas();
 		// We then redraw the whole canvas.
 		board.draw(canvas, timeRemaining);

@@ -187,6 +187,8 @@ public class Board {
         return this.y;
     }
 
+    public int getLevel() { return this.level; }
+
     public void setX(int nx) {
         this.x = nx;
     }
