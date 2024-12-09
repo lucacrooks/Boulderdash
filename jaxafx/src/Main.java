@@ -30,11 +30,12 @@ public class Main extends Application {
 	// player instance
 	public static Player player = new Player(1, 1, 3);
 
+	public static final int levelAmount = 8;
 	// list of each level file src in order
 	public static final String[] levels = {
-			"src/L8.txt", "src/L1.txt", "src/L2.txt", "src/L3.txt",
+			"src/L1.txt", "src/L2.txt", "src/L3.txt",
 			"src/L4.txt", "src/L5.txt", "src/L6.txt", "src/L7.txt",
-			"src/l8.txt"};
+			"src/L8.txt"};
 
 	// leaderboard creation from file
 	public static HighScoreTable highscores = new HighScoreTable();
@@ -419,6 +420,10 @@ public class Main extends Application {
 		tickTimeline.play();
 		isPaused = false;
 		timer.play();
+	}
+
+	public Canvas getCanvas() {
+		return canvas;
 	}
 
 	public static void main(String[] args) {

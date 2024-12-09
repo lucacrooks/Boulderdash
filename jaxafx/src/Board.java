@@ -170,9 +170,11 @@ public class Board {
      * @author Luca Crooks
      */
     public void nextLevel() {
-        this.level += 1;
-        Main.timeRemaining = Main.TOTAL_TIME;
-        this.resetLevel();
+        if(!(this.level == Main.levelAmount)) {
+            this.level += 1;
+            Main.timeRemaining = Main.TOTAL_TIME;
+            this.resetLevel();
+        }
     }
 
     /** Redraws original level to screen
@@ -209,7 +211,6 @@ public class Board {
     public void draw(Canvas canvas, int timeRemaining) {
         // get the graphic context of the canvas
         GraphicsContext gc = canvas.getGraphicsContext2D();
-
         // clear canvas
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
