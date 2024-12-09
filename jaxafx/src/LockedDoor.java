@@ -11,7 +11,7 @@ public class LockedDoor extends Tile {
      * @author Pearly Bhalani
      * @param x position of locked door
      * @param y position of locked door
-     *
+     * @param letter a b c or d
      */
     public LockedDoor(int x, int y, String letter) {
         super(x,y);

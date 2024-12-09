@@ -12,6 +12,7 @@ public class Key extends Tile {
      * @author Luca Crooks
      * @param x position of key
      * @param y position og key
+     * @param letter 1 2 3 or 4
      */
     public Key(int x, int y, String letter) {
         super(x,y);

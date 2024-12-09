@@ -81,6 +81,7 @@ public class Board {
      * @author Luca Crooks
      * @param x position of target tile
      * @param y position of target tile
+     * @param t tile to replace with
      */
     public void replace(int x, int y, Tile t) {
         this.array[y][x] = t;
@@ -203,6 +204,7 @@ public class Board {
     /** Draws the board using the overridden image getter in each subclass of tile
      * @author Luca Crooks
      * @param canvas the canvas where the graphics window will reside
+     * @param timeRemaining time remaining for player
      */
     public void draw(Canvas canvas, int timeRemaining) {
         // get the graphic context of the canvas

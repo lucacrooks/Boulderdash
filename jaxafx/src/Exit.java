@@ -13,6 +13,7 @@ public class Exit extends Tile {
      * @author Luca Crooks, Ellis Mann
      * @param x position of exit
      * @param y position of exit
+     * @param diamondGoal diamond quota to open
      */
     public Exit(int x, int y, int diamondGoal) {
         super(x, y);

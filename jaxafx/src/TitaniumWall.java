@@ -1,9 +1,17 @@
 import javafx.scene.image.Image;
 
+/** Titanium wall class
+ * @author Luca Crooks
+ */
 public class TitaniumWall extends Tile {
     private String letter;
     private Image image;
 
+    /** Wall constructor
+     * @author Luca Crooks
+     * @param x position of titanium wall
+     * @param y position of titanium wall
+     */
     public TitaniumWall(int x, int y) {
         super(x, y);
         this.letter = "T";

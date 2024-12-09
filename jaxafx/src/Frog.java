@@ -12,6 +12,10 @@ public class Frog extends Enemy {
 
     /** Frog constructor
      * @author Luca Crooks
+     * @param enemyType letter of frog "F"
+     * @param x position of frog
+     * @param y position of frog
+     * @param isAlive if frog is alive
      */
     public Frog(String enemyType, int x, int y, boolean isAlive) {
         super(enemyType, x, y, isAlive);

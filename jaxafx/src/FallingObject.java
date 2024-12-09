@@ -9,8 +9,9 @@ public class FallingObject extends Tile {
     private boolean isFalling;
     private boolean checked;
 
-    /** Boulder constructor
+    /** Falling object constructor
      * @author Iolo Staniland, Gregory Picton-Turberville, Ellis Mann
+     * @param letter determining whether it is a boulder or diamond
      * @param x position of boulder
      * @param y position of boulder
      */
@@ -26,7 +27,7 @@ public class FallingObject extends Tile {
         this.checked = false;
     }
 
-    /** Boulder pushing method
+    /** Boulder/diamond pushing method
      * @author Luca Crooks
      * @param dir is "left" or "right" depending on desired direction of pushing
      */
@@ -41,9 +42,9 @@ public class FallingObject extends Tile {
         this.checked = true;
     }
 
-    /** Returns a number based on which case the boulder can move
+    /** Returns a number based on which case the boulder/diamond can move
      * @author Luca Crooks, Iolo Staniland, Gregory Picton-Turberville, Ellis Mann
-     * @return a number based on what case the boulder is falling under, 0 if it cannot fall
+     * @return a number based on what case the boulder/diamond is falling under, 0 if it cannot fall
      */
     public int canFall() {
 
@@ -88,8 +89,9 @@ public class FallingObject extends Tile {
         return 0;
     }
 
-    /** Moves the boulder and/or tiles around it based on which case it falls under
+    /** Moves the boulder/diamond and/or tiles around it based on which case it falls under
      * @author Luca Crooks, Iolo Staniland, Gregory Picton-Turberville, Ellis Mann
+     * @param dir which case the falling object is using
      */
     public void fall(int dir) {
         this.isFalling = false;
@@ -119,7 +121,7 @@ public class FallingObject extends Tile {
         }
     }
 
-    /** Calls kill() in player class and replaces it with the falling boulder
+    /** Calls kill() in player class and replaces it with the falling boulder/diamond
      * @author Luca Crooks
      */
     public void killPlayer() {
