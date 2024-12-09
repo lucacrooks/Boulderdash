@@ -13,7 +13,7 @@ public class HighScoreTable {
      * @author Plabata Guha
      */
     public HighScoreTable() {
-        filePath = "src/Highscores.txt";
+        filePath = "src/PlayerScores.txt";
         loadFromFile();
     }
 

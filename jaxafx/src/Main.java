@@ -30,7 +30,7 @@ public class Main extends Application {
 
 	// list of each level file src in order
 	public static final String[] levels = {
-			"src/L8.txt", "src/L1.txt", "src/L2.txt", "src/L3.txt",
+			"src/L1.txt", "src/L2.txt", "src/L3.txt",
 			"src/L4.txt", "src/L5.txt", "src/L6.txt", "src/L7.txt",
 			"src/l8.txt"};
 
@@ -201,7 +201,7 @@ public class Main extends Application {
 
 	public void updateFile(){
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/PlayerScores.txt", true))) {
-			writer.write(username + " " + (board.getLevel()+1));
+			writer.write(username + "," + (board.getLevel() + 1));
 			writer.newLine();
 
 		} catch (IOException e){
@@ -288,7 +288,7 @@ public class Main extends Application {
 			}
 		}
 		int currentLevel = board.getLevel();
-		if(currentLevel != previousLevel){
+		if (currentLevel != previousLevel) {
 			previousLevel = currentLevel;
 			updateFile();
 		}
@@ -346,7 +346,7 @@ public class Main extends Application {
 		// Create the toolbar content
 
 		// Reset Player Location Button
-		Button resetPlayerLocationButton = new Button("BOULDERDASH HOLY MOLY!!!");
+		Button resetPlayerLocationButton = new Button("BOULDERDASH HOLY");
 		toolbar.getChildren().add(resetPlayerLocationButton);
 
 		// Setup the behaviour of the button.
