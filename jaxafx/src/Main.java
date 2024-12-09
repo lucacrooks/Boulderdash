@@ -33,9 +33,10 @@ public class Main extends Application {
 	public static final int levelAmount = 8;
 	// list of each level file src in order
 	public static final String[] levels = {
-			"src/L1.txt", "src/L2.txt", "src/L3.txt",
-			"src/L4.txt", "src/L5.txt", "src/L6.txt", "src/L7.txt",
-			"src/L8.txt"};
+			"src/L10.txt", "src/L11.txt", "src/L3.txt",
+			"src/L4.txt", "src/L5.txt", "src/L6.txt",
+			"src/L7.txt", "src/L8.txt", "src/L9.txt",
+			"src/L10.txt"};
 
 	// leaderboard creation from file
 	public static HighScoreTable highscores = new HighScoreTable();
@@ -190,24 +191,7 @@ public class Main extends Application {
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
-	public Scene leaderboard(Stage primaryStage){
-		/*TableView tableView = new TableView();
-
-		TableColumn<GamePlayer, String> player = new TableColumn<>("Player");
-		player.setCellValueFactory(new PropertyValueFactory<>("name"));
-
-		tableView.getColumns().add(player);
-
-		VBox table = new VBox(tableView);
-		table.setAlignment(Pos.TOP_CENTER);
-
-		Button goBack = new Button("Back");
-		table.getChildren().add(goBack);
-
-		goBack.setOnAction(e -> {
-			primaryStage.setScene(startMenu);
-			primaryStage.show();
-		});*/
+	public Scene leaderboard(Stage primaryStage) {
 
 		TableView<GamePlayer> tableView = new TableView<>();
 

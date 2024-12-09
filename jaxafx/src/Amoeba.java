@@ -40,8 +40,8 @@ public class Amoeba extends Tile {
         this.amoebas.clear();
         for (int row = Main.GRID_HEIGHT - 1; row >= 0; row--) {
             for (int col = 0; col < Main.GRID_WIDTH; col++) {
-                if (Main.board.get(row, col).getLetter().equals("A")) {
-                    this.amoebas.add((Amoeba) Main.board.get(row, col));
+                if (Main.board.get(col, row).getLetter().equals("A")) {
+                    this.amoebas.add((Amoeba) Main.board.get(col, row));
                 }
             }
         }
@@ -138,8 +138,8 @@ public class Amoeba extends Tile {
     public void setAllLocked(boolean l) {
         for (int row = Main.GRID_HEIGHT - 1; row >= 0; row--) {
             for (int col = 0; col < Main.GRID_WIDTH; col++) {
-                if (Main.board.get(row, col).getLetter().equals("A")) {
-                    Amoeba a = (Amoeba) Main.board.get(row, col);
+                if (Main.board.get(col, row).getLetter().equals("A")) {
+                    Amoeba a = (Amoeba) Main.board.get(col, row);
                     a.setLocked(l);
                 }
             }
@@ -172,6 +172,7 @@ public class Amoeba extends Tile {
     public void update() {
         this.elapsed++;
         if (this.elapsed % 10 == 0) {
+            System.out.println("jgfvfdggfgrf");
             this.makeAmoebasArray();
             this.makeValidTiles();
             if (!this.locked) {
