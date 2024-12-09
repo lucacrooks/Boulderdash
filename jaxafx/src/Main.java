@@ -153,9 +153,17 @@ public class Main extends Application {
 	}
 
 	public Scene enterName(Stage primaryStage) {
+		BorderPane root = new BorderPane();
+		root.setStyle("-fx-background-color: #68d79e;");
+
 		Label name = new Label("Enter your name:");
+		name.setStyle("-fx-font-size: 30; -fx-text-fill: #173886;");
+
 		TextField usernameField = new TextField();
+		usernameField.setStyle("-fx-font-size: 30; -fx-text-fill: #173886;");
+
 		Button submitButton = new Button("Submit");
+		submitButton.setStyle("-fx-font-size: 20; -fx-text-fill: #173886;");
 
 		submitButton.setOnAction(e -> {
 			username = usernameField.getText();
@@ -165,7 +173,9 @@ public class Main extends Application {
 			isPaused = false;
 
 		});
-		VBox root = new VBox(10, name, usernameField, submitButton);
+		VBox menu = new VBox(10, name, usernameField, submitButton);
+		menu.setAlignment(Pos.CENTER);
+		root.setCenter(menu);
 
 		return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
