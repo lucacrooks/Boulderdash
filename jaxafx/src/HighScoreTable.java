@@ -17,23 +17,6 @@ public class HighScoreTable {
         loadFromFile();
     }
 
-    /** Check if the player exists in the table and update their highest score
-     * If not add it to the table
-     * @author Plabata Guha
-     */
-    public void addOrUpdateHighScoreTable(GamePlayer gamePlayer) {
-        if (!gamePlayerExists(gamePlayer)) {
-            highestScores.add(gamePlayer);
-        } else {
-            updateExistingPlayerScore(gamePlayer);
-        }
-
-        // sorts then keeps top 10
-        sortHighestScores();
-        selectTop10Players();
-        saveToFile();
-    }
-
     /** Checks to see if a player already exists in the file
      * @author Plabata Guha
      */
@@ -48,7 +31,6 @@ public class HighScoreTable {
 
     /** Updates players score rather than making a whole new entry
      * @author Plabata Guha
-     * @returns
      */
     private void updateExistingPlayerScore(GamePlayer gamePlayer) {
         for (GamePlayer player: highestScores) {
@@ -105,7 +87,7 @@ public class HighScoreTable {
     private void loadFromFile() {
         //bufferedReader used to read line by line from a file.
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            //clears the what is currently in highestScore array to avoid dupilicates.
+            //clears what is currently in highestScore array to avoid dupilicates.
             highestScores.clear();
             String line;
             //read the file line by line
@@ -133,9 +115,16 @@ public class HighScoreTable {
 
     public void displayHighScores(){
         sortHighestScores();
+        selectTop10Players();
         System.out.println("High Scores: ");
         for (GamePlayer gamePlayer : highestScores){
-            System.out.println(gamePlayer.getName() + " - " + gamePlayer.getHighestScore());
+            System.out.println(gamePlayer.getName() + " - LEVEL " + gamePlayer.getHighestScore());
         }
+    }
+
+    public ArrayList<GamePlayer> getHighestScores() {
+        sortHighestScores();
+        selectTop10Players();
+        return highestScores;
     }
 }

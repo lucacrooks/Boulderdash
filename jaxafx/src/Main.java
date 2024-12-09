@@ -2,6 +2,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -30,7 +32,7 @@ public class Main extends Application {
 
 	// list of each level file src in order
 	public static final String[] levels = {
-			"src/L1.txt", "src/L2.txt", "src/L3.txt",
+			"src/L8.txt", "src/L1.txt", "src/L2.txt", "src/L3.txt",
 			"src/L4.txt", "src/L5.txt", "src/L6.txt", "src/L7.txt",
 			"src/l8.txt"};
 
@@ -59,7 +61,7 @@ public class Main extends Application {
 	public static final int TICK_SPEED = 200;
 	// time speed
 	public static final int TIMER_SPEED = 1;
-	public static final int TOTAL_TIME = 300;
+	public static final int TOTAL_TIME = 60;
 	// amoeba capacity
 	public static final int MAX_AMOEBA_CAP = 9;
 	
@@ -73,7 +75,7 @@ public class Main extends Application {
 
 	// Timer to track the level time left
 	private Timeline timer;
-	private int timeRemaining = TOTAL_TIME;
+	public static int timeRemaining = TOTAL_TIME;
 	private Label timerLabel;
 	// Flag to check that game isn't paused
 	private boolean isPaused = true;
@@ -82,7 +84,7 @@ public class Main extends Application {
 	private Scene startMenu;
 	private Scene leaderboard;
 	private Scene usernameMenu;
-	private String username;
+	private static String username;
 	private int previousLevel = -1;
 
 	/**
@@ -188,7 +190,7 @@ public class Main extends Application {
 	}
 
 	public Scene leaderboard(Stage primaryStage){
-		TableView tableView = new TableView();
+		/*TableView tableView = new TableView();
 
 		TableColumn<GamePlayer, String> player = new TableColumn<>("Player");
 		player.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -204,12 +206,38 @@ public class Main extends Application {
 		goBack.setOnAction(e -> {
 			primaryStage.setScene(startMenu);
 			primaryStage.show();
-		});
+		});*/
+
+		TableView<GamePlayer> tableView = new TableView<>();
+
+		// Define the column for "Player"
+		TableColumn<GamePlayer, String> playerColumn = new TableColumn<>("Player");
+		playerColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+		// Add the column to the TableView
+		tableView.getColumns().add(playerColumn);
+
+		// Create an ObservableList to hold the data
+		ObservableList<GamePlayer> players = FXCollections.observableArrayList();
+
+		for (int i = 0; i < highscores.getHighestScores().size(); i++) {
+			players.add(highscores.getHighestScores().get(i));
+		}
+
+		// Add the data to the TableView
+		tableView.setItems(players);
+
+		// Wrap in a VBox and add a button
+		VBox table = new VBox(tableView);
+		table.setAlignment(Pos.TOP_CENTER);
+
+		Button goBack = new Button("Back");
+		table.getChildren().add(goBack);
 
 		return new Scene(table, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
-	public void updateFile(){
+	public static void updateFile(){
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/PlayerScores.txt", true))) {
 			writer.write(username + "," + (board.getLevel() + 1));
 			writer.newLine();
@@ -297,11 +325,7 @@ public class Main extends Application {
 				}
 			}
 		}
-		int currentLevel = board.getLevel();
-		if (currentLevel != previousLevel) {
-			previousLevel = currentLevel;
-			updateFile();
-		}
+
 		board.unlockAmoebas();
 		// We then redraw the whole canvas.
 		board.draw(canvas, timeRemaining);

@@ -16,6 +16,7 @@ public class Board {
     private int level;
     private int x;
     private int y;
+    private boolean written;
 
     /** Board constructor
      * @author Luca Crooks
@@ -23,6 +24,7 @@ public class Board {
     public Board() {
         this.array = makeArray();
         this.level = 0;
+        this.written = false;
     }
 
     /** Reads the level file then takes the data and arranges it into a 2d array of tile objects
@@ -168,6 +170,7 @@ public class Board {
      */
     public void nextLevel() {
         this.level += 1;
+        Main.timeRemaining = Main.TOTAL_TIME;
         this.resetLevel();
     }
 
@@ -224,6 +227,10 @@ public class Board {
         }
         if (Main.player.getLives() == 0 || timeRemaining == 0) {
             gc.drawImage(gameOverImage, 0, 0);
+            if (!this.written) {
+                Main.updateFile();
+                this.written = true;
+            }
         }
     }
 }

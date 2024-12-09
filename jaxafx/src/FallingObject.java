@@ -64,7 +64,7 @@ public class FallingObject extends Tile {
             Main.board.replace(this.x, this.y, new Path(this.x, this.y));
             if (Main.board.getTileLetter(this.x, this.y + 1).equals("B")) {
                 Main.board.explodeDiamond(this.x, this.y + 1);
-            } else if (Main.board.getTileLetter(this.x, this.y + 1).equals("f")) {
+            } else {
                 Main.board.explode(this.x, this.y + 1);
             }
 
