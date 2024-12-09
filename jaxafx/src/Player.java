@@ -1,3 +1,4 @@
+import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
