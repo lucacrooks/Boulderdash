@@ -172,7 +172,6 @@ public class Amoeba extends Tile {
     public void update() {
         this.elapsed++;
         if (this.elapsed % 10 == 0) {
-            System.out.println("jgfvfdggfgrf");
             this.makeAmoebasArray();
             this.makeValidTiles();
             if (!this.locked) {

@@ -30,13 +30,14 @@ public class Main extends Application {
 	// player instance
 	public static Player player = new Player(1, 1, 3);
 
-	public static final int levelAmount = 8;
+	public static final int levelAmount = 12;
 	// list of each level file src in order
 	public static final String[] levels = {
-			"src/L10.txt", "src/L11.txt", "src/L3.txt",
+			"src/L1.txt", "src/L2.txt", "src/L3.txt",
 			"src/L4.txt", "src/L5.txt", "src/L6.txt",
 			"src/L7.txt", "src/L8.txt", "src/L9.txt",
-			"src/L10.txt"};
+			"src/L10.txt", "src/L11.txt", "src/L12.txt",
+			"src/L13.txt"};
 
 	// leaderboard creation from file
 	public static HighScoreTable highscores = new HighScoreTable();
